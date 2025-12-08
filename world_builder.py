@@ -27,7 +27,6 @@ class WorldBuilder:
 
                 Exits: EAST -> Lost Cache, SOUTH -> Glitch Pit
             +------------------------------------------------------------------------+
-
             """
         )
 
@@ -46,7 +45,6 @@ class WorldBuilder:
 
                 Exits: WEST -> Boot Sector
             +------------------------------------------------------------------------+
-
             """
         )
 
@@ -64,8 +62,6 @@ class WorldBuilder:
 
                 Exits: NORTH -> Boot Sector, EAST -> Data Well
             +------------------------------------------------------------------------+
-
-
             """
         )
 
@@ -83,7 +79,6 @@ class WorldBuilder:
 
                 Exits: WEST -> Glitch Pit, SOUTH -> Corrupted Arsenal
             +------------------------------------------------------------------------+
-
             """
         )
 
