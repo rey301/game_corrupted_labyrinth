@@ -1,5 +1,8 @@
+from entity import Entity
+
 class Puzzle:
-    def __init__(self, prompt, solution, reward):
+    def __init__(self, name, description, prompt, solution, reward):
+        super.__init__(name, description)
         self.prompt = prompt
         self.solution = solution
         self.reward = reward
