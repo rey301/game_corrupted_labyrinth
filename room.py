@@ -7,53 +7,35 @@ Create a room described "description". Initially, it has no exits. The
 class Room:
     """A room in the game."""
 
-    def __init__(self, description):
+    def __init__(self, monster=None, puzzle=None):
         """
             Constructor method.
-        :param description: Text description for this room
+        :param monster:
         """
-        self.description = description
-        self.exits = {}  # Dictionary
+        self.exits = {}  # Dictionary of Room objects
+        self.items = [] # List of items in the current room
+        self.monster = monster # Current monster in the room
+        self.puzzle = puzzle
 
-    def set_exit(self, direction, neighbour):
+    def set_exit(self, dir, room):
         """
             Adds an exit for a room. The exit is stored as a dictionary
             entry of the (key, value) pair (direction, room).
-        :param direction: The direction leading out of this room
-        :param neighbour: The room that this direction takes you to
+        :param dir: The direction leading out of this room.
+        :param room: The room that this direction takes you to.
         :return: None
         """
-        self.exits[direction] = neighbour
+        self.exits[dir] = room
 
-    def get_short_description(self):
+    def add_item(self, item):
         """
-            Fetch a short text description.
-        :return: text description
+            Adds an item to the room.
+        :param item: The item that is added to the room.
+        :return: None
         """
-        return self.description
 
-    def get_long_description(self):
+    def describe(self):
         """
-            Fetch a longer description including available exits.
-        :return: text description
+            Returns description of the room (including items and exits).
+        :return: Description string.
         """
-        return f'Location: {self.description}, Exits: {self.get_exits()}.'
-
-    def get_exits(self):
-        """
-            Fetch all available exits as a list.
-        :return: list of all available exits
-        """
-        all_exits = list(self.exits.keys())
-        return all_exits
-
-    def get_exit(self, direction):
-        """
-            Fetch an exit in a specified direction.
-        :param direction: The direction that the player wishes to travel
-        :return: Room object that this direction leads to, None if one does not exist
-        """
-        if direction in self.exits:
-            return self.exits[direction]
-
-        return None
