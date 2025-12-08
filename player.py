@@ -1,3 +1,4 @@
+from character import Character
 from room import Room
 
 class Player:
@@ -6,7 +7,8 @@ class Player:
     use items, pick up rewards, and engage in combat with monsters.
     """
 
-    def __init__(self):
+    def __init__(self, hp, max_hp, attack_power):
+        super().__init__(hp, max_hp, attack_power)
         self.current_room = Room()
         self.backpack = [] # list of class Item
         self.max_weight = 0
