@@ -1,3 +1,5 @@
+from room import Room
+
 class WorldBuilder:
     def build(self):
         """
