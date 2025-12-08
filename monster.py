@@ -1,5 +1,5 @@
-from item import Item
 from character import Character
+from item import Item
 
 class Monster:
     def __init__(self, hp, max_hp, attack_power, reward):

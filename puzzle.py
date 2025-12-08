@@ -1,4 +1,5 @@
 from entity import Entity
+from item import Item
 
 class Puzzle:
     def __init__(self, name, description, prompt, solution, reward):

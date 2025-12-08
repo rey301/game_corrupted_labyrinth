@@ -1,5 +1,6 @@
 from character import Character
 from room import Room
+from item import Item
 
 class Player:
     """
