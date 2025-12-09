@@ -2,6 +2,9 @@ from player import Player
 from parser import Parser
 from world_builder import WorldBuilder
 from text_ui import TextUI
+from weapon import Weapon
+from consumable import Consumable
+from misc import Misc
 
 class Game:
     """
@@ -146,6 +149,41 @@ class Game:
         :param item_name: Name of the item to use.
         :return: None
         """
+        if item_name is None:
+            self.ui.print("Use what?")
+            return
+
+        if item_name not in self.player.backpack:
+            self.ui.print("You don't have that item.")
+            return
+
+        item = self.player.backpack[item_name]
+
+        # check if it's a weapon
+        if isinstance(item, Weapon):
+            self.ui.print(f"You can't 'use' {item.name}. Try 'equip {item.name}' instead.")
+            return
+
+        # for healing
+        if isinstance(item, Consumable):
+            healed = item.use(self.player)
+            self.ui.print(f"You use {item.name}. {healed}")
+            self.player.backpack.pop(item_name)
+            return
+
+        # for unlocking something
+        if isinstance(item, Misc):
+            result = item.use(self.player, self.player.current_room, self.world)
+
+            if result:
+                self.ui.print(result)
+                self.player.backpack.pop(item_name)
+            else:
+                self.ui.print(f"You can't use {item.name} here.")
+            return
+
+        self.ui.print("Nothing happens.")
+
 
     def do_fight(self):
         """

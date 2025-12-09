@@ -275,7 +275,7 @@ Exits: none
             Place Item objects into chosen rooms.
         :return: None
         """
-        # -------------------- A-TIER ITEMS --------------------
+        # a items
         fragmented_blade = Weapon(
             "fragmented_blade",
             "A weak blade formed from unstable data shards.",
@@ -284,15 +284,22 @@ Exits: none
         )
         self.rooms["a0"].add_item(fragmented_blade)
 
-        hidden_packet = Misc(
-            "hidden_packet",
+        phantom_key = Misc(
+            "phantom_key",
             "A strange block of corrupted data. It seems to resonate with unseen doorways.",
             weight=1,
             misc_id="unlock_c0"
         )
-        self.rooms["a1"].add_item(hidden_packet)
+        self.rooms["a1"].add_item(phantom_key)
 
-        # -------------------- B-TIER ITEMS --------------------
+        # b items
+        first_corruption = Misc(
+            "first_corruption.log",
+            "A corrupted monster's log containing forgotten memories.",
+            weight=0.7,
+            misc_id="lore2"
+        )
+
         scan_module = Misc(
             "scan_module",
             "Allows you to read corrupted logs and system terminals.",
@@ -300,10 +307,10 @@ Exits: none
             misc_id="scan"
         )
         data_chip = Misc(
-            "data_chip",
-            "A broken memory chip containing fragments of lore.",
+            "data_chip.log",
+            "A broken memory chip containing a fragment of origins.",
             weight=0.8,
-            misc_id="lore"
+            misc_id="lore1"
         )
         self.rooms["b1"].add_item(scan_module)
         self.rooms["b1"].add_item(data_chip)
@@ -323,20 +330,13 @@ Exits: none
         self.rooms["b2"].add_item(backpack_upgrade)
         self.rooms["b2"].add_item(kernels_edge)
 
-        # -------------------- C-TIER ITEMS --------------------
-        ghost_fragment = Misc(
-            "ghost_fragment",
-            "A rare unstable data fragment pulsing faintly.",
-            weight=0,
-            misc_id="ghost"
-        )
+        # c items
         signal_tuner = Consumable(
             "signal_tuner",
             "A device that stabilises your attacks temporarily.",
             weight="0.9",
             heal=0
         )
-        self.rooms["c0"].add_item(ghost_fragment)
         self.rooms["c0"].add_item(signal_tuner)
 
         # -------------------- D-TIER ITEMS --------------------
@@ -346,11 +346,11 @@ Exits: none
             weight=0.4,
             misc_id="decrypt"
         )
-        fractured_log = Misc(
-            "fractured_log",
+        fractured = Misc(
+            "fractured.log",
             "A corrupted log showing pieces of the system's history.",
-            weight=0.1,
-            misc_id="lore2"
+            weight=0,
+            misc_id="lore4"
         )
         self.rooms["d0"].add_item(decryptor)
         self.rooms["d0"].add_item(fractured_log)
@@ -462,7 +462,7 @@ Exits: none
             hp=25,
             max_hp=25,
             attack_power=6,
-            reward=Misc("kernel key", "A critical system key dropped by the Gatekeeper.", weight="1.5", misc_id="kernel")
+            reward=Misc("kernel_key", "A critical system key dropped by the Gatekeeper.", weight="1.5", misc_id="kernel")
         )
         self.rooms["c2"].add_monster(gatekeeper)
 

@@ -9,12 +9,14 @@ from item import Item
 class Room(Entity):
     """A room in the game."""
 
-    def __init__(self, name, description, puzzle=None):
+    def __init__(self, name, description, locked=False, puzzle=None):
         """
             Constructor method.
         :param monster:
         """
         super().__init__(name, description)
+        self.locked = locked
+        self.hidden_path = False # for hidden room
         self.exits = {}  # Dictionary of Room objects
         self.items = {} # List of items in the current room
         self.monsters = [] # monsters in the current room

@@ -14,6 +14,7 @@ class Player(Character):
         self.backpack = {} # list of class Item
         self.weight = 0
         self.max_weight = 5
+        self.scannable = False # when true the player can read logs
 
     def set_current_room(self, room):
         """
