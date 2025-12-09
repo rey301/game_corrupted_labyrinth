@@ -24,7 +24,6 @@ class Game:
         self.ui = TextUI()
         self.parser = Parser(self.ui)
         self.world = WorldBuilder()
-        self.world.build()
         self.game_over = False
 
     def play(self):
@@ -66,6 +65,16 @@ class Game:
         # movement
         if verb == "go":
             self.do_go(obj)
+            return False
+
+        # looking for items in the room
+        elif verb == "inspect":
+            self.do_inspect(obj)
+            return False
+
+        # show inventory
+        elif verb == "inventory":
+            self.ui.print(self.player.show_inventory())
             return False
 
         # take item
@@ -117,6 +126,43 @@ class Game:
             self.player.current_room = next_room
             self.ui.print(self.player.current_room.describe())
 
+    def do_inspect(self, obj):
+        room = self.player.current_room
+        if obj is None:
+            self.ui.print("Inspect what?")
+            return
+
+        # inspecting an item in the room
+        if obj in room.items:
+            item = room.items[obj]
+            self.ui.print(f"{item.name}: {item.description}")
+            return
+
+        if obj == "room":
+            if not room.items:
+                self.ui.print("There are no items to inspect here.")
+                return
+
+            self.ui.print("Items in this room:")
+
+            for item_name, item in room.items.items():
+                self.ui.print(f" - {item_name}: {item.description}")
+            return
+
+        # inspecting item in inventory
+        if obj in self.player.inventory:
+            item = self.player.inventory[obj]
+            self.ui.print(f"{item.name}: {item.description}")
+            return
+
+        # inspecting a monster
+        for monster in room.monsters:
+            if monster.name.lower() == obj.lower():
+                self.ui.print(f"{monster.name}: {monster.description}")
+                return
+
+        self.ui.print("You see nothing like that.")
+
     def do_take(self, item_name):
         """
         Attempt to pick up an item from the current room and put it in the
@@ -153,11 +199,11 @@ class Game:
             self.ui.print("Use what?")
             return
 
-        if item_name not in self.player.backpack:
+        if item_name not in self.player.inventory:
             self.ui.print("You don't have that item.")
             return
 
-        item = self.player.backpack[item_name]
+        item = self.player.inventory[item_name]
 
         # check if it's a weapon
         if isinstance(item, Weapon):
@@ -168,7 +214,7 @@ class Game:
         if isinstance(item, Consumable):
             healed = item.use(self.player)
             self.ui.print(f"You use {item.name}. {healed}")
-            self.player.backpack.pop(item_name)
+            self.player.inventory.pop(item_name)
             return
 
         # for unlocking something
@@ -177,7 +223,6 @@ class Game:
 
             if result:
                 self.ui.print(result)
-                self.player.backpack.pop(item_name)
             else:
                 self.ui.print(f"You can't use {item.name} here.")
             return
@@ -206,17 +251,29 @@ class Game:
         Prints a list of all available player commands.
         :return: None
         """
-        self.ui.print("\nAvailable commands:")
-        self.ui.print("  go <direction>   - Move to another room (north, south, east, west)")
-        self.ui.print("  take <item>      - Pick up an item in the room")
-        self.ui.print("  use <item>       - Use a consumable or misc item")
-        self.ui.print("  equip <weapon>   - Equip a weapon from your inventory")
-        self.ui.print("  inventory        - Show items you're carrying")
-        self.ui.print("  inspect <thing>  - Examine an item, room, or monster")
-        self.ui.print("  fight            - Engage in combat with the monster here")
-        self.ui.print("  solve            - Attempt to solve the room's puzzle")
-        self.ui.print("  help             - Show this help message")
-        self.ui.print("  quit             - Exit the game\n")
+        self.ui.print("\nAvailable commands:\n")
+
+        self.ui.print("Movement:")
+        self.ui.print("  go <direction>     - Move to another room (north, south, east, west)")
+        self.ui.print("  look               - Reprint the current room's description")
+
+        self.ui.print("\nItem Interaction:")
+        self.ui.print("  take <item>        - Pick up an item in the room")
+        self.ui.print("  use <item>         - Use a misc or consumable item")
+        self.ui.print("  equip <weapon>     - Equip a weapon from your backpack")
+        self.ui.print("  inventory          - Show items you're carrying")
+        self.ui.print("  inspect room       - List all items in the room")
+        self.ui.print("  inspect <item>     - Examine an item in the room or in your backpack")
+
+        self.ui.print("\nCombat:")
+        self.ui.print("  fight              - Engage in combat with the monster here")
+
+        self.ui.print("\nPuzzles:")
+        self.ui.print("  solve              - Attempt to solve the room's puzzle")
+
+        self.ui.print("\nSystem:")
+        self.ui.print("  help               - Show this help message")
+        self.ui.print("  quit               - Exit the game\n")
 
 def main():
     """Main entry point for the game."""
