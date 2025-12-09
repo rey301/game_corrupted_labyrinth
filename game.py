@@ -1,5 +1,5 @@
 from player import Player
-from game_code.parser import Parser
+from parser import Parser
 from world_builder import WorldBuilder
 from text_ui import TextUI
 
@@ -21,6 +21,7 @@ class Game:
         self.parser = Parser()
         self.ui = TextUI()
         self.world = WorldBuilder()
+        self.world.build()
         self.game_over = False
 
     def play(self):

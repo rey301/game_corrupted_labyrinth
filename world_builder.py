@@ -1,4 +1,8 @@
 from room import Room
+from puzzle import Puzzle
+from weapon import Weapon
+from consumable import Consumable
+from misc import Misc
 
 class WorldBuilder:
     def __init__(self):
@@ -15,7 +19,7 @@ class WorldBuilder:
         a0 = Room(
             "Boot Sector",
             """
-            +----------------------- BOOT SECTOR ------------------------------------+
+            +----------------------------- BOOT SECTOR ------------------------------+
                 System booting...
 
                     [ Initialising user shell ]
@@ -24,7 +28,7 @@ class WorldBuilder:
 
                 A plain-looking room forms around you, 
                 like the world is still loading.
-                Bits of code drip from the ceiling. 
+                Bits of code fall from the ceiling. 
                 Something small glints on the floor.
 
                 Exits: EAST -> Lost Cache, SOUTH -> Glitch Pit
@@ -268,16 +272,127 @@ class WorldBuilder:
             Place Item objects into chosen rooms.
         :return: None
         """
+        # -------------------- A-TIER ITEMS --------------------
+        fragmented_blade = Weapon(
+            "Fragmented Blade",
+            "A weak blade formed from unstable data shards.",
+            damage=3,
+            weight=1
+        )
+        self.rooms["a0"].add_item(fragmented_blade)
+
+        hidden_packet = Misc(
+            "Hidden Packet",
+            "A strange block of corrupted data. It seems to resonate with unseen doorways.",
+            misc_id="unlock_c0"
+        )
+        self.rooms["a1"].add_item(hidden_packet)
+
+        # -------------------- B-TIER ITEMS --------------------
+        scan_module = Misc(
+            "Scan Module",
+            "Allows you to read corrupted logs and system terminals.",
+            misc_id="scan"
+        )
+        data_chip = Misc(
+            "Data Chip",
+            "A broken memory chip containing fragments of lore.",
+            misc_id="lore"
+        )
+        self.rooms["b1"].add_item(scan_module)
+        self.rooms["b1"].add_item(data_chip)
+
+        backpack_upgrade = Misc(
+            "Backpack Upgrade",
+            "Upgrades your inventory capacity using adaptive memory compression.",
+            misc_id="bag_upgrade"
+        )
+        kernels_edge = Weapon(
+            "Kernel's Edge",
+            "A powerful blade formed from unstable data.",
+            damage=7,
+            weight=2
+        )
+        self.rooms["b2"].add_item(backpack_upgrade)
+        self.rooms["b2"].add_item(kernels_edge)
+
+        # -------------------- C-TIER ITEMS --------------------
+        ghost_fragment = Misc(
+            "Ghost Fragment",
+            "A rare unstable data fragment pulsing faintly.",
+            misc_id="ghost"
+        )
+        signal_tuner = Consumable(
+            "Signal Tuner",
+            "A device that stabilises your attacks temporarily.",
+            heal=0
+        )
+        self.rooms["c0"].add_item(ghost_fragment)
+        self.rooms["c0"].add_item(signal_tuner)
+
+        # -------------------- D-TIER ITEMS --------------------
+        decryptor = Misc(
+            "Decryptor",
+            "Required to operate the final console in the Obsolete Hub.",
+            misc_id="decrypt"
+        )
+        fractured_log = Misc(
+            "Fractured Log",
+            "A corrupted log showing pieces of the system's history.",
+            misc_id="lore2"
+        )
+        self.rooms["d0"].add_item(decryptor)
+        self.rooms["d0"].add_item(fractured_log)
 
     def place_puzzles(self):
         """
             Assign Puzzle objects to chosen rooms.
         :return: None
         """
+        # -------------------- A1 – LOST CACHE --------------------
+        puzzle_a1 = Puzzle(
+            prompt="Reconstruct the missing byte: 101_01 → what number completes the sequence?",
+            solution="0",
+            reward="unlock_hidden_packet"
+        )
+        self.rooms["a1"].puzzle = puzzle_a1
+
+        # -------------------- B1 – DATA WELL --------------------
+        puzzle_b1 = Puzzle(
+            prompt="Decode the binary sequence: 0100 0001 = ? (ASCII)",
+            solution="A",
+            reward=None  # reward is using scan_module effectively
+        )
+        self.rooms["b1"].puzzle = puzzle_b1
+
+        # -------------------- B2 – CORRUPTED ARSENAL --------------------
+        puzzle_b2 = Puzzle(
+            prompt="Repair the corrupted kernel header: K_RN_L → fill the missing letters.",
+            solution="KERNEL",    # accepting "KERNEL" in game logic is easy too
+            reward="unlock_kernels_edge"  # Game will interpret this as unlocking the weapon
+        )
+        self.rooms["b2"].puzzle = puzzle_b2
+
+        # -------------------- C0 – PHANTOM NODE (SECRET) --------------------
+        puzzle_c0 = Puzzle(
+            prompt="A whisper: 'What remains when memory fades?'",
+            solution="echo",
+            reward=None  # optional: can spawn lore item if you want
+        )
+        self.rooms["c0"].puzzle = puzzle_c0
+
+        # -------------------- D1 – OBSOLETE HUB (FINAL PUZZLE) --------------------
+        puzzle_d1 = Puzzle(
+            prompt="Enter the decryption key: XOR(7, 12) = ?",
+            solution="11",
+            reward="unlock_exit"  # unlocks passage to System Kernel
+        )
+        self.rooms["d1"].puzzle = puzzle_d1
 
     def place_monsters(self):
         """
             Assign Monster objects to chosen rooms.
         :return: None
         """
+
 
