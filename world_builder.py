@@ -1,6 +1,9 @@
 from room import Room
 
 class WorldBuilder:
+    def __init__(self):
+        self.rooms = {}
+
     def build(self):
         """
             Creates all rooms, connects them with exits,
@@ -8,9 +11,8 @@ class WorldBuilder:
         :return: The starting room.
         """
 
-
-
-        room_a0 = Room(
+        # build rooms
+        a0 = Room(
             "Boot Sector",
             """
             +----------------------- BOOT SECTOR ------------------------------------+
@@ -30,7 +32,7 @@ class WorldBuilder:
             """
         )
 
-        room_a1 = Room(
+        a1 = Room(
             "Lost Cache",
             """
             +------------------------- LOST CACHE -----------------------------------+
@@ -48,7 +50,7 @@ class WorldBuilder:
             """
         )
 
-        room_b0 = Room(
+        b0 = Room(
             "Glitch Pit",
             """
             +-------------------------- GLITCH PIT ----------------------------------+
@@ -60,12 +62,12 @@ class WorldBuilder:
 
                 This area feels dangerous.
 
-                Exits: NORTH -> Boot Sector, EAST -> Data Well
+                Exits: NORTH -> Boot Sector, EAST -> Data Well, WEST -> Dead Pixels
             +------------------------------------------------------------------------+
             """
         )
 
-        room_b1 = Room(
+        b1 = Room(
             "Data Well",
             """
             +--------------------------- DATA WELL ----------------------------------+
@@ -82,116 +84,180 @@ class WorldBuilder:
             """
         )
 
-        room_b2 = Room(
+        b2 = Room(
             "Corrupted Arsenal",
             """
             +------------------------- CORRUPTED ARSENAL ----------------------------+
                 Rusty-looking digital weapon models float in the air, 
                 but many fail to render correctly.
-                
+
                    [ locked slot       ]
                    [ missing texture   ]
                    [ weapon_error_4F   ]
-                
+
                 A larger puzzle device sparks occasionally.
                 Your backpack system activates when entering this place.
-                
-                Exits: NORTH -> Data Well
+
+                Exits: NORTH -> Data Well, SOUTH -> Gatekeeper Node
             +------------------------------------------------------------------------+
             """
         )
 
-        room_c0 = Room(
+        b3 = Room(
+            "Dead Pixels",
+            """
+            +------------------------------ DEAD PIXELS -----------------------------+
+                The walls here have broken into scattered pixel noise.  
+                                                       
+                           . . .     . # .   . . # # .    . # . .               
+                             #   . # .   . .   # .   #     .    .               
+                           .   # # .   .   # #     .      # . . .               
+                                                                    
+                Black and white squares flicker without a pattern.    
+                It feels like an unfinished part of the mysterious labyrinth.         
+                                                                    
+                Exits: EAST -> Glitch Pit                              
+            +-----------------------------------------------------------------------+
+
+            """
+        )
+
+        c0 = Room(
             "Phantom Node",
             """
             +--------------------------- PHANTOM NODE -------------------------------+
                 This room shouldn't exist...  
                 Its walls are only half-there, fading in and out like a memory.
-                
+
                    You feel watched.
                    A strange object hovers silently.
-                
-                This place only appears if you're carrying something special.
-                
-                Exits: unknown
+
+                A doorway flickers in and out of existence, revealing a direct
+                link to a powerful presence deeper in the system...
+
+                Exits: SOUTH -> Gatekeeper Node
             +------------------------------------------------------------------------+
             """
         )
 
-        room_c2 = Room(
+        c2 = Room(
             "Gatekeeper Node",
             """
-            +----------------------- GATEKEEPER NODE --------------------------------+
+            +-------------------------- GATEKEEPER NODE -----------------------------+
                 A massive corrupted guardian blocks the path ahead.
                 It flickers between frames, unfinished and unstable.
-                
+
                    ACCESS DENIED: kernel key required
                    The creature roars and the whole room shudders.
-                
+
                 This fight is unavoidable.
-                
-                Exits: SOUTH -> Fractured Archive (locked until victory)
+
+                Exits: NORTH -> Corrupted Arsenal, SOUTH -> Fractured Archive (locked)
             +------------------------------------------------------------------------+
             """
         )
 
-        room_d0 = Room(
+        d0 = Room(
             "Fractured Archive",
             """
-            +----------------------- FRACTURED ARCHIVE ------------------------------+
+            +------------------------- FRACTURED ARCHIVE ----------------------------+
                 Broken bits of past events float around like ghosts.
                 Some logs replay wrong. Others don't load at all.
-                
+
                    [ log_04: missing timestamp ]
                    [ memory chunk corrupted    ]
-                
+
                 A console sits in the centre, but it needs a decryption item.
-                
+
                 Exits: NORTH -> Gatekeeper Node, EAST -> Obsolete Hub
             +------------------------------------------------------------------------+
             """
         )
 
-        room_d1 = Room(
+        d1 = Room(
             "Obsolete Hub",
             """
             +--------------------------- OBSOLETE HUB -------------------------------+
                 This room feels outdated. Old system functions lie everywhere,  
                 half-functional and flickering.
-                
+
                    < deprecated_module >
                    < legacy API called >
                    < unsupported format >
-                
+
                 A giant puzzle dominates the middle of the room.
-                
-                Exits: west -> Fractured Archive, north -> System Kernel
+
+                Exits: WEST -> Fractured Archive, NORTH -> System Kernel
             +------------------------------------------------------------------------+
             """
         )
 
-        room_d2 = Room(
+        d2 = Room(
             "System Kernel",
             """
             +---------------------------- SYSTEM KERNEL -----------------------------+
                 Everything is suddenly calm.  
                 The glitches are gone. The room is clean and bright.
-                
+
                    You hold the kernel key.
                    A door of pure white light waits for you.
-                
+
                 This is the exit.
-                
+
                 Exits: none
             +------------------------------------------------------------------------+
             """
         )
+
+        self.rooms = {"a0": a0, "a1": a1, "b0": b0, "b1": b1, "b2": b2, "b3": b3,
+                      "c0": c0, "c2": c2, "d0": d0, "d1": d1, "d2": d2
+                      }
 
     def link_rooms(self):
         """
             Creates directional exits between rooms.
         :return: None
         """
+        # set exits
+        # Boot Sector (spawn)
+        self.rooms["a0"].set_exit("east", self.rooms["a1"])
+        self.rooms["a0"].set_exit("south", self.rooms["b0"])
+
+        # Lost Cache
+        self.rooms["a1"].set_exit("west", self.rooms["a0"])
+
+        # Glitch Pit
+        self.rooms["b0"].set_exit("north", self.rooms["a0"])
+        self.rooms["b0"].set_exit("east", self.rooms["b1"])
+        self.rooms["b0"].set_exit("west", self.rooms["b3"])  # dead-end branch
+
+        # Dead Pixels
+        self.rooms["b3"].set_exit("east", self.rooms["b0"])  # only way back
+
+        # Data Well
+        self.rooms["b1"].set_exit("west", self.rooms["b0"])
+        self.rooms["b1"].set_exit("south", self.rooms["b2"])
+
+        # Corrupted Arsenal
+        self.rooms["b2"].set_exit("north", self.rooms["b1"])
+        self.rooms["b2"].set_exit("south", self.rooms["c2"])  # boss path
+
+        # Phantom Node (secret room) - unlocked separately
+        self.rooms["c0"].set_exit("south", self.rooms["c2"])  # secret shortcut back to maze
+
+        # Gatekeeper Node (boss)
+        self.rooms["c2"].set_exit("north", self.rooms["b2"])
+        self.rooms["c2"].set_exit("south", self.rooms["d0"])
+
+        # Fractured Archive
+        self.rooms["d0"].set_exit("north", self.rooms["c2"])
+        self.rooms["d0"].set_exit("east", self.rooms["d1"])
+
+        # Obsolete Hub
+        self.rooms["d1"].set_exit("west", self.rooms["d0"])
+        self.rooms["d1"].set_exit("north", self.rooms["d2"])
+
+        # System Kernel is endgame (no exits)
 
     def place_items(self):
         """

@@ -6,7 +6,7 @@ Create a room described "description". Initially, it has no exits. The
 from entity import Entity
 from item import Item
 
-class Room:
+class Room(Entity):
     """A room in the game."""
 
     def __init__(self, name, description, monster=None, puzzle=None):
@@ -14,7 +14,7 @@ class Room:
             Constructor method.
         :param monster:
         """
-        super.__init__(name, description)
+        super().__init__(name, description)
         self.exits = {}  # Dictionary of Room objects
         self.items = [] # List of items in the current room
         self.monster = monster # Current monster in the room
@@ -36,9 +36,11 @@ class Room:
         :param item: The item that is added to the room.
         :return: None
         """
+        self.items.append(item)
 
     def describe(self):
         """
             Returns description of the room (including items and exits).
         :return: Description string.
         """
+        return self.description

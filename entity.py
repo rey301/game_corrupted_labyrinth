@@ -8,9 +8,11 @@ class Entity:
             Returns entity's name.
         :return: The name string.
         """
+        return self.name
 
     def get_description(self):
         """
             Returns the object's description.
         :return: The description string.
         """
+        return self.description
