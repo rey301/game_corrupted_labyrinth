@@ -20,109 +20,109 @@ class WorldBuilder:
         a0 = Room(
             "Boot Sector",
             """
-            +----------------------------- BOOT SECTOR ------------------------------+
-                System booting...
++----------------------------- BOOT SECTOR ------------------------------+
+    System booting...
 
-                    [ Initialising user shell ]
-                    [ Loading visual layer    ]
-                    [ Syncing input streams   ]
+        [ Initialising user shell ]
+        [ Loading visual layer    ]
+        [ Syncing input streams   ]
 
-                A plain-looking room forms around you, 
-                like the world is still loading.
-                Bits of code fall from the ceiling. 
-                Something small glints on the floor.
+    A plain-looking room forms around you, 
+    like the world is still loading.
+    Bits of code fall from the ceiling. 
+    Something small glints on the floor.
 
-                Exits: EAST -> Lost Cache, SOUTH -> Glitch Pit
-            +------------------------------------------------------------------------+
+    Exits: EAST -> Lost Cache, SOUTH -> Glitch Pit
++------------------------------------------------------------------------+
             """
         )
 
         a1 = Room(
             "Lost Cache",
             """
-            +------------------------- LOST CACHE -----------------------------------+
-                Piles of old memory blocks are stacked everywhere. 
-                Some flicker, some don't load at all.
++------------------------- LOST CACHE -----------------------------------+
+    Piles of old memory blocks are stacked everywhere. 
+    Some flicker, some don't load at all.
 
-                    < Rebuilding item data ... 12% >
-                    < Warning: corrupted fragment >
+        < Rebuilding item data ... 12% >
+        < Warning: corrupted fragment >
 
-                A small terminal hums quietly. 
-                Something useful might be buried here.
+    A small terminal hums quietly. 
+    Something useful might be buried here.
 
-                Exits: WEST -> Boot Sector
-            +------------------------------------------------------------------------+
+    Exits: WEST -> Boot Sector
++------------------------------------------------------------------------+
             """
         )
 
         b0 = Room(
             "Glitch Pit",
             """
-            +-------------------------- GLITCH PIT ----------------------------------+
-                The ground seems unreliable here.  
-                Tiles appear late, and some just blink in and out of existence.
++-------------------------- GLITCH PIT ----------------------------------+
+    The ground seems unreliable here.  
+    Tiles appear late, and some just blink in and out of existence.
 
-                    !! Terrain error: mesh failed to load !!
-                    A twitching, half-rendered monster notices you.
+        !! Terrain error: mesh failed to load !!
+        A twitching, half-rendered monster notices you.
 
-                This area feels dangerous.
+    This area feels dangerous.
 
-                Exits: NORTH -> Boot Sector, EAST -> Data Well, WEST -> Dead Pixels
-            +------------------------------------------------------------------------+
+    Exits: NORTH -> Boot Sector, EAST -> Data Well, WEST -> Dead Pixels
++------------------------------------------------------------------------+
             """
         )
 
         b1 = Room(
             "Data Well",
             """
-            +--------------------------- DATA WELL ----------------------------------+
-                A column of falling numbers spills from the ceiling like a waterfall.
-                Binary streams flow along the floor.
++--------------------------- DATA WELL ----------------------------------+
+    A column of falling numbers spills from the ceiling like a waterfall.
+    Binary streams flow along the floor.
 
-                    010101... 011001... 010110...
-                    A terminal nearby flashes: "LOG AVAILABLE"
+        010101... 011001... 010110...
+        A terminal nearby flashes: "LOG AVAILABLE"
 
-                A puzzle seems to be woven into the data flow itself.
+    A puzzle seems to be woven into the data flow itself.
 
-                Exits: WEST -> Glitch Pit, SOUTH -> Corrupted Arsenal
-            +------------------------------------------------------------------------+
+    Exits: WEST -> Glitch Pit, SOUTH -> Corrupted Arsenal
++------------------------------------------------------------------------+
             """
         )
 
         b2 = Room(
             "Corrupted Arsenal",
             """
-            +------------------------- CORRUPTED ARSENAL ----------------------------+
-                Rusty-looking digital weapon models float in the air, 
-                but many fail to render correctly.
++------------------------- CORRUPTED ARSENAL ----------------------------+
+    Rusty-looking digital weapon models float in the air, 
+    but many fail to render correctly.
 
-                   [ locked slot       ]
-                   [ missing texture   ]
-                   [ weapon_error_4F   ]
+       [ locked slot       ]
+       [ missing texture   ]
+       [ weapon_error_4F   ]
 
-                A larger puzzle device sparks occasionally.
-                Your backpack system activates when entering this place.
+    A larger puzzle device sparks occasionally.
+    Your backpack system activates when entering this place.
 
-                Exits: NORTH -> Data Well, SOUTH -> Gatekeeper Node
-            +------------------------------------------------------------------------+
+    Exits: NORTH -> Data Well, SOUTH -> Gatekeeper Node
++------------------------------------------------------------------------+
             """
         )
 
         b3 = Room(
             "Dead Pixels",
             """
-            +------------------------------ DEAD PIXELS -----------------------------+
-                The walls here have broken into scattered pixel noise.  
-                                                       
-                           . . .     . # .   . . # # .    . # . .               
-                             #   . # .   . .   # .   #     .    .               
-                           .   # # .   .   # #     .      # . . .               
-                                                                    
-                Black and white squares flicker without a pattern.    
-                It feels like an unfinished part of the mysterious labyrinth.         
-                                                                    
-                Exits: EAST -> Glitch Pit                              
-            +-----------------------------------------------------------------------+
++------------------------------ DEAD PIXELS -----------------------------+
+    The walls here have broken into scattered pixel noise.  
+                                           
+               . . .     . # .   . . # # .    . # . .               
+                 #   . # .   . .   # .   #     .    .               
+               .   # # .   .   # #     .      # . . .               
+                                                        
+    Black and white squares flicker without a pattern.    
+    It feels like an unfinished part of the mysterious labyrinth.         
+                                                        
+    Exits: EAST -> Glitch Pit                              
++------------------------------------------------------------------------+
 
             """
         )
@@ -130,87 +130,87 @@ class WorldBuilder:
         c0 = Room(
             "Phantom Node",
             """
-            +--------------------------- PHANTOM NODE -------------------------------+
-                This room shouldn't exist...  
-                Its walls are only half-there, fading in and out like a memory.
++--------------------------- PHANTOM NODE -------------------------------+
+    This room shouldn't exist...  
+    Its walls are only half-there, fading in and out like a memory.
 
-                   You feel watched.
-                   A strange object hovers silently.
+       You feel watched.
+       A strange object hovers silently.
 
-                A doorway flickers in and out of existence, revealing a direct
-                link to a powerful presence deeper in the system...
+    A doorway flickers in and out of existence, revealing a direct
+    link to a powerful presence deeper in the system...
 
-                Exits: SOUTH -> Gatekeeper Node
-            +------------------------------------------------------------------------+
+    Exits: SOUTH -> Gatekeeper Node
++------------------------------------------------------------------------+
             """
         )
 
         c2 = Room(
             "Gatekeeper Node",
             """
-            +-------------------------- GATEKEEPER NODE -----------------------------+
-                A massive corrupted guardian blocks the path ahead.
-                It flickers between frames, unfinished and unstable.
++-------------------------- GATEKEEPER NODE -----------------------------+
+    A massive corrupted guardian blocks the path ahead.
+    It flickers between frames, unfinished and unstable.
 
-                   ACCESS DENIED: kernel key required
-                   The creature roars and the whole room shudders.
+       ACCESS DENIED: kernel key required
+       The creature roars and the whole room shudders.
 
-                This fight is unavoidable.
+    This fight is unavoidable.
 
-                Exits: NORTH -> Corrupted Arsenal, SOUTH -> Fractured Archive (locked)
-            +------------------------------------------------------------------------+
+    Exits: NORTH -> Corrupted Arsenal, SOUTH -> Fractured Archive (locked)
++------------------------------------------------------------------------+
             """
         )
 
         d0 = Room(
             "Fractured Archive",
             """
-            +------------------------- FRACTURED ARCHIVE ----------------------------+
-                Broken bits of past events float around like ghosts.
-                Some logs replay wrong. Others don't load at all.
++------------------------- FRACTURED ARCHIVE ----------------------------+
+    Broken bits of past events float around like ghosts.
+    Some logs replay wrong. Others don't load at all.
 
-                   [ log_04: missing timestamp ]
-                   [ memory chunk corrupted    ]
+       [ log_04: missing timestamp ]
+       [ memory chunk corrupted    ]
 
-                A console sits in the centre, but it needs a decryption item.
+    A console sits in the centre, but it needs a decryption item.
 
-                Exits: NORTH -> Gatekeeper Node, EAST -> Obsolete Hub
-            +------------------------------------------------------------------------+
+    Exits: NORTH -> Gatekeeper Node, EAST -> Obsolete Hub
++------------------------------------------------------------------------+
             """
         )
 
         d1 = Room(
             "Obsolete Hub",
             """
-            +--------------------------- OBSOLETE HUB -------------------------------+
-                This room feels outdated. Old system functions lie everywhere,  
-                half-functional and flickering.
++--------------------------- OBSOLETE HUB -------------------------------+
+    This room feels outdated. Old system functions lie everywhere,  
+    half-functional and flickering.
 
-                   < deprecated_module >
-                   < legacy API called >
-                   < unsupported format >
+       < deprecated_module >
+       < legacy API called >
+       < unsupported format >
 
-                A giant puzzle dominates the middle of the room.
+    A giant puzzle dominates the middle of the room.
 
-                Exits: WEST -> Fractured Archive, NORTH -> System Kernel
-            +------------------------------------------------------------------------+
+    Exits: WEST -> Fractured Archive, NORTH -> System Kernel
++------------------------------------------------------------------------+
             """
         )
 
         d2 = Room(
             "System Kernel",
             """
-            +---------------------------- SYSTEM KERNEL -----------------------------+
-                Everything is suddenly calm.  
-                The glitches are gone. The room is clean and bright.
++---------------------------- SYSTEM KERNEL -----------------------------+
+Everything is suddenly calm.  
+The glitches are gone. The room is clean and bright.
 
-                   You hold the kernel key.
-                   A door of pure white light waits for you.
+   You hold the kernel key.
+   A door of pure white light waits for you.
 
-                This is the exit.
+This is the exit.
 
-                Exits: none
-            +------------------------------------------------------------------------+
+Exits: none
++------------------------------------------------------------------------+
             """
         )
 
@@ -222,6 +222,8 @@ class WorldBuilder:
         self.place_items()
         self.place_puzzles()
         self.place_monsters()
+
+        return a0
 
     def link_rooms(self):
         """
@@ -285,6 +287,7 @@ class WorldBuilder:
         hidden_packet = Misc(
             "Hidden Packet",
             "A strange block of corrupted data. It seems to resonate with unseen doorways.",
+            weight=1,
             misc_id="unlock_c0"
         )
         self.rooms["a1"].add_item(hidden_packet)
@@ -293,11 +296,13 @@ class WorldBuilder:
         scan_module = Misc(
             "Scan Module",
             "Allows you to read corrupted logs and system terminals.",
+            weight=0.7,
             misc_id="scan"
         )
         data_chip = Misc(
             "Data Chip",
             "A broken memory chip containing fragments of lore.",
+            weight=0.8,
             misc_id="lore"
         )
         self.rooms["b1"].add_item(scan_module)
@@ -306,6 +311,7 @@ class WorldBuilder:
         backpack_upgrade = Misc(
             "Backpack Upgrade",
             "Upgrades your inventory capacity using adaptive memory compression.",
+            weight=0.2,
             misc_id="bag_upgrade"
         )
         kernels_edge = Weapon(
@@ -321,11 +327,13 @@ class WorldBuilder:
         ghost_fragment = Misc(
             "Ghost Fragment",
             "A rare unstable data fragment pulsing faintly.",
+            weight=0,
             misc_id="ghost"
         )
         signal_tuner = Consumable(
             "Signal Tuner",
             "A device that stabilises your attacks temporarily.",
+            weight="0.9",
             heal=0
         )
         self.rooms["c0"].add_item(ghost_fragment)
@@ -335,11 +343,13 @@ class WorldBuilder:
         decryptor = Misc(
             "Decryptor",
             "Required to operate the final console in the Obsolete Hub.",
+            weight=0.4,
             misc_id="decrypt"
         )
         fractured_log = Misc(
             "Fractured Log",
             "A corrupted log showing pieces of the system's history.",
+            weight=0.1,
             misc_id="lore2"
         )
         self.rooms["d0"].add_item(decryptor)
@@ -352,6 +362,7 @@ class WorldBuilder:
         """
         # -------------------- A1 – LOST CACHE --------------------
         puzzle_a1 = Puzzle(
+            name="Reconstruction",
             prompt="Reconstruct the missing byte: 101_01 → what number completes the sequence?",
             solution="0",
             reward="unlock_hidden_packet"
@@ -360,6 +371,7 @@ class WorldBuilder:
 
         # -------------------- B1 – DATA WELL --------------------
         puzzle_b1 = Puzzle(
+            name="Binary Code",
             prompt="Decode the binary sequence: 0100 0001 = ? (ASCII)",
             solution="A",
             reward=None  # reward is using scan_module effectively
@@ -368,6 +380,7 @@ class WorldBuilder:
 
         # -------------------- B2 – CORRUPTED ARSENAL --------------------
         puzzle_b2 = Puzzle(
+            name="Kernel Repair",
             prompt="Repair the corrupted kernel header: K_RN_L → fill the missing letters.",
             solution="KERNEL",    # accepting "KERNEL" in game logic is easy too
             reward="unlock_kernels_edge"  # Game will interpret this as unlocking the weapon
@@ -376,6 +389,7 @@ class WorldBuilder:
 
         # -------------------- C0 – PHANTOM NODE (SECRET) --------------------
         puzzle_c0 = Puzzle(
+            name="Faded Data",
             prompt="A whisper: 'What remains when memory fades?'",
             solution="echo",
             reward=None  # optional: can spawn lore item if you want
@@ -384,6 +398,7 @@ class WorldBuilder:
 
         # -------------------- D1 – OBSOLETE HUB (FINAL PUZZLE) --------------------
         puzzle_d1 = Puzzle(
+            name="Unlocking the Door",
             prompt="Enter the decryption key: XOR(7, 12) = ?",
             solution="11",
             reward="unlock_exit"  # unlocks passage to System Kernel
@@ -399,6 +414,7 @@ class WorldBuilder:
             name="Glitch Beast",
             description="A twitching creature made of broken meshes and flickering polygons.",
             hp=6,
+            max_hp=6,
             attack_power=2,
             reward=None
         )
@@ -408,6 +424,7 @@ class WorldBuilder:
             name="Data Wraith",
             description="A humanoid shape made of streaming binary. Its form shifts unpredictably.",
             hp=10,
+            max_hp=10,
             attack_power=3,
             reward=None
         )
@@ -417,6 +434,7 @@ class WorldBuilder:
             name="Corrupted Drone",
             description="A floating defense unit, its casing fractured and emitting sparks.",
             hp=14,
+            max_hp=14,
             attack_power=4,
             reward=None
         )
@@ -428,6 +446,7 @@ class WorldBuilder:
             name="Echo Shade",
             description="A faint silhouette, like a shadow of code that never fully loads.",
             hp=12,
+            max_hp=12,
             attack_power=4,
             reward=None
         )
@@ -441,8 +460,9 @@ class WorldBuilder:
                 "A massive corrupted guardian flickering between frames. It guards the kernel path."
             ),
             hp=25,
+            max_hp=25,
             attack_power=6,
-            reward=Misc("kernel key", "A critical system key dropped by the Gatekeeper.", misc_id="kernel")
+            reward=Misc("kernel key", "A critical system key dropped by the Gatekeeper.", weight="1.5", misc_id="kernel")
         )
         self.rooms["c2"].add_monster(gatekeeper)
 
@@ -452,6 +472,7 @@ class WorldBuilder:
             name="Memory Phantom",
             description="A ghost formed from corrupted logs and broken memories.",
             hp=15,
+            max_hp=15,
             attack_power=5,
             reward=None
         )

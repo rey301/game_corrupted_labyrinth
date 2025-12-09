@@ -17,9 +17,9 @@ class Game:
         Initialises the game.
         """
 
-        self.player = Player()
-        self.parser = Parser()
+        self.player = Player("Lapel","",5, 5, 1)
         self.ui = TextUI()
+        self.parser = Parser(self.ui)
         self.world = WorldBuilder()
         self.world.build()
         self.game_over = False
@@ -31,15 +31,15 @@ class Game:
             True.
         :return: None
         """
-        # intialise world and intro messages
+        # initialise world and intro messages
         start_room = self.world.build()
+        self.player.set_current_room(start_room)
         self.ui.print("Welcome to the Labyrinth. \nType HELP to see available commands.\n")
-        self.player.current_room.describe()
+        self.ui.print(self.player.current_room.describe())
 
         # main game loop
         while not self.game_over and self.player.is_alive():
-            input = self.ui.input()
-            command = self.parser.get_command(input)
+            command = self.parser.get_command()
             self.game_over = self.process(command)
         print("Thank you for playing!")
 

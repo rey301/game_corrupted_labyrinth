@@ -1,8 +1,8 @@
 from entity import Entity
 
-class Character:
+class Character(Entity):
     def __init__(self, name, description, hp, max_hp, attack_power):
-        super.__init__(name, description)
+        super().__init__(name, description)
         self.hp = hp
         self.max_hp = max_hp
         self.attack_power = attack_power

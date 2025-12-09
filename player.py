@@ -8,11 +8,19 @@ class Player(Character):
     use items, pick up rewards, and engage in combat with monsters.
     """
 
-    def __init__(self, hp, max_hp, attack_power, room):
-        super().__init__(hp, max_hp, attack_power)
-        self.current_room = room
+    def __init__(self, name, description, hp, max_hp, attack_power):
+        super().__init__(name, description, hp, max_hp, attack_power)
+        self.current_room = None
         self.backpack = [] # list of class Item
         self.max_weight = 0
+
+    def set_current_room(self, room):
+        """
+        Set the room to the current room that the player is in.
+        :param room: The room the player moves to.
+        :return: None
+        """
+        self.current_room = room
 
     def move(self, direction):
         """
@@ -51,8 +59,9 @@ class Player(Character):
         """
         if self.hp == 0:
             return False
-        else
+        else:
             return True
+
 
 
 

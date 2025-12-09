@@ -9,8 +9,9 @@ class TextUI:
         """
         print(msg)
 
-    def input(self):
+    def input(self, prompt=""):
         """
             Reads a line of text entered by the user.
-        :return: None
+        :return:
         """
+        return input(prompt)

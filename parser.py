@@ -1,15 +1,24 @@
 from command import Command
 
 class Parser:
-    def get_command(self, inp):
+    def __init__(self, ui):
+        self.ui = ui
+        self.valid_verbs = {
+            "go", "take", "use", "fight", "solve", "inspect",
+            "help", "quit"
+        }
+
+    def get_command(self):
         """
-Takes user input using the TextUI and converts it
-to a structure Command object (verb, obj).
-Splits the input into a verb and optional object argument.
-:return: A command object containing (verb, obj).
+        Takes user input using the TextUI and converts it
+        to a structure Command object (verb, obj).
+        Splits the input into a verb and optional object argument.
+        :return: A command object containing (verb, obj).
         """
         verb = None
         obj = None
+        inp = self.ui.input("> ").strip().lower()
+
         if inp != "":
             all_words = inp.split()
             verb = all_words[0]
@@ -18,5 +27,5 @@ Splits the input into a verb and optional object argument.
             else:
                 obj = None
             # Just ignore any other words
-        return (verb, obj)
+        return Command(verb, obj)
 

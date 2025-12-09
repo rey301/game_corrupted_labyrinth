@@ -1,8 +1,8 @@
 from entity import Entity
 
-class Item:
+class Item(Entity):
     def __init__(self, name, description, weight):
-        super.__init__(name, description)
+        super().__init__(name, description)
         self.weight = weight
 
     def user(self):
