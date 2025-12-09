@@ -11,7 +11,7 @@ class Player(Character):
     def __init__(self, name, description, hp, max_hp, attack_power):
         super().__init__(name, description, hp, max_hp, attack_power)
         self.current_room = None
-        self.inventory = {} # list of class Item
+        self.storage = {} # list of class Item
         self.weight = 0
         self.max_weight = 5
         self.scannable = False # when true the player can read logs
@@ -36,7 +36,7 @@ class Player(Character):
 
     def pick_up(self, item):
         """
-            Pick up an item and add to inventory, checking the weight limit before
+            Pick up an item and add to storage, checking the weight limit before
             pick up.
         :param item: Item in which the player picks up.
         :return: True if the item has been picked up, otherwise False (too heavy).
@@ -44,7 +44,7 @@ class Player(Character):
 
         if self.weight + item.weight > self.max_weight:
             return False
-        self.inventory[item.name] = item
+        self.storage[item.name] = item
         self.weight += item.weight
         return True
 
@@ -54,16 +54,16 @@ class Player(Character):
         :param item: Item in which the player has in their backpack.
         """
 
-    def show_inventory(self):
+    def show_storage(self):
         """
-            Displays the inventory.
+            Displays the storage.
         :return: The string content of the player's backpack.
         """
         if self.weight == 0:
             return "Your storage is empty."
 
         res = ["Your storage contains: \n"]
-        for name, item in self.inventory.items():
+        for name, item in self.storage.items():
             res.append(f"- {name} (Weight: {item.weight})")
         res.append(f"\nCapacity: {self.weight}/{self.max_weight} bytes")
         return "\n".join(res)
@@ -81,7 +81,7 @@ class Player(Character):
 
 
 
-class NotInInventoryError(Exception):
+class NotInStorageError(Exception):
     """A custom exception to handle items not in backpack."""
     def __init__(self, item, message):
         print(f'{item} {message}')

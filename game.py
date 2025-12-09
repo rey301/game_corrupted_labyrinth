@@ -72,9 +72,9 @@ class Game:
             self.do_inspect(obj)
             return False
 
-        # show inventory
-        elif verb == "inventory":
-            self.ui.print(self.player.show_inventory())
+        # show storage
+        elif verb == "storage":
+            self.ui.print(self.player.show_storage())
             return False
 
         # take item
@@ -127,6 +127,11 @@ class Game:
             self.ui.print(self.player.current_room.describe())
 
     def do_inspect(self, obj):
+        """
+        Inspect an object which could be an item, a monster, a puzzle, or the whole room.
+        :param obj: This is the object that the user defines (e.g. item name)
+        :return: None
+        """
         room = self.player.current_room
         if obj is None:
             self.ui.print("Inspect what?")
@@ -135,24 +140,13 @@ class Game:
         # inspecting an item in the room
         if obj in room.items:
             item = room.items[obj]
-            self.ui.print(f"{item.name}: {item.description}")
+            self.ui.print(f"{item.description}")
             return
 
-        if obj == "room":
-            if not room.items:
-                self.ui.print("There are no items to inspect here.")
-                return
-
-            self.ui.print("Items in this room:")
-
-            for item_name, item in room.items.items():
-                self.ui.print(f" - {item_name}: {item.description}")
-            return
-
-        # inspecting item in inventory
-        if obj in self.player.inventory:
-            item = self.player.inventory[obj]
-            self.ui.print(f"{item.name}: {item.description}")
+        # inspecting item in storage
+        if obj in self.player.storage:
+            item = self.player.storage[obj]
+            self.ui.print(f"{item.description}")
             return
 
         # inspecting a monster
@@ -161,7 +155,28 @@ class Game:
                 self.ui.print(f"{monster.name}: {monster.description}")
                 return
 
-        self.ui.print("You see nothing like that.")
+        # inspect the room for everything
+        if obj == "room":
+            if not room.items and not room.monsters:
+                self.ui.print("There is nothing in this room.")
+                return
+
+            res = ["The room reveals itself..."]
+            if room.items:
+                res.append("Items in this room:")
+                for item_name, item in room.items.items():
+                    res.append(f" - {item_name}")
+
+            if room.monsters:
+                res.append("Monsters in this room:")
+                for monster in room.monsters:
+                    res.append(f" - {monster.name}")
+
+            self.ui.print("\n".join(res))
+
+            return
+
+        self.ui.print("Invalid string name, try again.")
 
     def do_take(self, item_name):
         """
@@ -182,7 +197,7 @@ class Game:
         prev_weight = self.player.weight
         success = self.player.pick_up(item)
         if success:
-            self.ui.print(f"{item_name} added to backpack.")
+            self.ui.print(f"{item_name} added to storage.")
             self.ui.print(f"Storage: {prev_weight} + {item.weight} --> {self.player.weight}/{self.player.max_weight} bytes")
             self.player.current_room.remove_item(item)
         else:
@@ -199,11 +214,11 @@ class Game:
             self.ui.print("Use what?")
             return
 
-        if item_name not in self.player.inventory:
+        if item_name not in self.player.storage:
             self.ui.print("You don't have that item.")
             return
 
-        item = self.player.inventory[item_name]
+        item = self.player.storage[item_name]
 
         # check if it's a weapon
         if isinstance(item, Weapon):
@@ -214,7 +229,7 @@ class Game:
         if isinstance(item, Consumable):
             healed = item.use(self.player)
             self.ui.print(f"You use {item.name}. {healed}")
-            self.player.inventory.pop(item_name)
+            self.player.storage.pop(item_name)
             return
 
         # for unlocking something
@@ -261,7 +276,7 @@ class Game:
         self.ui.print("  take <item>        - Pick up an item in the room")
         self.ui.print("  use <item>         - Use a misc or consumable item")
         self.ui.print("  equip <weapon>     - Equip a weapon from your backpack")
-        self.ui.print("  inventory          - Show items you're carrying")
+        self.ui.print("  storage          - Show items you're carrying")
         self.ui.print("  inspect room       - List all items in the room")
         self.ui.print("  inspect <item>     - Examine an item in the room or in your backpack")
 
