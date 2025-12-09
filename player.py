@@ -11,8 +11,9 @@ class Player(Character):
     def __init__(self, name, description, hp, max_hp, attack_power):
         super().__init__(name, description, hp, max_hp, attack_power)
         self.current_room = None
-        self.backpack = [] # list of class Item
-        self.max_weight = 0
+        self.backpack = {} # list of class Item
+        self.weight = 0
+        self.max_weight = 5
 
     def set_current_room(self, room):
         """
@@ -39,6 +40,12 @@ class Player(Character):
         :param item: Item in which the player picks up.
         :return: True if the item has been picked up, otherwise False (too heavy).
         """
+
+        if self.weight + item.weight > self.max_weight:
+            return False
+        self.backpack[item.name] = item
+        self.weight += item.weight
+        return True
 
     def use(self, item):
         """

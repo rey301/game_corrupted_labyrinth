@@ -16,7 +16,7 @@ class Room(Entity):
         """
         super().__init__(name, description)
         self.exits = {}  # Dictionary of Room objects
-        self.items = [] # List of items in the current room
+        self.items = {} # List of items in the current room
         self.monsters = [] # monsters in the current room
         self.puzzle = puzzle
 
@@ -42,7 +42,15 @@ class Room(Entity):
         :param item: The item that is added to the room.
         :return: None
         """
-        self.items.append(item)
+        self.items[item.name] = item
+
+    def remove_item(self, item):
+        """
+        Removes an item from the room.
+        :param item: The item that is added to the room
+        :return: None
+        """
+        self.items.pop(item.name)
 
     def add_monster(self, monster):
         """

@@ -277,7 +277,7 @@ Exits: none
         """
         # -------------------- A-TIER ITEMS --------------------
         fragmented_blade = Weapon(
-            "Fragmented Blade",
+            "fragmented_blade",
             "A weak blade formed from unstable data shards.",
             damage=3,
             weight=1
@@ -285,7 +285,7 @@ Exits: none
         self.rooms["a0"].add_item(fragmented_blade)
 
         hidden_packet = Misc(
-            "Hidden Packet",
+            "hidden_packet",
             "A strange block of corrupted data. It seems to resonate with unseen doorways.",
             weight=1,
             misc_id="unlock_c0"
@@ -294,13 +294,13 @@ Exits: none
 
         # -------------------- B-TIER ITEMS --------------------
         scan_module = Misc(
-            "Scan Module",
+            "scan_module",
             "Allows you to read corrupted logs and system terminals.",
             weight=0.7,
             misc_id="scan"
         )
         data_chip = Misc(
-            "Data Chip",
+            "data_chip",
             "A broken memory chip containing fragments of lore.",
             weight=0.8,
             misc_id="lore"
@@ -309,13 +309,13 @@ Exits: none
         self.rooms["b1"].add_item(data_chip)
 
         backpack_upgrade = Misc(
-            "Backpack Upgrade",
+            "backpack_upgrade",
             "Upgrades your inventory capacity using adaptive memory compression.",
             weight=0.2,
             misc_id="bag_upgrade"
         )
         kernels_edge = Weapon(
-            "Kernel's Edge",
+            "kernels_edge",
             "A powerful blade formed from unstable data.",
             damage=7,
             weight=2
@@ -325,13 +325,13 @@ Exits: none
 
         # -------------------- C-TIER ITEMS --------------------
         ghost_fragment = Misc(
-            "Ghost Fragment",
+            "ghost_fragment",
             "A rare unstable data fragment pulsing faintly.",
             weight=0,
             misc_id="ghost"
         )
         signal_tuner = Consumable(
-            "Signal Tuner",
+            "signal_tuner",
             "A device that stabilises your attacks temporarily.",
             weight="0.9",
             heal=0
@@ -341,13 +341,13 @@ Exits: none
 
         # -------------------- D-TIER ITEMS --------------------
         decryptor = Misc(
-            "Decryptor",
+            "decrypter",
             "Required to operate the final console in the Obsolete Hub.",
             weight=0.4,
             misc_id="decrypt"
         )
         fractured_log = Misc(
-            "Fractured Log",
+            "fractured_log",
             "A corrupted log showing pieces of the system's history.",
             weight=0.1,
             misc_id="lore2"

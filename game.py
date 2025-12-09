@@ -121,6 +121,23 @@ class Game:
         :param item_name: Name of the item the player wishes to pick up.
         :return: None
         """
+        room = self.player.current_room
+        if item_name is None:
+            self.ui.print("Take what?")
+            return
+        if item_name not in room.items:
+            self.ui.print("That item is not here.")
+            return
+
+        item = room.items[item_name]
+        prev_weight = self.player.weight
+        success = self.player.pick_up(item)
+        if success:
+            self.ui.print(f"{item_name} added to backpack.")
+            self.ui.print(f"Storage: {prev_weight} + {item.weight} --> {self.player.weight}/{self.player.max_weight} bytes")
+            self.player.current_room.remove_item(item)
+        else:
+            self.ui.print(f"{item.name} is too heavy to carry.")
 
     def do_use(self, item_name):
         """
@@ -145,6 +162,23 @@ class Game:
         :return: None
         """
         self.puzzle.attempt()
+
+    def print_help(self):
+        """
+        Prints a list of all available player commands.
+        :return: None
+        """
+        self.ui.print("\nAvailable commands:")
+        self.ui.print("  go <direction>   - Move to another room (north, south, east, west)")
+        self.ui.print("  take <item>      - Pick up an item in the room")
+        self.ui.print("  use <item>       - Use a consumable or misc item")
+        self.ui.print("  equip <weapon>   - Equip a weapon from your inventory")
+        self.ui.print("  inventory        - Show items you're carrying")
+        self.ui.print("  inspect <thing>  - Examine an item, room, or monster")
+        self.ui.print("  fight            - Engage in combat with the monster here")
+        self.ui.print("  solve            - Attempt to solve the room's puzzle")
+        self.ui.print("  help             - Show this help message")
+        self.ui.print("  quit             - Exit the game\n")
 
 def main():
     """Main entry point for the game."""
