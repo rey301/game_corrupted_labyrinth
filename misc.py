@@ -17,6 +17,7 @@ class Misc(Item):
         if self.misc_id == "unlock_c0":
             if room.name == "Data Well":
                 room.set_exit("east", world.rooms["c0"])
+                world.rooms["c0"].locked = False
                 return "A hidden doorway flickers open to the east..."
             return "The key hums faintly, but nothing happens here."
 
@@ -25,7 +26,7 @@ class Misc(Item):
             if room.name == "Data Well":
                 player.scannable = True
                 return "You activate the scan module: hidden log fragments become readable."
-            return "You scan the area, but detect nothing unusual"
+            return "You scan the area, but detect nothing unusual."
 
         # this key is only dropped by the gatekeeper once defeated, unlocking final exit
         if self.misc_id == "kernel":

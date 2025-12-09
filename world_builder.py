@@ -142,7 +142,8 @@ class WorldBuilder:
 
     Exits: SOUTH -> Gatekeeper Node
 +------------------------------------------------------------------------+
-            """
+            """,
+            locked = True
         )
 
         c2 = Room(
@@ -353,7 +354,7 @@ Exits: none
             misc_id="lore4"
         )
         self.rooms["d0"].add_item(decryptor)
-        self.rooms["d0"].add_item(fractured_log)
+        self.rooms["d0"].add_item(fractured)
 
     def place_puzzles(self):
         """
