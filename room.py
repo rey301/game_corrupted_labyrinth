@@ -30,6 +30,12 @@ class Room(Entity):
         """
         self.exits[dir] = room
 
+    def get_exit(self, dir):
+        try:
+            return self.exits[dir]
+        except DirectionNotValidError:
+            raise DirectionNotValidError(f"{dir} is not a valid direction.\n")
+
     def add_item(self, item):
         """
             Adds an item to the room.
@@ -52,3 +58,7 @@ class Room(Entity):
         :return: Description string.
         """
         return self.description
+
+class DirectionNotValidError(Exception):
+    def __init__(self, message):
+        print(message)

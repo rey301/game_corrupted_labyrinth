@@ -31,32 +31,93 @@ class Game:
             True.
         :return: None
         """
-        self.print_welcome()
-        finished = False
-        while not finished:
-            command = self.ui.get_command()  # Returns a 2-tuple
-            finished = self.process_command(command)
+        # intialise world and intro messages
+        start_room = self.world.build()
+        self.ui.print("Welcome to the Labyrinth. \nType HELP to see available commands.\n")
+        self.player.current_room.describe()
+
+        # main game loop
+        while not self.game_over and self.player.is_alive():
+            input = self.ui.input()
+            command = self.parser.get_command(input)
+            self.game_over = self.process(command)
         print("Thank you for playing!")
 
-    def process(self, cmd):
+
+    def process(self, command):
         """
             Handles user commands and invokes an action method from
             the command given (e.g. item interaction, problem solving).
-        :param cmd: Parse command object containing the verb and obj (optional)
+        :param command: Parse command object containing the verb and obj (optional)
         :return: True if game should end (quit or player dies), otherwise False if game continues
         """
 
-    def do_go(self, dir):
+        verb = command.verb
+        obj = command.obj
+
+        # unknown command
+        if verb is None:
+            self.ui.print("I don't understand that command.")
+            return False
+
+        # movement
+        if verb == "go":
+            self.do_go(obj)
+            return False
+
+        # take item
+        elif verb == "take":
+            self.do_take(obj)
+            return False
+
+        # use item
+        elif verb == "use":
+            self.do_use(obj)
+            return False
+
+        # fight monster
+        elif verb == "fight":
+            self.do_fight()
+            return False
+
+        # solve puzzle
+        elif verb == "solve":
+            self.do_solve()
+            return False
+
+        # help menu
+        elif verb == "help":
+            self.print_help()
+            return False
+
+        # quit game
+        elif verb == "quit":
+            return True  # This ends the game loop
+
+        # otherwise
+        else:
+            self.ui.print("That command is not implemented.")
+            return False
+
+    def do_go(self, direction):
         """
-            Move player into room given the direction, and if exit doesn't exist;
-            error message is displayed.
-        :param dir: Direction the player wishes to move (e.g. north, east)
+        Move player into room given the direction, and if exit doesn't exist;
+        error message is displayed.
+        :param direction: Direction the player wishes to move (e.g. north, east)
         """
+        if direction is None:
+            self.ui.print("Go where?")
+            return
+        next_room = self.player.current_room.get_exit(direction)
+
+        if next_room is not None:
+            self.player.current_room = next_room
+            self.ui.print(self.player.current_room.describe())
 
     def do_take(self, item_name):
         """
-            Attempt to pick up an item from the current room and put it in the
-            player's backpack.
+        Attempt to pick up an item from the current room and put it in the
+        player's backpack.
         :param item_name: Name of the item the player wishes to pick up.
         :return: None
         """

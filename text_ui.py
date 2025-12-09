@@ -7,7 +7,7 @@ class TextUI:
         :param msg: Text to be displayed
         :return: None
         """
-        print(text)
+        print(msg)
 
     def input(self):
         """
