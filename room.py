@@ -9,7 +9,7 @@ from item import Item
 class Room(Entity):
     """A room in the game."""
 
-    def __init__(self, name, description, monster=None, puzzle=None):
+    def __init__(self, name, description, puzzle=None):
         """
             Constructor method.
         :param monster:
@@ -17,7 +17,7 @@ class Room(Entity):
         super().__init__(name, description)
         self.exits = {}  # Dictionary of Room objects
         self.items = [] # List of items in the current room
-        self.monster = monster # Current monster in the room
+        self.monsters = [] # monsters in the current room
         self.puzzle = puzzle
 
     def set_exit(self, dir, room):
@@ -37,6 +37,14 @@ class Room(Entity):
         :return: None
         """
         self.items.append(item)
+
+    def add_monster(self, monster):
+        """
+            Adds a new monster to the room.
+        :param monster: The Monster that is added.
+        :return: None
+        """
+        self.monsters.append(monster)
 
     def describe(self):
         """

@@ -1,5 +1,6 @@
 from room import Room
 from puzzle import Puzzle
+from monster import Monster
 from weapon import Weapon
 from consumable import Consumable
 from misc import Misc
@@ -394,5 +395,65 @@ class WorldBuilder:
             Assign Monster objects to chosen rooms.
         :return: None
         """
+        glitch_beast = Monster(
+            name="Glitch Beast",
+            description="A twitching creature made of broken meshes and flickering polygons.",
+            hp=6,
+            attack_power=2,
+            reward=None
+        )
+        self.rooms["b0"].add_monster(glitch_beast)
 
+        data_wraith = Monster(
+            name="Data Wraith",
+            description="A humanoid shape made of streaming binary. Its form shifts unpredictably.",
+            hp=10,
+            attack_power=3,
+            reward=None
+        )
+        self.rooms["b1"].add_monster(data_wraith)
+
+        corrupted_drone = Monster(
+            name="Corrupted Drone",
+            description="A floating defense unit, its casing fractured and emitting sparks.",
+            hp=14,
+            attack_power=4,
+            reward=None
+        )
+        self.rooms["b2"].add_monster(corrupted_drone)
+
+        # -------------------- SECRET ROOM MONSTER --------------------
+
+        echo_shade = Monster(
+            name="Echo Shade",
+            description="A faint silhouette, like a shadow of code that never fully loads.",
+            hp=12,
+            attack_power=4,
+            reward=None
+        )
+        self.rooms["c0"].add_monster(echo_shade)
+
+        # -------------------- BOSS MONSTER --------------------
+
+        gatekeeper = Monster(
+            name="Gatekeeper",
+            description=(
+                "A massive corrupted guardian flickering between frames. It guards the kernel path."
+            ),
+            hp=25,
+            attack_power=6,
+            reward=Misc("kernel key", "A critical system key dropped by the Gatekeeper.", misc_id="kernel")
+        )
+        self.rooms["c2"].add_monster(gatekeeper)
+
+        # -------------------- ARCHIVE MONSTER --------------------
+
+        memory_phantom = Monster(
+            name="Memory Phantom",
+            description="A ghost formed from corrupted logs and broken memories.",
+            hp=15,
+            attack_power=5,
+            reward=None
+        )
+        self.rooms["d0"].add_monster(memory_phantom)
 
