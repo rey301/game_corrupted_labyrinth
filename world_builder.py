@@ -213,12 +213,16 @@ class WorldBuilder:
                       "c0": c0, "c2": c2, "d0": d0, "d1": d1, "d2": d2
                       }
 
+        self.link_rooms()
+        self.place_items()
+        self.place_puzzles()
+        self.place_monsters()
+
     def link_rooms(self):
         """
             Creates directional exits between rooms.
         :return: None
         """
-        # set exits
         # Boot Sector (spawn)
         self.rooms["a0"].set_exit("east", self.rooms["a1"])
         self.rooms["a0"].set_exit("south", self.rooms["b0"])

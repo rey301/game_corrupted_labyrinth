@@ -1,10 +1,9 @@
 from entity import Entity
 
 class Item:
-    def __init__(self, name, description, weight, corrupted):
+    def __init__(self, name, description, weight):
         super.__init__(name, description)
         self.weight = weight
-        self.corrupted = corrupted
 
     def user(self):
         """
