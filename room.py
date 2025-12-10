@@ -21,6 +21,7 @@ class Room(Entity):
         self.items = {} # List of items in the current room
         self.monsters = {} # monsters in the current room
         self.puzzle = puzzle
+        self.locked_exits = {} # exits that are locked from the player
 
     def set_exit(self, dir, room):
         """
@@ -64,10 +65,17 @@ class Room(Entity):
 
     def describe(self):
         """
-            Returns description of the room (including items and exits).
+        Returns description of the room (including items and exits).
         :return: Description string.
         """
         return self.description
+
+    def lock_exit(self, direction, lock_id):
+        self.locked_exits[direction] = lock_id
+
+    def unlock_exit(self, direction):
+        if direction in self.locked_exits:
+            self.locked_exits.pop(direction)
 
 class DirectionNotValidError(Exception):
     def __init__(self, message):

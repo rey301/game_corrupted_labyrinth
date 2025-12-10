@@ -132,13 +132,6 @@ class Game:
         """
         room = self.player.current_room
 
-        for m in room.monsters.values():
-            if m.blocks_exit == direction:
-                self.ui.print(f"{m.name} has blocked you!")
-                self.ui.print("Defeating it is the only way in...")
-                self.do_fight(m.name)
-                return
-
         if direction is None:
             self.ui.print("Go where?")
             return
@@ -148,6 +141,37 @@ class Game:
             return
 
         next_room = self.player.current_room.get_exit(direction)
+
+        # checking if a monster blocks an exit
+        for m in room.monsters.values():
+            if m.blocks_exit == direction:
+                self.ui.print(f"{m.name} has blocked you!")
+                self.ui.print("Defeating it is the only way in...")
+                self.do_fight(m.name)
+                return
+
+        # check for locks
+        if direction in room.locked_exits:
+            lock_id = room.locked_exits[direction]
+            self.ui.print(f"The path to {next_room.name} is locked ({lock_id})")
+
+            # check if player has the key
+            key_item = None
+            for item in self.player.storage.values():
+
+                if isinstance(item, Misc) and item.misc_id == lock_id:
+                    key_item = item
+                    break
+
+            if key_item:
+                # ask user if they want to unlock it
+                answer = self.ui.input(f"Use {key_item.name} to unlock? (yes/no)\n> ").strip().lower()
+
+                # unlock the door
+                if answer in ("yes", "y"):
+                    self.do_use(key_item.name) # use the item
+
+            return
 
         if next_room is not None:
             self.player.current_room = next_room
@@ -221,7 +245,7 @@ class Game:
             if room.monsters:
                 lines.append("[ Hostile Entities ]")
                 for monster in room.monsters:
-                    lines.append(f" • {room.monsters[monster].name}")
+                    lines.append(f" - {room.monsters[monster].name}")
                 lines.append("")
             else:
                 lines.append("[ No Hostiles Present ]\n")
@@ -229,13 +253,11 @@ class Game:
             # PUZZLE --------------------------------------------------------
             if room.puzzle:
                 lines.append("[ Corrupted Engram Detected ]")
-                lines.append(f" • Puzzle: {room.puzzle.name}\n")
+                lines.append(f" - Puzzle: {room.puzzle.name}\n")
 
             lines.append("=== END OF ROOM SCAN ===")
 
             self.ui.print("\n".join(lines))
-            return
-
             return
 
         self.ui.print("Invalid string name, try again.")

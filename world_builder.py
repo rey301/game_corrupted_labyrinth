@@ -18,7 +18,7 @@ class WorldBuilder:
 
         # build rooms
         a0 = Room(
-            "Boot Sector",
+            "boot_sector",
             """
 +----------------------------- BOOT SECTOR ------------------------------+
     System booting...
@@ -38,7 +38,7 @@ class WorldBuilder:
         )
 
         a1 = Room(
-            "Lost Cache",
+            "lost_cache",
             """
 +------------------------- LOST CACHE -----------------------------------+
     Piles of old memory blocks are stacked everywhere. 
@@ -56,7 +56,7 @@ class WorldBuilder:
         )
 
         b0 = Room(
-            "Glitch Pit",
+            "glitch_pit",
             """
 +-------------------------- GLITCH PIT ----------------------------------+
     The ground seems unreliable here.  
@@ -73,7 +73,7 @@ class WorldBuilder:
         )
 
         b1 = Room(
-            "Data Well",
+            "data_well",
             """
 +--------------------------- DATA WELL ----------------------------------+
     A column of falling numbers spills from the ceiling like a waterfall.
@@ -90,7 +90,7 @@ class WorldBuilder:
         )
 
         b2 = Room(
-            "Corrupted Arsenal",
+            "corrupted_arsenal",
             """
 +------------------------- CORRUPTED ARSENAL ----------------------------+
     Rusty-looking digital weapon models float in the air, 
@@ -109,7 +109,7 @@ class WorldBuilder:
         )
 
         b3 = Room(
-            "Dead Pixels",
+            "dead_pixels",
             """
 +------------------------------ DEAD PIXELS -----------------------------+
     The walls here have broken into scattered pixel noise.  
@@ -128,7 +128,7 @@ class WorldBuilder:
         )
 
         c0 = Room(
-            "Phantom Node",
+            "phantom_node",
             """
 +--------------------------- PHANTOM NODE -------------------------------+
     This room shouldn't exist...  
@@ -147,7 +147,7 @@ class WorldBuilder:
         )
 
         c2 = Room(
-            "Gatekeeper Node",
+            "gatekeeper_node",
             """
 +-------------------------- GATEKEEPER NODE -----------------------------+
     A massive corrupted guardian blocks the path ahead.
@@ -164,7 +164,7 @@ class WorldBuilder:
         )
 
         d0 = Room(
-            "Fractured Archive",
+            "fractured_archive",
             """
 +------------------------- FRACTURED ARCHIVE ----------------------------+
     Broken bits of past events float around like ghosts.
@@ -181,7 +181,7 @@ class WorldBuilder:
         )
 
         d1 = Room(
-            "Obsolete Hub",
+            "obsolete_hub",
             """
 +--------------------------- OBSOLETE HUB -------------------------------+
     This room feels outdated. Old system functions lie everywhere,  
@@ -199,7 +199,7 @@ class WorldBuilder:
         )
 
         d2 = Room(
-            "System Kernel",
+            "system_kernel",
             """
 +---------------------------- SYSTEM KERNEL -----------------------------+
 Everything is suddenly calm.  
@@ -242,6 +242,7 @@ Exits: none
         self.rooms["b0"].set_exit("north", self.rooms["a0"])
         self.rooms["b0"].set_exit("east", self.rooms["b1"])
         self.rooms["b0"].set_exit("west", self.rooms["b3"])  # dead-end branch
+        self.rooms["b0"].lock_exit("east", "d4t4")
 
         # Dead Pixels
         self.rooms["b3"].set_exit("east", self.rooms["b0"])  # only way back
@@ -281,12 +282,12 @@ Exits: none
             "fragmented_blade",
             "A weak blade formed from unstable data shards.",
             damage=3,
-            weight=1
+            weight=20
         )
         health_module = Consumable(
             "health_module",
             "A compact utility that repairs corrupted user data. Activating it restores a portion of your health.",
-            weight=16,
+            weight=7,
             heal=2
         )
         self.rooms["a0"].add_item(health_module)
@@ -299,6 +300,7 @@ Exits: none
             weight=4,
             misc_id="lore2"
         )
+        self.rooms["b3"].add_item(first_corruption)
 
         log_module = Misc(
             "log_module",
@@ -362,7 +364,7 @@ Exits: none
         """
         # -------------------- A1 – LOST CACHE --------------------
         puzzle_a1 = Puzzle(
-            name="Reconstruction",
+            name="reconstruction",
             prompt="Reconstruct the missing byte: 101_01 → what number completes the sequence?",
             solution="0",
             reward="unlock_hidden_packet"
@@ -371,7 +373,7 @@ Exits: none
 
         # -------------------- B1 – DATA WELL --------------------
         puzzle_b1 = Puzzle(
-            name="Binary Code",
+            name="binary_code",
             prompt="Decode the binary sequence: 0100 0001 = ? (ASCII)",
             solution="A",
             reward=None  # reward is using scan_module effectively
@@ -380,7 +382,7 @@ Exits: none
 
         # -------------------- B2 – CORRUPTED ARSENAL --------------------
         puzzle_b2 = Puzzle(
-            name="Kernel Repair",
+            name="kernel_repair",
             prompt="Repair the corrupted kernel header: K_RN_L → fill the missing letters.",
             solution="KERNEL",    # accepting "KERNEL" in game logic is easy too
             reward="unlock_kernels_edge"  # Game will interpret this as unlocking the weapon
@@ -389,7 +391,7 @@ Exits: none
 
         # -------------------- C0 – PHANTOM NODE (SECRET) --------------------
         puzzle_c0 = Puzzle(
-            name="Faded Data",
+            name="faded_data",
             prompt="A whisper: 'What remains when memory fades?'",
             solution="echo",
             reward=None  # optional: can spawn lore item if you want
@@ -398,7 +400,7 @@ Exits: none
 
         # -------------------- D1 – OBSOLETE HUB (FINAL PUZZLE) --------------------
         puzzle_d1 = Puzzle(
-            name="Unlocking the Door",
+            name="unlocking_the_door",
             prompt="Enter the decryption key: XOR(7, 12) = ?",
             solution="11",
             reward="unlock_exit"  # unlocks passage to System Kernel
@@ -418,9 +420,9 @@ Exits: none
             attack_power=2,
             reward=Misc(
                 "data_key",
-                "A key to the Data Well dropped by the glitch_beast.",
+                "A glowing access shard designed to unlock the Data Well gateway.",
                 weight=8,
-                misc_id="data_key"
+                misc_id="d4t4"
             ),
             blocks_exit="east"
         )

@@ -20,6 +20,14 @@ class Misc(Item):
             player.max_weight += 5
             return f"Your storage expands. \n{prev_max}+5 --> {player.max_weight}", "remove"
 
+        # once activated in the data well, the lore items can be read
+        if self.misc_id == "log":
+            if room.name == "Data Well":
+                player.scannable = True
+                return "You activate the log module: hidden log fragments become readable.", "remove"
+            return "You try to activate the log module. It beeps in error.", "keep"
+
+        # keys
         # used to unlock phantom node
         # this node exits straight to the gatekeeper node from data well
         if self.misc_id == "unlock_c0":
@@ -27,14 +35,16 @@ class Misc(Item):
                 room.set_exit("east", world.rooms["c0"])
                 world.rooms["c0"].locked = False
                 return "A hidden doorway flickers open to the east...", "remove"
-            return "The key hums faintly, but nothing happens here."
+            return "The key hums faintly, but happens here.", "keep"
 
-        # once activated in the data well, the lore items can be read
-        if self.misc_id == "log":
-            if room.name == "Data Well":
-                player.scannable = True
-                return "You activate the log module: hidden log fragments become readable.", "remove"
-            return "You scan the area, but detect nothing unusual."
+        # unlock data well
+        if self.misc_id == "d4t4":
+            # player must be in the room to unlock
+            if room.name == "glitch_pit":
+                room.unlock_exit("east")
+                return "The shard dissolves into the air. The Data Well gateway unlocks.", "remove"
+            else:
+                return "The data key hums, but nothing happens.", "keep"
 
         # this key is only dropped by the gatekeeper once defeated, unlocking final exit
         if self.misc_id == "kernel":
@@ -43,7 +53,7 @@ class Misc(Item):
                     return "The kernel pathway is already unlocked."
                 room.set_exit("north", world.rooms["d2"])
                 return "The kernel key glows - heading towards door towards the system kernel, unlocking the final pathway.", "remove"
-            return "The kernel key hums softly, but nothing happens here."
+            return "The kernel key hums softly, but nothing happens here.", "keep"
 
         # lore items
         if player.scannable:
@@ -102,7 +112,7 @@ was created from your own user profile.
 It was built to keep you from remembering why.
                 """, "keep"
         else:
-            return "You need to activate the scan module to read the logs."
+            return "You need to activate the scan module to read the logs.", "keep"
 
         return None
 
