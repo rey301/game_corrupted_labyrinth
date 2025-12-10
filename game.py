@@ -95,6 +95,11 @@ class Game:
             self.do_use(obj)
             return False
 
+        # equip a weapon
+        elif verb == "equip":
+            self.do_equip(obj)
+            return False
+
         # fight monster
         elif verb == "fight":
             self.do_fight()
@@ -291,6 +296,12 @@ class Game:
 
         self.ui.print("Nothing happens.")
 
+    def do_equip(self, weapon_name):
+        if weapon_name is None:
+            self.ui.print("Equip what?")
+            return
+
+        self.ui.print(self.player.equip(weapon_name))
 
     def do_fight(self):
         """

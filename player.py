@@ -1,6 +1,5 @@
 from character import Character
-from room import Room
-from item import Item
+from weapon import Weapon
 
 class Player(Character):
     """
@@ -15,6 +14,7 @@ class Player(Character):
         self.weight = 0
         self.max_weight = 64
         self.scannable = False # when true the player can read logs
+        self.equipped_weapon = None # what weapon the player is currently holding
 
     def set_current_room(self, room):
         """
@@ -23,15 +23,6 @@ class Player(Character):
         :return: None
         """
         self.current_room = room
-
-    def move(self, direction):
-        """
-            Attempt to move player in a new room in direction chosen.
-            If the exit exists, the player's current room is updated.
-            If no exit exists and error message is shown.
-        :param direction: Direction in which the player moves.
-        :return: True if dir is a valid move (room is changed), otherwise False (no exit).
-        """
 
     def pick_up(self, item):
         """
@@ -98,6 +89,28 @@ class Player(Character):
             f"Log Module Active: {'Yes' if self.scannable else 'No'}",
         ]
         return "\n".join(lines)
+
+    def equip(self, weapon_name):
+        """
+        Equip a weapon from the player's storage.
+        :param weapon_name: String name of the weapon to equip.
+        :return: String message describing what was equiped.
+        """
+        # check the storage if weapon is inside
+        if weapon_name not in self.storage:
+            return f"You don't have {weapon_name}"
+
+        item = self.storage[weapon_name]
+
+        # check if it's a weapon
+        if not isinstance(item, Weapon):
+            return f"You can't equip {weapon_name}"
+
+        # equip the weapon
+        self.equipped_weapon = item
+        self.attack_power = item.damage
+
+        return f"You equip {item.name}. Attack power has been updated to {self.attack_power}."
 
 
 
