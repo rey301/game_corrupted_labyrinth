@@ -170,12 +170,17 @@ class Game:
                 # unlock the door
                 if answer in ("yes", "y"):
                     self.do_use(key_item.name) # use the item
+                    self.ui.print(f"You enter the {next_room.name}")
+                    self.player.current_room = next_room
+                    self.ui.print(self.player.current_room.describe())
+                    return
 
             return
 
         if next_room is not None:
             self.player.current_room = next_room
             self.ui.print(self.player.current_room.describe())
+            return
 
 
     def do_scan(self, obj):
