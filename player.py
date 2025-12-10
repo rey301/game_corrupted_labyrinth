@@ -84,6 +84,20 @@ class Player(Character):
         else:
             return True
 
+    def show_stats(self):
+        """
+        Showing the player's stats, with hp and attack power.
+        :return: The formatted string for the player's stats.
+        """
+        lines = [
+            "=== PLAYER STATUS ===",
+            f"Name: {self.name}",
+            f"HP: {self.hp}/{self.max_hp}",
+            f"Attack Power: {self.attack_power}",
+            f"Inventory Weight: {self.weight}/{self.max_weight}",
+            f"Log Module Active: {'Yes' if self.scannable else 'No'}",
+        ]
+        return "\n".join(lines)
 
 
 

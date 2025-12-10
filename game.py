@@ -67,8 +67,12 @@ class Game:
             self.do_go(obj)
             return False
 
-        if verb == "look":
+        elif verb == "look":
             self.ui.print(self.player.current_room.describe())
+            return False
+
+        elif verb == "stats":
+            self.ui.print(self.player.show_stats())
             return False
 
         # looking for items in the room
@@ -332,9 +336,10 @@ class Game:
         """
         self.ui.print("\nAvailable commands:\n")
 
-        self.ui.print("Movement:")
+        self.ui.print("Player:")
         self.ui.print("  go <direction>     - Move to another room (north, south, east, west)")
         self.ui.print("  look               - Reprint the current room's description")
+        self.ui.print("  stats              - View player's statistics")
 
         self.ui.print("\nItem Interaction:")
         self.ui.print("  take <item>        - Pick up an item in the room")
