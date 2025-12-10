@@ -283,26 +283,33 @@ Exits: none
             damage=3,
             weight=1
         )
+        health_module = Consumable(
+            "health_module",
+            "A compact utility that repairs corrupted user data. Activating it restores a portion of your health.",
+            weight=16,
+            heal=0
+        )
+        self.rooms["a0"].add_item(health_module)
         self.rooms["a0"].add_item(fragmented_blade)
 
         # b items
         first_corruption = Misc(
             "first_corruption.log",
             "A corrupted monster's log containing forgotten memories.",
-            weight=0.1,
+            weight=4,
             misc_id="lore2"
         )
 
         log_module = Misc(
             "log_module",
             "Allows you to read corrupted logs and system terminals.",
-            weight=0.7,
+            weight=8,
             misc_id="log"
         )
         data_chip = Misc(
             "data_chip.log",
             "A broken memory chip containing a fragment of origins.",
-            weight=0.1,
+            weight=4,
             misc_id="lore1"
         )
         self.rooms["b1"].add_item(log_module)
@@ -311,14 +318,14 @@ Exits: none
         backpack_upgrade = Misc(
             "backpack_upgrade",
             "Upgrades your inventory capacity using adaptive memory compression.",
-            weight=0.2,
+            weight=8,
             misc_id="bag_upgrade"
         )
         kernels_edge = Weapon(
             "kernels_edge",
             "A powerful blade formed from unstable data.",
             damage=7,
-            weight=2
+            weight=64
         )
         self.rooms["b2"].add_item(backpack_upgrade)
         self.rooms["b2"].add_item(kernels_edge)
@@ -327,7 +334,7 @@ Exits: none
         signal_tuner = Consumable(
             "signal_tuner",
             "A device that stabilises your attacks temporarily.",
-            weight="0.9",
+            weight="16",
             heal=0
         )
         self.rooms["c0"].add_item(signal_tuner)
@@ -336,13 +343,13 @@ Exits: none
         decryptor = Misc(
             "decrypter",
             "Required to operate the final console in the Obsolete Hub.",
-            weight=0.4,
+            weight=8,
             misc_id="decrypt"
         )
         fractured = Misc(
             "fractured.log",
             "A corrupted log showing pieces of the system's history.",
-            weight=0.1,
+            weight=4,
             misc_id="lore4"
         )
         self.rooms["d0"].add_item(decryptor)

@@ -13,7 +13,7 @@ class Player(Character):
         self.current_room = None
         self.storage = {} # list of class Item
         self.weight = 0
-        self.max_weight = 5
+        self.max_weight = 64
         self.scannable = False # when true the player can read logs
 
     def set_current_room(self, room):
@@ -41,7 +41,7 @@ class Player(Character):
         :return: True if the item has been picked up, otherwise False (too heavy).
         """
 
-        if self.weight + item.weight > self.max_weight:
+        if (self.weight + item.weight) > self.max_weight:
             return False
         self.storage[item.name] = item
         self.weight += item.weight

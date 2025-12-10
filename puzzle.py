@@ -18,8 +18,8 @@ class Puzzle(Entity):
         if self.solved:
             return "You have already solved this puzzle."
 
-        ui.print(self.prompt)
-        answer = ui.input().strip().lower() # retrieve answer from user
+        ui.print(self.prompt+"\n>")
+        answer = ui.input()# retrieve answer from user
 
         if answer == self.solution:
             self.solved = True
