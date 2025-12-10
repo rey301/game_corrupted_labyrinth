@@ -63,7 +63,7 @@ class Player(Character):
         prev_weight = self.weight
         self.weight -= item_weight
         self.storage.pop(item_name)
-        return f"You have removed {item_name} \nCapacity: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes"
+        return f"{item_name} deleted. \nCapacity updated: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes"
 
     def is_alive(self):
         """

@@ -288,9 +288,8 @@ class Game:
 
             if result:
                 self.ui.print(result)
-            if flag == "remove":
-                self.player.storage.pop(item)
-                self.ui.print
+                if flag == "remove":
+                    self.ui.print(self.player.remove_item(item.name))
             else:
                 self.ui.print(f"You can't use {item.name} here.")
             return
@@ -358,6 +357,11 @@ class Game:
 
             # remove monster from room
             room.remove_monster(monster)
+
+        # loss condition
+        if self.player.hp == 0:
+            self.ui.print("You have been defeated...")
+            self.game_over = True
 
 
 
