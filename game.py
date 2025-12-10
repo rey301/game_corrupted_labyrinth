@@ -67,9 +67,13 @@ class Game:
             self.do_go(obj)
             return False
 
+        if verb == "look":
+            self.ui.print(self.player.current_room.describe())
+            return False
+
         # looking for items in the room
-        elif verb == "inspect":
-            self.do_inspect(obj)
+        elif verb == "scan":
+            self.do_scan(obj)
             return False
 
         # show storage
@@ -126,7 +130,7 @@ class Game:
             self.player.current_room = next_room
             self.ui.print(self.player.current_room.describe())
 
-    def do_inspect(self, obj):
+    def do_scan(self, obj):
         """
         Inspect an object which could be an item, a monster, a puzzle, or the whole room.
         :param obj: This is the object that the user defines (e.g. item name)
@@ -134,19 +138,32 @@ class Game:
         """
         room = self.player.current_room
         if obj is None:
-            self.ui.print("Inspect what?")
+            self.ui.print("Scan what?")
             return
 
         # inspecting an item in the room
         if obj in room.items:
             item = room.items[obj]
-            self.ui.print(f"{item.description}")
+            lines = [item.description]
+
+            if isinstance(item, Weapon):
+                lines.append(f" | ATTACK POWER {item.damage}")
+
+            if isinstance(item, Consumable):
+                lines.append(f" | HEALING {item.heal}")
+
+            if isinstance(item, Misc):
+                lines.append(f" | DATA SIGNATURE: {item.misc_id}")
+            self.ui.print("".join(lines))
+
             return
 
         # inspecting item in storage
         if obj in self.player.storage:
             item = self.player.storage[obj]
             self.ui.print(f"{item.description}")
+            if isinstance(item, Weapon):
+                self.ui.print(f"ATTACK POWER {item.damage}")
             return
 
         # inspecting a monster
@@ -157,22 +174,42 @@ class Game:
 
         # inspect the room for everything
         if obj == "room":
-            if not room.items and not room.monsters:
-                self.ui.print("There is nothing in this room.")
+            room = self.player.current_room
+
+            # If the room contains nothing of interest
+            if not room.items and not room.monsters and not room.puzzle:
+                self.ui.print("The room reveals nothing unusual.")
                 return
 
-            res = ["The room reveals itself..."]
+            lines = ["=== SCANNING ROOM ===\n"]
+
+            # ITEMS ---------------------------------------------------------
             if room.items:
-                res.append("Items in this room:")
+                lines.append("[ Items Detected ]")
                 for item_name, item in room.items.items():
-                    res.append(f" - {item_name}")
+                    lines.append(f" - {item_name}")
+                lines.append("")  # blank line
+            else:
+                lines.append("[ No Items Detected ]\n")
 
+            # MONSTERS ------------------------------------------------------
             if room.monsters:
-                res.append("Monsters in this room:")
+                lines.append("[ Hostile Entities ]")
                 for monster in room.monsters:
-                    res.append(f" - {monster.name}")
+                    lines.append(f" • {monster.name}")
+                lines.append("")
+            else:
+                lines.append("[ No Hostiles Present ]\n")
 
-            self.ui.print("\n".join(res))
+            # PUZZLE --------------------------------------------------------
+            if room.puzzle:
+                lines.append("[ Corrupted Engram Detected ]")
+                lines.append(f" • Puzzle: {room.puzzle.name}\n")
+
+            lines.append("=== END OF ROOM SCAN ===")
+
+            self.ui.print("\n".join(lines))
+            return
 
             return
 
@@ -227,17 +264,23 @@ class Game:
 
         # for healing
         if isinstance(item, Consumable):
-            healed = item.use(self.player)
-            self.ui.print(f"You use {item.name}. {healed}")
-            self.player.storage.pop(item_name)
+            if self.player.hp == self.player.max_hp:
+                self.ui.print("You are at max hp!")
+            else:
+                healed = item.use(self.player)
+                self.ui.print(f"You use {item.name}. {healed}")
+                self.player.storage.pop(item_name)
             return
 
         # for unlocking something
         if isinstance(item, Misc):
-            result = item.use(self.player, self.player.current_room, self.world)
+            result, flag = item.use(self.player, self.player.current_room, self.world)
 
             if result:
                 self.ui.print(result)
+            if flag == "remove":
+                self.player.storage.pop(item)
+                self.ui.print
             else:
                 self.ui.print(f"You can't use {item.name} here.")
             return
@@ -247,10 +290,10 @@ class Game:
 
     def do_fight(self):
         """
-            Handles the combat with a monster in the current room, where combat
-            alternates between player and the monster until one is defeated.
-            Game is over if the player dies. If the monster dies, the player
-            is rewarded and monster is removed from the room.
+        Handles the combat with a monster in the current room, where combat
+        alternates between player and the monster until one is defeated.
+        Game is over if the player dies. If the monster dies, the player
+        is rewarded and monster is removed from the room.
         :return: None
         """
 
@@ -259,7 +302,28 @@ class Game:
             Allows player to attempt to solve the puzzle in the current room.
         :return: None
         """
-        self.puzzle.attempt()
+        room = self.player.current_room
+        if room.puzzle is None:
+            self.ui.print("There is no puzzle here.")
+            return
+
+        result = room.puzzle.attempt(self.ui)
+        self.ui.print(result)
+
+        if room.puzzle.solved and room.puzzle.reward:
+            self.retrieve_puzzle_reward(room.puzzle.reward, room)
+
+    def retrieve_puzzle_reward(self, reward, room):
+        if reward == "unlock_hidden_packet":
+            self.ui.print("A corrupted packet materialises on the floor...")
+
+            phantom_key = Misc(
+                "phantom_key",
+                "A strange block of corrupted data. It seems to resonate with unseen doorways.",
+                weight=1,
+                misc_id="unlock_c0"
+            )
+            room.add_item(phantom_key)
 
     def print_help(self):
         """
@@ -276,9 +340,9 @@ class Game:
         self.ui.print("  take <item>        - Pick up an item in the room")
         self.ui.print("  use <item>         - Use a misc or consumable item")
         self.ui.print("  equip <weapon>     - Equip a weapon from your backpack")
-        self.ui.print("  storage          - Show items you're carrying")
-        self.ui.print("  inspect room       - List all items in the room")
-        self.ui.print("  inspect <item>     - Examine an item in the room or in your backpack")
+        self.ui.print("  storage            - Show items you're carrying")
+        self.ui.print("  scan room          - List all entities in the room")
+        self.ui.print("  scan <entity>      - Examine an entity in the room or in your storage")
 
         self.ui.print("\nCombat:")
         self.ui.print("  fight              - Engage in combat with the monster here")

@@ -33,7 +33,6 @@ class Player(Character):
         :return: True if dir is a valid move (room is changed), otherwise False (no exit).
         """
 
-
     def pick_up(self, item):
         """
             Pick up an item and add to storage, checking the weight limit before
@@ -67,6 +66,13 @@ class Player(Character):
             res.append(f"- {name} (Weight: {item.weight})")
         res.append(f"\nCapacity: {self.weight}/{self.max_weight} bytes")
         return "\n".join(res)
+
+    def remove_item(self, item_name):
+        item_weight = self.storage[item_name].weight
+        prev_weight = self.weight
+        self.weight -= item_weight
+        self.storage.pop(item_name)
+        return f"You have removed {item_name} \nCapacity: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes"
 
     def is_alive(self):
         """

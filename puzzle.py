@@ -9,9 +9,20 @@ class Puzzle(Entity):
         self.reward = reward
         self.solved = False
 
-    def attempt(self, ans):
+    def attempt(self, ui):
         """
-            Checks if the player's solution solves the puzzle.
-        :param ans: Player's attempted solution.
-        :return: True if solved, False otherwise.
+        Checks if the player's solution solves the puzzle.
+        :param ui: TextUI instance for input and output.
+        :return: Message that summarises the result.
         """
+        if self.solved:
+            return "You have already solved this puzzle."
+
+        ui.print(self.prompt)
+        answer = ui.input().strip().lower() # retrieve answer from user
+
+        if answer == self.solution:
+            self.solved = True
+            return "Puzzle has been solved."
+
+        return "That doesn't seem correct."

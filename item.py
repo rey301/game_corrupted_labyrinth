@@ -5,8 +5,9 @@ class Item(Entity):
         super().__init__(name, description)
         self.weight = weight
 
-    def user(self):
+    def use(self, player, room=None, world=None):
         """
-            Uses the item's in-game effect (e.g. healing, remove corruption)
-        :return: None
+            Base method for using an item, where subclasses override as needed.
+        :return: The message and flag to keep or drop the item.
         """
+        return "Nothing happens.", "keep"

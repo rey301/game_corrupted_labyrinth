@@ -285,35 +285,27 @@ Exits: none
         )
         self.rooms["a0"].add_item(fragmented_blade)
 
-        phantom_key = Misc(
-            "phantom_key",
-            "A strange block of corrupted data. It seems to resonate with unseen doorways.",
-            weight=1,
-            misc_id="unlock_c0"
-        )
-        self.rooms["a1"].add_item(phantom_key)
-
         # b items
         first_corruption = Misc(
             "first_corruption.log",
             "A corrupted monster's log containing forgotten memories.",
-            weight=0.7,
+            weight=0.1,
             misc_id="lore2"
         )
 
-        scan_module = Misc(
-            "scan_module",
+        log_module = Misc(
+            "log_module",
             "Allows you to read corrupted logs and system terminals.",
             weight=0.7,
-            misc_id="scan"
+            misc_id="log"
         )
         data_chip = Misc(
             "data_chip.log",
             "A broken memory chip containing a fragment of origins.",
-            weight=0.8,
+            weight=0.1,
             misc_id="lore1"
         )
-        self.rooms["b1"].add_item(scan_module)
+        self.rooms["b1"].add_item(log_module)
         self.rooms["b1"].add_item(data_chip)
 
         backpack_upgrade = Misc(
@@ -350,7 +342,7 @@ Exits: none
         fractured = Misc(
             "fractured.log",
             "A corrupted log showing pieces of the system's history.",
-            weight=0,
+            weight=0.1,
             misc_id="lore4"
         )
         self.rooms["d0"].add_item(decryptor)
