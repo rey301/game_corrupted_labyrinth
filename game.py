@@ -133,11 +133,17 @@ class Game:
         if direction is None:
             self.ui.print("Go where?")
             return
+
+        if direction not in self.player.current_room.exits:
+            self.ui.print("You can't go that way!")
+            return
+
         next_room = self.player.current_room.get_exit(direction)
 
         if next_room is not None:
             self.player.current_room = next_room
             self.ui.print(self.player.current_room.describe())
+
 
     def do_scan(self, obj):
         """
@@ -277,9 +283,9 @@ class Game:
             if self.player.hp == self.player.max_hp:
                 self.ui.print("You are at max hp!")
             else:
-                healed = item.use(self.player)
+                healed, flag = item.use(self.player)
                 self.ui.print(f"You use {item.name}. {healed}")
-                self.player.storage.pop(item_name)
+                self.player.remove_item(item.name)
             return
 
         # for unlocking something
@@ -312,27 +318,89 @@ class Game:
         :return: None
         """
         room = self.player.current_room
-        monster = room.monsters[monster_name]
+
 
         # if there are no monsters in the room
         if not room.monsters:
             self.ui.print("There is nothing here to fight.")
             return
 
+        if monster_name not in room.monsters:
+            self.ui.print("Invalid name.")
+            return
+
+        monster = room.monsters[monster_name]
         # one monster per fight for now
         self.ui.print(f"You engage the {monster.name}")
+        self.ui.print(f"{monster.name} HP: {monster.hp}/{monster.max_hp}")
+        self.ui.print(f"Your HP: {self.player.hp}/{self.player.max_hp}")
 
         # combat loop
         while self.player.is_alive() and monster.is_alive():
-            # player attacks first
-            m_hp = monster.hp
-            p_damage = self.player.attack(monster)
-            # check if player has weapon
-            if self.player.equipped_weapon is None:
-                self.ui.print(f"You strike the {monster.name} with your fists for {p_damage}")
+            self.ui.print("\nChoose your action:")
+            self.ui.print("  1. Attack")
+            self.ui.print("  2. Heal")
+            self.ui.print("  3. Retreat")
+
+            action = self.ui.input("> ").strip()
+
+            if action == "1" or action.lower() == "attack":
+                # player attacks first
+                m_hp = monster.hp
+                p_damage = self.player.attack(monster)
+                # check if player has weapon
+                if self.player.equipped_weapon is None:
+                    self.ui.print(f"Warning! You have no weapon equipped.")
+                    self.ui.print(f"You strike the {monster.name} with your fists for {p_damage}")
+                else:
+                    p_weapon = self.player.equipped_weapon.name
+                    self.ui.print(f"You strike the {monster.name} with {p_weapon} for {p_damage}")
+            elif action == "2" or action.lower() == "heal":
+                consumables = self.player.get_consumables()
+
+                if not consumables:
+                    self.ui.print("You have no healing items!")
+                    continue
+
+                self.ui.print("Choose a healing item:")
+                for name, item in consumables.items():
+                    self.ui.print(f" - {name} (+{item.heal} HP")
+
+                heal_choice = self.ui.input("> ").strip()
+
+                if heal_choice in consumables:
+                    item = consumables[heal_choice]
+                    message = item.use(self.player)
+                    self.ui.print(message)
+                    self.player.remove_item(item.name)
+                else:
+                    self.ui.print("Invalid healing item.")
+                    continue
+            elif action == "3" or action.lower() == "retreat":
+                escape_chance = 0.6  # 60% success rate
+
+                from random import random
+                if random() < escape_chance:
+                    self.ui.print("You successfully retreat from the fight!")
+                    return  # exits combat, game continues
+
+                else:
+                    self.ui.print("Retreat failed! The monster strikes as you turn away!")
+                    # monster gets a free hit
+                    dmg = monster.attack(self.player)
+                    self.ui.print(f"The {monster.name} hits you for {dmg} damage.")
+                    self.ui.print(f"Your HP: {self.player.hp}/{self.player.max_hp}")
+
+                    if not self.player.is_alive():
+                        self.ui.print("You collapse while trying to escape...")
+                        self.game_over = True
+                        return
+
+                    # continue to next round
+                    continue
             else:
-                p_weapon = self.player.equipped_weapon.name
-                self.ui.print(f"You strike the {monster.name} with {p_weapon} for {p_damage}")
+                self.ui.print("Invalid action.")
+                continue
 
             if not monster.is_alive():
                 break

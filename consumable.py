@@ -18,6 +18,7 @@ class Consumable(Item):
         # if overheal just set the player's health to the max hp
         if player.hp > player.max_hp:
             player.hp = player.max_hp
-            return f"HP recovered: {prev_hp}+{self.heal} (Overhealed) --> {player.hp}", "remove"
-        return f"HP recovered: {prev_hp}+{self.heal} --> {player.hp}", "remove"
+            return f"HP recovered: {prev_hp}+{self.heal} (Overhealed) --> {player.hp}/{player.max_hp}", "remove"
+        else:
+            return f"HP recovered: {prev_hp}+{self.heal} --> {player.hp}/{player.max_hp}", "remove"
 

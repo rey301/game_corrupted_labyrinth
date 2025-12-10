@@ -33,10 +33,7 @@ class Room(Entity):
         self.exits[dir] = room
 
     def get_exit(self, dir):
-        try:
-            return self.exits[dir]
-        except DirectionNotValidError:
-            raise DirectionNotValidError(f"{dir} is not a valid direction.\n")
+        return self.exits[dir]
 
     def add_item(self, item):
         """

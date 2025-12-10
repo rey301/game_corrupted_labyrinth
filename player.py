@@ -1,5 +1,6 @@
 from character import Character
 from weapon import Weapon
+from consumable import Consumable
 
 class Player(Character):
     """
@@ -111,6 +112,13 @@ class Player(Character):
         self.attack_power = item.damage
 
         return f"You equip {item.name}. Attack power has been updated to {self.attack_power}."
+
+    def get_consumables(self):
+        consumables = {}
+        for item in self.storage:
+            if isinstance(self.storage[item], Consumable):
+                consumables[item] = item
+        return consumables
 
 class NotInStorageError(Exception):
     """A custom exception to handle items not in backpack."""
