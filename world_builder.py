@@ -287,7 +287,7 @@ Exits: none
             "health_module",
             "A compact utility that repairs corrupted user data. Activating it restores a portion of your health.",
             weight=16,
-            heal=0
+            heal=2
         )
         self.rooms["a0"].add_item(health_module)
         self.rooms["a0"].add_item(fragmented_blade)
@@ -416,7 +416,13 @@ Exits: none
             hp=6,
             max_hp=6,
             attack_power=2,
-            reward=None
+            reward=Misc(
+                "data_key",
+                "A key to the Data Well dropped by the glitch_beast.",
+                weight=8,
+                misc_id="data_key"
+            ),
+            blocks_exit="east"
         )
         self.rooms["b0"].add_monster(glitch_beast)
 

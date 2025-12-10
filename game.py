@@ -130,6 +130,15 @@ class Game:
         error message is displayed.
         :param direction: Direction the player wishes to move (e.g. north, east)
         """
+        room = self.player.current_room
+
+        for m in room.monsters.values():
+            if m.blocks_exit == direction:
+                self.ui.print(f"{m.name} has blocked you!")
+                self.ui.print("Defeating it is the only way in...")
+                self.do_fight(m.name)
+                return
+
         if direction is None:
             self.ui.print("Go where?")
             return
@@ -318,7 +327,6 @@ class Game:
         :return: None
         """
         room = self.player.current_room
-
 
         # if there are no monsters in the room
         if not room.monsters:

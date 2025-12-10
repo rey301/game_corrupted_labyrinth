@@ -115,9 +115,9 @@ class Player(Character):
 
     def get_consumables(self):
         consumables = {}
-        for item in self.storage:
-            if isinstance(self.storage[item], Consumable):
-                consumables[item] = item
+        for item_name in self.storage:
+            if isinstance(self.storage[item_name], Consumable):
+                consumables[item_name] = self.storage[item_name]
         return consumables
 
 class NotInStorageError(Exception):
