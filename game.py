@@ -102,7 +102,7 @@ class Game:
 
         # fight monster
         elif verb == "fight":
-            self.do_fight()
+            self.do_fight(obj)
             return False
 
         # solve puzzle
@@ -176,10 +176,11 @@ class Game:
             return
 
         # inspecting a monster
-        for monster in room.monsters:
-            if monster.name.lower() == obj.lower():
-                self.ui.print(f"{monster.name}: {monster.description}")
-                return
+        if obj in room.monsters:
+            monster = room.monsters[obj]
+            self.ui.print(f"{monster.description}")
+            self.ui.print(f"ATTACK POWER {monster.attack_power}")
+            return
 
         # inspect the room for everything
         if obj == "room":
@@ -205,7 +206,7 @@ class Game:
             if room.monsters:
                 lines.append("[ Hostile Entities ]")
                 for monster in room.monsters:
-                    lines.append(f" • {monster.name}")
+                    lines.append(f" • {room.monsters[monster].name}")
                 lines.append("")
             else:
                 lines.append("[ No Hostiles Present ]\n")
@@ -303,7 +304,7 @@ class Game:
 
         self.ui.print(self.player.equip(weapon_name))
 
-    def do_fight(self):
+    def do_fight(self, monster_name):
         """
         Handles the combat with a monster in the current room, where combat
         alternates between player and the monster until one is defeated.
@@ -311,6 +312,54 @@ class Game:
         is rewarded and monster is removed from the room.
         :return: None
         """
+        room = self.player.current_room
+        monster = room.monsters[monster_name]
+
+        # if there are no monsters in the room
+        if not room.monsters:
+            self.ui.print("There is nothing here to fight.")
+            return
+
+        # one monster per fight for now
+        self.ui.print(f"You engage the {monster.name}")
+
+        # combat loop
+        while self.player.is_alive() and monster.is_alive():
+            # player attacks first
+            m_hp = monster.hp
+            p_damage = self.player.attack(monster)
+            # check if player has weapon
+            if self.player.equipped_weapon is None:
+                self.ui.print(f"You strike the {monster.name} with your fists for {p_damage}")
+            else:
+                p_weapon = self.player.equipped_weapon.name
+                self.ui.print(f"You strike the {monster.name} with {p_weapon} for {p_damage}")
+
+            if not monster.is_alive():
+                break
+
+            # monster attacks
+            p_hp = self.player.hp
+            m_damage = monster.attack(self.player)
+            self.ui.print(f"The {monster.name} hits you for {m_damage} damage.")
+
+            # show hp
+            self.ui.print(f"Player HP: {p_hp} - {m_damage} --> {self.player.hp}/{self.player.max_hp}")
+            self.ui.print(f"{monster.name} HP: {m_hp} - {p_damage} --> {monster.hp}/{monster.max_hp}")
+
+        # victory condition
+        if monster.hp == 0:
+            self.ui.print(f"{monster.name} has fallen.")
+
+            # drop reward
+            if monster.reward:
+                room.add_item(monster.reward)
+                self.ui.print(f"The {monster.name} dropped: {monster.reward.name}")
+
+            # remove monster from room
+            room.remove_monster(monster)
+
+
 
     def do_solve(self):
         """

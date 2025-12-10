@@ -19,7 +19,7 @@ class Room(Entity):
         self.hidden_path = False # for hidden room
         self.exits = {}  # Dictionary of Room objects
         self.items = {} # List of items in the current room
-        self.monsters = [] # monsters in the current room
+        self.monsters = {} # monsters in the current room
         self.puzzle = puzzle
 
     def set_exit(self, dir, room):
@@ -60,7 +60,10 @@ class Room(Entity):
         :param monster: The Monster that is added.
         :return: None
         """
-        self.monsters.append(monster)
+        self.monsters[monster.name] = monster
+
+    def remove_monster(self, monster):
+        self.monsters.pop(monster.name)
 
     def describe(self):
         """

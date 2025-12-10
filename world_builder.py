@@ -411,7 +411,7 @@ Exits: none
         :return: None
         """
         glitch_beast = Monster(
-            name="Glitch Beast",
+            name="glitch_beast",
             description="A twitching creature made of broken meshes and flickering polygons.",
             hp=6,
             max_hp=6,
@@ -421,7 +421,7 @@ Exits: none
         self.rooms["b0"].add_monster(glitch_beast)
 
         data_wraith = Monster(
-            name="Data Wraith",
+            name="data_wraith",
             description="A humanoid shape made of streaming binary. Its form shifts unpredictably.",
             hp=10,
             max_hp=10,
@@ -431,7 +431,7 @@ Exits: none
         self.rooms["b1"].add_monster(data_wraith)
 
         corrupted_drone = Monster(
-            name="Corrupted Drone",
+            name="corrupted_drone",
             description="A floating defense unit, its casing fractured and emitting sparks.",
             hp=14,
             max_hp=14,
@@ -443,7 +443,7 @@ Exits: none
         # -------------------- SECRET ROOM MONSTER --------------------
 
         echo_shade = Monster(
-            name="Echo Shade",
+            name="echo_shade",
             description="A faint silhouette, like a shadow of code that never fully loads.",
             hp=12,
             max_hp=12,
@@ -455,7 +455,7 @@ Exits: none
         # -------------------- BOSS MONSTER --------------------
 
         gatekeeper = Monster(
-            name="Gatekeeper",
+            name="gatekeeper",
             description=(
                 "A massive corrupted guardian flickering between frames. It guards the kernel path."
             ),
@@ -469,7 +469,7 @@ Exits: none
         # -------------------- ARCHIVE MONSTER --------------------
 
         memory_phantom = Monster(
-            name="Memory Phantom",
+            name="memory_phantom",
             description="A ghost formed from corrupted logs and broken memories.",
             hp=15,
             max_hp=15,

@@ -12,6 +12,7 @@ class Character(Entity):
             Returns whether the character's hp is < 0
         :return: True if character's hp is > 0, False otherwise.
         """
+        return self.hp > 0
 
     def take_damage(self, amount):
         """
@@ -24,4 +25,10 @@ class Character(Entity):
         """
             Perform attack on another character.
         :param target: The character being attacked.
+        :return: Damage dealt as an integer
         """
+        damage = self.attack_power
+        target.hp -= damage
+        if target.hp < 0:
+            target.hp = 0
+        return damage

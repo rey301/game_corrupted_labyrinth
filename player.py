@@ -112,8 +112,6 @@ class Player(Character):
 
         return f"You equip {item.name}. Attack power has been updated to {self.attack_power}."
 
-
-
 class NotInStorageError(Exception):
     """A custom exception to handle items not in backpack."""
     def __init__(self, item, message):

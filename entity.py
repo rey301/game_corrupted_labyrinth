@@ -16,3 +16,4 @@ class Entity:
         :return: The description string.
         """
         return self.description
+
