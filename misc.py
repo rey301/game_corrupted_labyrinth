@@ -33,6 +33,22 @@ class Misc(Item):
         if self.misc_id == "unlock_c0":
             if room.name == "boot_sector":
                 room.unlock_exit("east")
+                room.update_description("""
++----------------------------- BOOT SECTOR ------------------------------+
+    System booting...
+
+        [ Initialising user shell ]
+        [ Loading visual layer    ]
+        [ Syncing input streams   ]
+
+    A plain-looking room forms around you, 
+    like the world is still loading.
+    Bits of code fall from the ceiling. 
+    Something small glints on the floor.
+
+    Exits: NORTH -> Lost Cache, SOUTH -> Glitch Pit, EAST -> Phantom Node
++------------------------------------------------------------------------+
+                """)
                 return "A hidden doorway flickers open to the east...", "remove"
             return "The key hums faintly, but nothing happens here.", "keep"
 

@@ -261,6 +261,11 @@ class Game:
                 lines.append("[ Corrupted Engram Detected ]")
                 lines.append(f"- {puzzle.name}\n")
 
+            # check if user has the phantom key
+            if "phantom_key" in self.player.storage:
+                lines.append("[ Spatial Anomaly Detected ]")
+                lines.append("A faint doorway signature is flickering here...\n")
+
             lines.append("=== END OF ROOM SCAN ===")
 
             self.ui.print("\n".join(lines))
@@ -300,7 +305,8 @@ class Game:
                     self.ui.print(msg)
 
     def do_use(self, item_name):
-        """
+        """[ Spatial Anomaly Detected ]
+A faint doorway signature is flickering here...
             Allows player to use an item from their backpack, applying whatever
             effect the item has.
         :param item_name: Name of the item to use.

@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
   <diagram name="Page-1" id="rG1H_dBumMCmWrBPW2gX">
-    <mxGraphModel dx="1096" dy="924" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="1195" dy="693" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,10 +8,10 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-29" value="Boot Sector a0" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="300" y="200" width="140" height="110" as="geometry" />
+          <mxGeometry x="300" y="200" width="140" height="70" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-30" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;fragmented_blade : Weapon&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;health_module: Consumable&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-29">
-          <mxGeometry y="26" width="140" height="84" as="geometry" />
+          <mxGeometry y="26" width="140" height="44" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-34" target="oprImkwHHz-dYFtP1b-H-29">
           <mxGeometry relative="1" as="geometry" />
@@ -26,7 +26,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-40" value="Glitch Pit b0" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="300" y="380" width="140" height="52" as="geometry" />
+          <mxGeometry x="270" y="370" width="140" height="52" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-41" value="&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;glitch_beast : Monster&lt;/font&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-40">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
@@ -41,7 +41,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-50" value="Data Well b1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="500" y="356" width="140" height="100" as="geometry" />
+          <mxGeometry x="500" y="346" width="140" height="100" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-51" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;log_module : Misc&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;data_chip.log : Misc&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;binary_code : Puzzle&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;data_wraith : Monster&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-50">
           <mxGeometry y="26" width="140" height="74" as="geometry" />
@@ -104,6 +104,9 @@
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-90" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-41" target="oprImkwHHz-dYFtP1b-H-51">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oprImkwHHz-dYFtP1b-H-93" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;data_key&lt;/font&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="381" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

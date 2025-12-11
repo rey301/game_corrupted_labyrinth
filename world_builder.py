@@ -140,7 +140,7 @@ class WorldBuilder:
     A doorway flickers in and out of existence, revealing a direct
     link to a powerful presence deeper in the system...
 
-    Exits: SOUTH -> Gatekeeper Node
+    Exits: SOUTH -> Gatekeeper Node, WEST -> Boot Sector
 +------------------------------------------------------------------------+
             """,
             locked = True
@@ -257,7 +257,8 @@ The path leads you back, back to the real world.
         self.rooms["b2"].set_exit("east", self.rooms["c2"])  # boss path
 
         # Phantom Node (secret room) - unlocked separately
-        self.rooms["c0"].set_exit("south", self.rooms["c2"])  # secret shortcut back to maze
+        self.rooms["c0"].set_exit("south", self.rooms["c2"]) # secret shortcut to gatekeeper
+        self.rooms["c0"].set_exit("west", self.rooms["a0"]) # boot sector (spawn)
 
         # Gatekeeper Node (boss)
         self.rooms["c2"].set_exit("west", self.rooms["b2"])

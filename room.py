@@ -77,6 +77,9 @@ class Room(Entity):
         if direction in self.locked_exits:
             self.locked_exits.pop(direction)
 
+    def update_description(self, new_desc):
+        self.description = new_desc
+
 class DirectionNotValidError(Exception):
     def __init__(self, message):
         print(message)

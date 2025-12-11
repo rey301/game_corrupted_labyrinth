@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
   <diagram name="Page-1" id="rG1H_dBumMCmWrBPW2gX">
-    <mxGraphModel dx="1434" dy="693" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="1096" dy="924" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,165 +8,101 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-29" value="Boot Sector a0" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="300" y="200" width="140" height="104" as="geometry" />
+          <mxGeometry x="300" y="200" width="140" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-30" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-29">
-          <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-31" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-29">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-32" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-29">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
+        <mxCell id="oprImkwHHz-dYFtP1b-H-30" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;fragmented_blade : Weapon&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;health_module: Consumable&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-29">
+          <mxGeometry y="26" width="140" height="84" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-34" target="oprImkwHHz-dYFtP1b-H-29">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-34" value="Lost Cache a1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="320" y="50" width="140" height="104" as="geometry" />
+          <mxGeometry x="300" y="90" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-35" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-34">
-          <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-36" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-34">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-37" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-34">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
+        <mxCell id="oprImkwHHz-dYFtP1b-H-35" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;reconstruction : Puzzle&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-34">
+          <mxGeometry y="26" width="140" height="34" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-40" target="oprImkwHHz-dYFtP1b-H-46">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-40" target="oprImkwHHz-dYFtP1b-H-52">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-40" value="Glitch Pit b0" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="240" y="458" width="140" height="104" as="geometry" />
+          <mxGeometry x="300" y="380" width="140" height="52" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-41" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-40">
+        <mxCell id="oprImkwHHz-dYFtP1b-H-41" value="&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;glitch_beast : Monster&lt;/font&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-40">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-42" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-40">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-43" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-40">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-44" value="Dead Pixels b3" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="10" y="450" width="140" height="104" as="geometry" />
+          <mxGeometry x="110" y="370" width="140" height="52" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-45" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-44">
+        <mxCell id="oprImkwHHz-dYFtP1b-H-46" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;first_corruption.log : Misc&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-44">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-46" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-44">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-47" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-44">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-50" target="oprImkwHHz-dYFtP1b-H-55">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-50" value="Data Well b1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="410" y="458" width="140" height="104" as="geometry" />
+          <mxGeometry x="500" y="356" width="140" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-51" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-50">
-          <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-52" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-50">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-53" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-50">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
+        <mxCell id="oprImkwHHz-dYFtP1b-H-51" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;log_module : Misc&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;data_chip.log : Misc&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;binary_code : Puzzle&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;data_wraith : Monster&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-50">
+          <mxGeometry y="26" width="140" height="74" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-89" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-55" target="oprImkwHHz-dYFtP1b-H-62">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-55" value="Corrupted Arsenal b2" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="430" y="600" width="140" height="104" as="geometry" />
+          <mxGeometry x="500" y="524" width="140" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-56" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-55">
-          <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-57" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-55">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-58" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-55">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
+        <mxCell id="oprImkwHHz-dYFtP1b-H-56" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;backpack_upgrade : Misc&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;kernels_edge : Weapon&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;kernel_repair : Puzzle&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;corrupted_drone : Monster&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-55">
+          <mxGeometry y="26" width="140" height="74" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-82" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-60" target="oprImkwHHz-dYFtP1b-H-70">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-60" value="Gatekeeper Node c2" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="680" y="598" width="140" height="104" as="geometry" />
+          <mxGeometry x="700" y="530" width="140" height="52" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-61" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-60">
+        <mxCell id="oprImkwHHz-dYFtP1b-H-62" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;gatekeeper : Monster&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-60">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-62" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-60">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-63" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-60">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-64" target="oprImkwHHz-dYFtP1b-H-60">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-64" value="Phantom Node c0" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="660" y="210" width="140" height="104" as="geometry" />
+          <mxGeometry x="700" y="215" width="140" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-65" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-64">
-          <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-66" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-64">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-67" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-64">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
+        <mxCell id="oprImkwHHz-dYFtP1b-H-65" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;signal_tuner : Consumable&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;faded_data : Puzzle&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;echo_shade : Monster&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-64">
+          <mxGeometry y="26" width="140" height="54" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-68" value="Fractured Archive c0" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="970" y="520" width="140" height="104" as="geometry" />
+          <mxGeometry x="930" y="502" width="140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-69" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-68">
-          <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-70" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-68">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-71" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-68">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
+        <mxCell id="oprImkwHHz-dYFtP1b-H-70" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;decrypter : Misc&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;fractured.log : Misc&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;memory_phantom : Monster&lt;/font&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-68">
+          <mxGeometry y="26" width="140" height="64" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-85" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-72" target="oprImkwHHz-dYFtP1b-H-68">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-72" value="Obsolete Hub d1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="890" y="340" width="140" height="104" as="geometry" />
+          <mxGeometry x="930" y="328" width="140" height="52" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-73" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-72">
+        <mxCell id="oprImkwHHz-dYFtP1b-H-73" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;kernel_bypass : Puzzle&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-72">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-74" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-72">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-75" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-72">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-76" target="oprImkwHHz-dYFtP1b-H-72">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="oprImkwHHz-dYFtP1b-H-76" value="System Kernel d2" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="970" y="60" width="140" height="104" as="geometry" />
+          <mxGeometry x="930" y="130" width="140" height="52" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-77" value="fragmented_blade : Weapon" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-76">
+        <mxCell id="oprImkwHHz-dYFtP1b-H-77" value="None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-76">
           <mxGeometry y="26" width="140" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-78" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-76">
-          <mxGeometry y="52" width="140" height="26" as="geometry" />
+        <mxCell id="oprImkwHHz-dYFtP1b-H-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-30" target="oprImkwHHz-dYFtP1b-H-65">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="275" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-79" value="+ field: type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="oprImkwHHz-dYFtP1b-H-76">
-          <mxGeometry y="78" width="140" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="oprImkwHHz-dYFtP1b-H-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-30" target="oprImkwHHz-dYFtP1b-H-66">
+        <mxCell id="oprImkwHHz-dYFtP1b-H-90" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="oprImkwHHz-dYFtP1b-H-41" target="oprImkwHHz-dYFtP1b-H-51">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
