@@ -233,6 +233,8 @@ The path leads you back, back to the real world.
         # Boot Sector (spawn)
         self.rooms["a0"].set_exit("north", self.rooms["a1"])
         self.rooms["a0"].set_exit("south", self.rooms["b0"])
+        self.rooms["a0"].set_exit("east", self.rooms["c0"]) # phantom node
+        self.rooms["a0"].lock_exit("east", "unlock_c0")
 
         # Lost Cache
         self.rooms["a1"].set_exit("south", self.rooms["a0"])

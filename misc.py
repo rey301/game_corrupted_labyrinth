@@ -31,11 +31,10 @@ class Misc(Item):
         # used to unlock phantom node
         # this node exits straight to the gatekeeper node from data well
         if self.misc_id == "unlock_c0":
-            if room.name == "Data Well":
-                room.set_exit("east", world.rooms["c0"])
-                world.rooms["c0"].locked = False
+            if room.name == "boot_sector":
+                room.unlock_exit("east")
                 return "A hidden doorway flickers open to the east...", "remove"
-            return "The key hums faintly, but happens here.", "keep"
+            return "The key hums faintly, but nothing happens here.", "keep"
 
         # unlock data well
         if self.misc_id == "d4t4":
@@ -44,7 +43,7 @@ class Misc(Item):
                 room.unlock_exit("east")
                 return "The shard dissolves into the air. The Data Well gateway unlocks.", "remove"
             else:
-                return "The data key hums, but nothing happens.", "keep"
+                return "The data key hums faintly, but nothing happens here.", "keep"
 
         # this key is only dropped by the gatekeeper once defeated, unlocking final exit
         if self.misc_id == "kernel":
