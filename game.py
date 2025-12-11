@@ -283,14 +283,7 @@ class Game:
             return
 
         item = room.items[item_name]
-        prev_weight = self.player.weight
-        success = self.player.pick_up(item)
-        if success:
-            self.ui.print(f"{item_name} added to storage.")
-            self.ui.print(f"Storage: {prev_weight} + {item.weight} --> {self.player.weight}/{self.player.max_weight} bytes")
-            self.player.current_room.remove_item(item)
-        else:
-            self.ui.print(f"{item.name} is too heavy to carry.")
+        self.ui.print(self.player.pick_up(item))
 
     def do_use(self, item_name):
         """
@@ -478,11 +471,12 @@ class Game:
             self.ui.print("There is no puzzle here.")
             return
 
-        result = room.puzzle.attempt(self.ui)
-        self.ui.print(result)
+        message, reward = room.puzzle.attempt(self.ui)
+        self.ui.print(message)
 
-        if room.puzzle.solved and room.puzzle.reward:
-            self.retrieve_puzzle_reward(room.puzzle.reward, room)
+        if reward:
+            self.ui.print(f"You have received: {reward.name}")
+            self.ui.print(self.player.pick_up(reward))
 
     def retrieve_puzzle_reward(self, reward, room):
         if reward == "unlock_hidden_packet":

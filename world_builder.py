@@ -32,7 +32,7 @@ class WorldBuilder:
     Bits of code fall from the ceiling. 
     Something small glints on the floor.
 
-    Exits: EAST -> Lost Cache, SOUTH -> Glitch Pit
+    Exits: NORTH -> Lost Cache, SOUTH -> Glitch Pit
 +------------------------------------------------------------------------+
             """
         )
@@ -50,7 +50,7 @@ class WorldBuilder:
     A small terminal hums quietly. 
     Something useful might be buried here.
 
-    Exits: WEST -> Boot Sector
+    Exits: SOUTH -> Boot Sector
 +------------------------------------------------------------------------+
             """
         )
@@ -103,7 +103,7 @@ class WorldBuilder:
     A larger puzzle device sparks occasionally.
     Your backpack system activates when entering this place.
 
-    Exits: NORTH -> Data Well, SOUTH -> Gatekeeper Node
+    Exits: NORTH -> Data Well, EAST -> Gatekeeper Node
 +------------------------------------------------------------------------+
             """
         )
@@ -158,7 +158,7 @@ class WorldBuilder:
 
     This fight is unavoidable.
 
-    Exits: NORTH -> Corrupted Arsenal, SOUTH -> Fractured Archive (locked)
+    Exits: WEST -> Corrupted Arsenal, EAST -> Fractured Archive
 +------------------------------------------------------------------------+
             """
         )
@@ -175,7 +175,7 @@ class WorldBuilder:
 
     A console sits in the centre, but it needs a decryption item.
 
-    Exits: NORTH -> Gatekeeper Node, EAST -> Obsolete Hub
+    Exits: WEST -> Gatekeeper Node, NORTH -> Obsolete Hub
 +------------------------------------------------------------------------+
             """
         )
@@ -193,7 +193,7 @@ class WorldBuilder:
 
     A giant puzzle dominates the middle of the room.
 
-    Exits: WEST -> Fractured Archive, NORTH -> System Kernel
+    Exits: SOUTH -> Fractured Archive, NORTH -> System Kernel
 +------------------------------------------------------------------------+
             """
         )
@@ -208,9 +208,8 @@ The glitches are gone. The room is clean and bright.
    You hold the kernel key.
    A door of pure white light waits for you.
 
-This is the exit.
+The path leads you back, back to the real world.
 
-Exits: none
 +------------------------------------------------------------------------+
             """
         )
@@ -232,17 +231,17 @@ Exits: none
         :return: None
         """
         # Boot Sector (spawn)
-        self.rooms["a0"].set_exit("east", self.rooms["a1"])
+        self.rooms["a0"].set_exit("north", self.rooms["a1"])
         self.rooms["a0"].set_exit("south", self.rooms["b0"])
 
         # Lost Cache
-        self.rooms["a1"].set_exit("west", self.rooms["a0"])
+        self.rooms["a1"].set_exit("south", self.rooms["a0"])
 
         # Glitch Pit
         self.rooms["b0"].set_exit("north", self.rooms["a0"])
         self.rooms["b0"].set_exit("east", self.rooms["b1"])
+        self.rooms["b0"].lock_exit("east", "d4t4") # lock the door to data well
         self.rooms["b0"].set_exit("west", self.rooms["b3"])  # dead-end branch
-        self.rooms["b0"].lock_exit("east", "d4t4")
 
         # Dead Pixels
         self.rooms["b3"].set_exit("east", self.rooms["b0"])  # only way back
@@ -253,22 +252,24 @@ Exits: none
 
         # Corrupted Arsenal
         self.rooms["b2"].set_exit("north", self.rooms["b1"])
-        self.rooms["b2"].set_exit("south", self.rooms["c2"])  # boss path
+        self.rooms["b2"].set_exit("east", self.rooms["c2"])  # boss path
 
         # Phantom Node (secret room) - unlocked separately
         self.rooms["c0"].set_exit("south", self.rooms["c2"])  # secret shortcut back to maze
 
         # Gatekeeper Node (boss)
-        self.rooms["c2"].set_exit("north", self.rooms["b2"])
-        self.rooms["c2"].set_exit("south", self.rooms["d0"])
+        self.rooms["c2"].set_exit("west", self.rooms["b2"])
+        self.rooms["c2"].set_exit("east", self.rooms["d0"])
+        self.rooms["b0"].lock_exit("east", "4rch1ve")  # lock the door to fractured archive
 
         # Fractured Archive
-        self.rooms["d0"].set_exit("north", self.rooms["c2"])
-        self.rooms["d0"].set_exit("east", self.rooms["d1"])
+        self.rooms["d0"].set_exit("west", self.rooms["c2"])
+        self.rooms["d0"].set_exit("north", self.rooms["d1"])
 
         # Obsolete Hub
-        self.rooms["d1"].set_exit("west", self.rooms["d0"])
         self.rooms["d1"].set_exit("north", self.rooms["d2"])
+        self.rooms["d1"].lock_exit("north", "k3rn3l")  # lock the door to system kernel (end)
+        self.rooms["d1"].set_exit("south", self.rooms["d0"])
 
         # System Kernel is endgame (no exits)
 
@@ -277,7 +278,8 @@ Exits: none
             Place Item objects into chosen rooms.
         :return: None
         """
-        # a items
+        # a tier items
+        # boot sector
         fragmented_blade = Weapon(
             "fragmented_blade",
             "A weak blade formed from unstable data shards.",
@@ -362,16 +364,21 @@ Exits: none
             Assign Puzzle objects to chosen rooms.
         :return: None
         """
-        # -------------------- A1 – LOST CACHE --------------------
+        # lost cache
         puzzle_a1 = Puzzle(
             name="reconstruction",
             prompt="Reconstruct the missing byte: 101_01 → what number completes the sequence?",
             solution="0",
-            reward="unlock_hidden_packet"
+            reward=Misc(
+                "phantom_key",
+                "A strange shard that faints in and out of existence.",
+                weight=4,
+                misc_id="unlock_c0"
+            )
         )
         self.rooms["a1"].puzzle = puzzle_a1
 
-        # -------------------- B1 – DATA WELL --------------------
+        # data well
         puzzle_b1 = Puzzle(
             name="binary_code",
             prompt="Decode the binary sequence: 0100 0001 = ? (ASCII)",

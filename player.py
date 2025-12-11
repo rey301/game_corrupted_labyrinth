@@ -34,10 +34,13 @@ class Player(Character):
         """
 
         if (self.weight + item.weight) > self.max_weight:
-            return False
+            return f"{item.name} is too heavy to carry."
         self.storage[item.name] = item
+        prev_weight = self.weight
         self.weight += item.weight
-        return True
+        lines=[f"{item.name} added to storage."]
+        lines.append(f"Storage: {prev_weight} + {item.weight} --> {self.weight}/{self.max_weight} bytes")
+        return "\n".join(lines)
 
     def use(self, item):
         """
