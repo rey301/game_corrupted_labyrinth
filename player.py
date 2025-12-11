@@ -38,8 +38,9 @@ class Player(Character):
         self.storage[item.name] = item
         prev_weight = self.weight
         self.weight += item.weight
-        lines=[f"{item.name} added to storage."]
-        lines.append(f"Storage: {prev_weight} + {item.weight} --> {self.weight}/{self.max_weight} bytes")
+        lines= [f"{item.name} added to storage.",
+                f"Storage: {prev_weight} + {item.weight} --> {self.weight}/{self.max_weight} bytes"
+                ]
         return "\n".join(lines)
 
     def use(self, item):
@@ -114,7 +115,7 @@ class Player(Character):
         self.equipped_weapon = item
         self.attack_power = item.damage
 
-        return f"You equip {item.name}. Attack power has been updated to {self.attack_power}."
+        return f"You equip {item.name}. Attack updated to {self.attack_power}."
 
     def get_consumables(self):
         consumables = {}

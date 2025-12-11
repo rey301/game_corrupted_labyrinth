@@ -235,9 +235,9 @@ class Game:
                 self.ui.print("The room reveals nothing unusual.")
                 return
 
-            lines = ["=== SCANNING ROOM ===\n"]
+            lines = ["======= SCANNING =======\n"]
 
-            # ITEMS ---------------------------------------------------------
+            # items
             if room.items:
                 lines.append("[ Items Detected ]")
                 for item_name, item in room.items.items():
@@ -246,7 +246,7 @@ class Game:
             else:
                 lines.append("[ No Items Detected ]\n")
 
-            # MONSTERS ------------------------------------------------------
+            # monsters
             if room.monsters:
                 lines.append("[ Hostile Entities ]")
                 for monster in room.monsters:
@@ -255,10 +255,11 @@ class Game:
             else:
                 lines.append("[ No Hostiles Present ]\n")
 
-            # PUZZLE --------------------------------------------------------
+            # puzzle
             if room.puzzle:
+                puzzle = room.puzzle
                 lines.append("[ Corrupted Engram Detected ]")
-                lines.append(f" - Puzzle: {room.puzzle.name}\n")
+                lines.append(f"- {puzzle.name}\n")
 
             lines.append("=== END OF ROOM SCAN ===")
 
@@ -284,6 +285,19 @@ class Game:
 
         item = room.items[item_name]
         self.ui.print(self.player.pick_up(item))
+
+        # auto equip for weapons
+        if isinstance(item, Weapon):
+            current = self.player.attack_power
+            new = item.damage
+
+            if new > current:
+                self.ui.print(f"\n{item.name} is stronger than your current attack power.")
+                answer = self.ui.input("Equip? (yes/no)\n> ").strip().lower()
+
+                if answer in ("yes", "y"):
+                    msg = self.player.equip(item.name)
+                    self.ui.print(msg)
 
     def do_use(self, item_name):
         """
