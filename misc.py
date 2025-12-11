@@ -17,11 +17,11 @@ class Misc(Item):
         # for expanding storage
         if self.misc_id == "bag_upgrade":
             prev_max = player.max_weight
-            player.max_weight += 5
+            player.max_weight += 32
             return f"Your storage expands. \n{prev_max}+5 --> {player.max_weight}", "remove"
 
         # for increasing maximum health
-        if self.misc_id == "integrity_recompiler":
+        if self.misc_id == "health_upgrade":
             prev_max_hp = player.max_hp
             player.max_hp += 5
             return f"Your HP increases. \n{prev_max_hp}+5 --> {player.max_hp}", "remove"
@@ -68,11 +68,9 @@ class Misc(Item):
                 return "The data key hums faintly, but nothing happens here.", "keep"
 
         # this key is only dropped by the gatekeeper once defeated, unlocking final exit
-        if self.misc_id == "kernel":
+        if self.misc_id == "k3rn3l":
             if room.name == "Obsolete Hub":
-                if "north" in room.exits:
-                    return "The kernel pathway is already unlocked."
-                room.set_exit("north", world.rooms["d2"])
+                room.unlock_exit("north")
                 return "The kernel key glows - heading towards door towards the system kernel, unlocking the final pathway.", "remove"
             return "The kernel key hums softly, but nothing happens here.", "keep"
 

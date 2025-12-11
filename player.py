@@ -35,7 +35,7 @@ class Player(Character):
         """
 
         if (self.weight + item.weight) > self.max_weight:
-            return f"{item.name} is too heavy to carry."
+            return f"{item.name} is too heavy to carry.", False
         self.storage[item.name] = item
         prev_weight = self.weight
         self.weight += item.weight
@@ -57,7 +57,7 @@ class Player(Character):
                 if answer in ("yes", "y"):
                     msg = self.equip(item.name)
                     ui.print(msg)
-        return "\n".join(lines)
+        return "\n".join(lines), True
 
     def use(self, item):
         """

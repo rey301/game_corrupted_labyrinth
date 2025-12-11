@@ -26,6 +26,8 @@ class Game:
         self.world = WorldBuilder()
         self.game_over = False
 
+
+
     def play(self):
         """
             The main play loop that displays welcome message, reads player input
@@ -163,7 +165,6 @@ class Game:
             # check if player has the key
             key_item = None
             for item in self.player.storage.values():
-
                 if isinstance(item, Misc) and item.misc_id == lock_id:
                     key_item = item
                     break
@@ -294,7 +295,8 @@ class Game:
             return
 
         item = room.items[item_name]
-        self.ui.print(self.player.pick_up(item, self.ui))
+        msg, flag = self.player.pick_up(item, self.ui)
+        self.ui.print(msg)
 
     def do_drop(self, item_name):
         """
@@ -485,7 +487,14 @@ class Game:
 
             # drop reward
             if monster.reward:
-                self.ui.print(f"The have received: {self.player.pick_up(monster.reward, self.ui)}\n")
+                self.ui.print(f"You have received: {monster.reward.name}\n")
+                msg, picked_up = self.player.pick_up(monster.reward, self.ui)
+                self.ui.print(msg)
+                if not picked_up:
+                    # add item to room
+                    room.add_item(monster.reward)
+                    self.ui.print(f"{monster.reward.name} has fallen to the floor.")
+
 
             # remove monster from room
             room.remove_monster(monster)
@@ -515,7 +524,13 @@ class Game:
 
         if reward:
             self.ui.print(f"You have received: {reward.name}")
-            self.ui.print(self.player.pick_up(reward, ui=self.ui))
+            msg, picked_up = self.player.pick_up(reward, ui=self.ui)
+            self.ui.print(msg)
+
+            if not picked_up:
+                # add item to room
+                room.add_item(reward)
+                self.ui.print(f"{reward.name} has fallen to the floor.")
 
     def print_help(self):
         """

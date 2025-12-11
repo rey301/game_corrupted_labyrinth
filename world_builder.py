@@ -325,7 +325,7 @@ The path leads you back, back to the real world.
 
         # corrupted arsenal
         backpack_upgrade = Misc(
-            "backpack_upgrade",
+            "storage_expansion",
             "Upgrades your inventory capacity using adaptive memory compression.",
             weight=8,
             misc_id="bag_upgrade"
@@ -404,7 +404,12 @@ The path leads you back, back to the real world.
             name="kernel_repair",
             prompt="Repair the corrupted kernel header: K_RN_L → fill the missing letters.",
             solution="KERNEL",    # accepting "KERNEL" in game logic is easy too
-            reward="unlock_kernels_edge"  # Game will interpret this as unlocking the weapon
+            reward=Consumable(
+                name="health_container",
+                description="A large utility that immensely repairs corrupted user data. Activating it restores a large portion of your health.",
+                heal=5,
+                weight=8
+            )  # unlock a large health_container
         )
         self.rooms["b2"].puzzle = puzzle_b2
 
@@ -457,10 +462,7 @@ The path leads you back, back to the real world.
             attack_power=3,
             reward=Misc(
                 "integrity_recompiler",
-                description="""
-                An ancient subsystem tool once used by the system administrators. It rewrites part
-                of your core, patching deep corruption and increases your maximum health.
-                """,
+                description="An ancient subsystem tool once used by the system administrators. It rewrites part of your core, patching deep corruption and increases your maximum health.",
                 weight=16,
                 misc_id="health_upgrade"
             ),
@@ -499,7 +501,7 @@ The path leads you back, back to the real world.
             hp=25,
             max_hp=25,
             attack_power=6,
-            reward=Misc("kernel_key", "A critical system key dropped by the Gatekeeper.", weight="1.5", misc_id="kernel")
+            reward=Misc("kernel_key", "A critical system key dropped by the Gatekeeper.", weight="16", misc_id="k3rn3l")
         )
         self.rooms["c2"].add_monster(gatekeeper)
 
