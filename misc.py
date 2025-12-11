@@ -14,15 +14,21 @@ class Misc(Item):
         :param world: The world with attributes of the game.
         :return: The text that will be printed to the user, and the flag if the item gets removed.
         """
-        # for expanding backpack
+        # for expanding storage
         if self.misc_id == "bag_upgrade":
             prev_max = player.max_weight
             player.max_weight += 5
             return f"Your storage expands. \n{prev_max}+5 --> {player.max_weight}", "remove"
 
+        # for increasing maximum health
+        if self.misc_id == "integrity_recompiler":
+            prev_max_hp = player.max_hp
+            player.max_hp += 5
+            return f"Your HP increases. \n{prev_max_hp}+5 --> {player.max_hp}", "remove"
+
         # once activated in the data well, the lore items can be read
         if self.misc_id == "log":
-            if room.name == "Data Well":
+            if room.name == "data_well":
                 player.scannable = True
                 return "You activate the log module: hidden log fragments become readable.", "remove"
             return "You try to activate the log module. It beeps in error.", "keep"
@@ -53,7 +59,7 @@ class Misc(Item):
             return "The key hums faintly, but nothing happens here.", "keep"
 
         # unlock data well
-        if self.misc_id == "d4t4":
+        if self.misc_id == "4rch1ve":
             # player must be in the room to unlock
             if room.name == "glitch_pit":
                 room.unlock_exit("east")

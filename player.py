@@ -25,10 +25,11 @@ class Player(Character):
         """
         self.current_room = room
 
-    def pick_up(self, item):
+    def pick_up(self, item, ui):
         """
             Pick up an item and add to storage, checking the weight limit before
             pick up.
+        :param ui:
         :param item: Item in which the player picks up.
         :return: True if the item has been picked up, otherwise False (too heavy).
         """
@@ -41,6 +42,19 @@ class Player(Character):
         lines= [f"{item.name} added to storage.",
                 f"Storage: {prev_weight} + {item.weight} --> {self.weight}/{self.max_weight} bytes"
                 ]
+
+        # auto equip for weapons
+        if isinstance(item, Weapon):
+            current = self.attack_power
+            new = item.damage
+
+            if new > current:
+                ui.print(f"\n{item.name} is stronger than your current attack power.")
+                answer = ui.input("Equip? (yes/no)\n> ").strip().lower()
+
+                if answer in ("yes", "y"):
+                    msg = self.equip(item.name)
+                    ui.print(msg)
         return "\n".join(lines)
 
     def use(self, item):

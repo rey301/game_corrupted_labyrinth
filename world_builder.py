@@ -123,7 +123,6 @@ class WorldBuilder:
                                                         
     Exits: EAST -> Glitch Pit                              
 +------------------------------------------------------------------------+
-
             """
         )
 
@@ -391,7 +390,12 @@ The path leads you back, back to the real world.
             name="binary_code",
             prompt="Decode the binary sequence: 0100 0001 = ? (ASCII)",
             solution="A",
-            reward=None  # reward is using scan_module effectively
+            reward=Weapon(
+                name="debugging_lance",
+                description="A long digital spear forged from stabilised error logs. It hums with corrective energy.",
+                weight=32,
+                damage=5
+            )  # reward is a weapon that defeats data_wraith
         )
         self.rooms["b1"].puzzle = puzzle_b1
 
@@ -438,7 +442,7 @@ The path leads you back, back to the real world.
                 "data_key",
                 "A glowing access shard designed to unlock the Data Well gateway.",
                 weight=8,
-                misc_id="d4t4"
+                misc_id="4rch1ve"
             ),
             blocks_exit="east"
         )
@@ -451,7 +455,16 @@ The path leads you back, back to the real world.
             hp=10,
             max_hp=10,
             attack_power=3,
-            reward=None
+            reward=Misc(
+                "integrity_recompiler",
+                description="""
+                An ancient subsystem tool once used by the system administrators. It rewrites part
+                of your core, patching deep corruption and increases your maximum health.
+                """,
+                weight=16,
+                misc_id="health_upgrade"
+            ),
+            blocks_exit="south"
         )
         self.rooms["b1"].add_monster(data_wraith)
 

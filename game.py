@@ -259,7 +259,7 @@ class Game:
             if room.puzzle:
                 puzzle = room.puzzle
                 lines.append("[ Corrupted Engram Detected ]")
-                lines.append(f"- {puzzle.name}\n")
+                lines.append(f" - {puzzle.name}\n")
 
             # check if user has the phantom key
             if "phantom_key" in self.player.storage:
@@ -289,26 +289,12 @@ class Game:
             return
 
         item = room.items[item_name]
-        self.ui.print(self.player.pick_up(item))
-
-        # auto equip for weapons
-        if isinstance(item, Weapon):
-            current = self.player.attack_power
-            new = item.damage
-
-            if new > current:
-                self.ui.print(f"\n{item.name} is stronger than your current attack power.")
-                answer = self.ui.input("Equip? (yes/no)\n> ").strip().lower()
-
-                if answer in ("yes", "y"):
-                    msg = self.player.equip(item.name)
-                    self.ui.print(msg)
+        self.ui.print(self.player.pick_up(item, self.ui))
 
     def do_use(self, item_name):
-        """[ Spatial Anomaly Detected ]
-A faint doorway signature is flickering here...
-            Allows player to use an item from their backpack, applying whatever
-            effect the item has.
+        """
+        Allows player to use an item from their backpack, applying whatever
+        effect the item has.
         :param item_name: Name of the item to use.
         :return: None
         """
@@ -334,7 +320,8 @@ A faint doorway signature is flickering here...
             else:
                 healed, flag = item.use(self.player)
                 self.ui.print(f"You use {item.name}. {healed}")
-                self.player.remove_item(item.name)
+                msg = self.player.remove_item(item.name)
+                self.ui.print(msg)
             return
 
         # for unlocking something
@@ -468,8 +455,7 @@ A faint doorway signature is flickering here...
 
             # drop reward
             if monster.reward:
-                room.add_item(monster.reward)
-                self.ui.print(f"The {monster.name} dropped: {monster.reward.name}")
+                self.ui.print(f"The have received: {self.player.pick_up(monster.reward, self.ui)}\n")
 
             # remove monster from room
             room.remove_monster(monster)
@@ -496,7 +482,7 @@ A faint doorway signature is flickering here...
 
         if reward:
             self.ui.print(f"You have received: {reward.name}")
-            self.ui.print(self.player.pick_up(reward))
+            self.ui.print(self.player.pick_up(reward, ui=self.ui))
 
     def retrieve_puzzle_reward(self, reward, room):
         if reward == "unlock_hidden_packet":
