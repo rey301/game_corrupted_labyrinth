@@ -296,6 +296,7 @@ The path leads you back, back to the real world.
         self.rooms["a0"].add_item(fragmented_blade)
 
         # b items
+        # dead pixels
         first_corruption = Misc(
             "first_corruption.log",
             "A corrupted monster's log containing forgotten memories.",
@@ -304,6 +305,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["b3"].add_item(first_corruption)
 
+        # data well
         log_module = Misc(
             "log_module",
             "Allows you to read corrupted logs and system terminals.",
@@ -319,6 +321,7 @@ The path leads you back, back to the real world.
         self.rooms["b1"].add_item(log_module)
         self.rooms["b1"].add_item(data_chip)
 
+        # corrupted arsenal
         backpack_upgrade = Misc(
             "backpack_upgrade",
             "Upgrades your inventory capacity using adaptive memory compression.",
@@ -335,6 +338,7 @@ The path leads you back, back to the real world.
         self.rooms["b2"].add_item(kernels_edge)
 
         # c items
+        # phantom node
         signal_tuner = Consumable(
             "signal_tuner",
             "A device that stabilises your attacks temporarily.",
@@ -343,7 +347,8 @@ The path leads you back, back to the real world.
         )
         self.rooms["c0"].add_item(signal_tuner)
 
-        # -------------------- D-TIER ITEMS --------------------
+        # d tier items
+        # fractured archive
         decryptor = Misc(
             "decrypter",
             "Required to operate the final console in the Obsolete Hub.",
@@ -387,7 +392,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["b1"].puzzle = puzzle_b1
 
-        # -------------------- B2 – CORRUPTED ARSENAL --------------------
+        # corrupted arsenal
         puzzle_b2 = Puzzle(
             name="kernel_repair",
             prompt="Repair the corrupted kernel header: K_RN_L → fill the missing letters.",
@@ -396,7 +401,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["b2"].puzzle = puzzle_b2
 
-        # -------------------- C0 – PHANTOM NODE (SECRET) --------------------
+        # phantom node
         puzzle_c0 = Puzzle(
             name="faded_data",
             prompt="A whisper: 'What remains when memory fades?'",
@@ -405,12 +410,12 @@ The path leads you back, back to the real world.
         )
         self.rooms["c0"].puzzle = puzzle_c0
 
-        # -------------------- D1 – OBSOLETE HUB (FINAL PUZZLE) --------------------
+        # obsolete hub
         puzzle_d1 = Puzzle(
-            name="unlocking_the_door",
+            name="kernel_bypass",
             prompt="Enter the decryption key: XOR(7, 12) = ?",
             solution="11",
-            reward="unlock_exit"  # unlocks passage to System Kernel
+            reward="kernel_key"  # unlocks passage to System Kernel
         )
         self.rooms["d1"].puzzle = puzzle_d1
 
@@ -419,6 +424,7 @@ The path leads you back, back to the real world.
             Assign Monster objects to chosen rooms.
         :return: None
         """
+        # glitch pit
         glitch_beast = Monster(
             name="glitch_beast",
             description="A twitching creature made of broken meshes and flickering polygons.",
@@ -435,6 +441,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["b0"].add_monster(glitch_beast)
 
+        # data well
         data_wraith = Monster(
             name="data_wraith",
             description="A humanoid shape made of streaming binary. Its form shifts unpredictably.",
@@ -445,6 +452,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["b1"].add_monster(data_wraith)
 
+        # corrupted arsenal
         corrupted_drone = Monster(
             name="corrupted_drone",
             description="A floating defense unit, its casing fractured and emitting sparks.",
@@ -455,8 +463,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["b2"].add_monster(corrupted_drone)
 
-        # -------------------- SECRET ROOM MONSTER --------------------
-
+        # phantom node
         echo_shade = Monster(
             name="echo_shade",
             description="A faint silhouette, like a shadow of code that never fully loads.",
@@ -467,8 +474,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["c0"].add_monster(echo_shade)
 
-        # -------------------- BOSS MONSTER --------------------
-
+        # gatekeeper node
         gatekeeper = Monster(
             name="gatekeeper",
             description=(
@@ -481,8 +487,7 @@ The path leads you back, back to the real world.
         )
         self.rooms["c2"].add_monster(gatekeeper)
 
-        # -------------------- ARCHIVE MONSTER --------------------
-
+        # fractured archive
         memory_phantom = Monster(
             name="memory_phantom",
             description="A ghost formed from corrupted logs and broken memories.",
