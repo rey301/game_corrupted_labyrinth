@@ -90,6 +90,11 @@ class Game:
             self.do_take(obj)
             return False
 
+        # drop item
+        elif verb == "drop":
+            self.do_drop(obj)
+            return False
+
         # use item
         elif verb == "use":
             self.do_use(obj)
@@ -291,6 +296,31 @@ class Game:
         item = room.items[item_name]
         self.ui.print(self.player.pick_up(item, self.ui))
 
+    def do_drop(self, item_name):
+        """
+        Select an item to drop from player's storage and is place in the room.
+        :param item_name: The item the player wishes to drop.
+        :return: None
+        """
+        room = self.player.current_room
+
+        if item_name is None:
+            self.ui.print("Drop what?")
+            return
+
+        if item_name not in self.player.storage:
+            self.ui.print("You don't have that item.")
+            return
+
+        # remove from storage
+        item = self.player.storage[item_name]
+        self.ui.print(self.player.remove_item(item_name))
+
+        # add item to room
+        room.add_item(item)
+
+        self.ui.print(f"{item_name} has fallen to the floor.")
+
     def do_use(self, item_name):
         """
         Allows player to use an item from their backpack, applying whatever
@@ -480,21 +510,12 @@ class Game:
         message, reward = room.puzzle.attempt(self.ui)
         self.ui.print(message)
 
+        if room.puzzle.solved:
+            room.remove_puzzle()
+
         if reward:
             self.ui.print(f"You have received: {reward.name}")
             self.ui.print(self.player.pick_up(reward, ui=self.ui))
-
-    def retrieve_puzzle_reward(self, reward, room):
-        if reward == "unlock_hidden_packet":
-            self.ui.print("A corrupted packet materialises on the floor...")
-
-            phantom_key = Misc(
-                "phantom_key",
-                "A strange block of corrupted data. It seems to resonate with unseen doorways.",
-                weight=1,
-                misc_id="unlock_c0"
-            )
-            room.add_item(phantom_key)
 
     def print_help(self):
         """

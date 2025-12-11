@@ -42,6 +42,8 @@ class Player(Character):
         lines= [f"{item.name} added to storage.",
                 f"Storage: {prev_weight} + {item.weight} --> {self.weight}/{self.max_weight} bytes"
                 ]
+        if item.name in self.current_room.items:
+            self.current_room.remove_item(item) # remove item from room
 
         # auto equip for weapons
         if isinstance(item, Weapon):
@@ -78,11 +80,19 @@ class Player(Character):
         return "\n".join(res)
 
     def remove_item(self, item_name):
-        item_weight = self.storage[item_name].weight
-        prev_weight = self.weight
-        self.weight -= item_weight
-        self.storage.pop(item_name)
-        return f"{item_name} deleted. \nCapacity updated: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes"
+        lines = []
+        if item_name in self.storage:
+            if self.equipped_weapon:
+                if item_name == self.equipped_weapon.name:
+                    lines.append(f"You have unequipped {self.equipped_weapon.name}")
+                    self.unequip()
+            item_weight = self.storage[item_name].weight
+            prev_weight = self.weight
+            self.weight -= item_weight
+            self.storage.pop(item_name)
+            lines.append(f"{item_name} removed. \nCapacity updated: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes.\n")
+            return "\n".join(lines)
+        return "Item not found."
 
     def is_alive(self):
         """
@@ -130,6 +140,16 @@ class Player(Character):
         self.attack_power = item.damage
 
         return f"You equip {item.name}. Attack updated to {self.attack_power}."
+
+    def unequip(self):
+        """
+        Unequip a weapon from the player's storage.
+        :return: String message describing what was unequipped.
+        """
+        weapon_name = self.equipped_weapon.name
+        self.equipped_weapon = None
+        self.attack_power = 1
+        return f"You unequip {weapon_name}. Attack updated to {self.attack_power}."
 
     def get_consumables(self):
         consumables = {}

@@ -47,10 +47,18 @@ class Room(Entity):
     def remove_item(self, item):
         """
         Removes an item from the room.
-        :param item: The item that is added to the room
+        :param item: The item that is removed fromthe room
         :return: None
         """
         self.items.pop(item.name)
+
+    def remove_puzzle(self):
+        """
+        Removes puzzle from the room.
+        :param puzzle: The puzzle that is removed from the room.
+        :return: None
+        """
+        self.puzzle = None
 
     def add_monster(self, monster):
         """
