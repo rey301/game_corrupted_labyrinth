@@ -1,4 +1,5 @@
 from player import Player
+import curses
 from parser import Parser
 from world_builder import WorldBuilder
 from text_ui import TextUI
@@ -21,16 +22,25 @@ class Game:
         """
 
         self.player = Player("Lapel","",5, 5, 1)
+        #self.parser = Parser(self.ui)
         self.ui = TextUI()
-        self.parser = Parser(self.ui)
         self.world = WorldBuilder()
         self.game_over = False
 
-
+    def run(self):
+        """
+        Entry point for the game.
+        Handles UI lifecycle safely.
+        """
+        try:
+            self.ui.start()
+            self.play()
+        finally:
+            self.ui.stop()
 
     def play(self):
         """
-            The main play loop that displays welcome message, reads player input
+            The main play loop that generates the world, displays welcome message, reads player input
             in a loop, processes commands, and terminates when game_over becomes
             True.
         :return: None
@@ -43,9 +53,50 @@ class Game:
 
         # main game loop
         while not self.game_over and self.player.is_alive():
-            command = self.parser.get_command()
-            self.game_over = self.process(command)
+            key = self.ui.get_key()
+            self.handle_key(key)
         print("Thank you for playing!")
+
+    def handle_key(self, key):
+        if key == curses.KEY_UP:
+            self.move("north")
+        elif key == curses.KEY_DOWN:
+            self.move("south")
+        elif key == curses.KEY_LEFT:
+            self.move("west")
+        elif key == curses.KEY_RIGHT:
+            self.move("east")
+
+        elif key == 's':
+            self.scan_room()
+        elif key == 'u':
+            self.use_item()
+
+        elif key == 'e':
+            self.equip_weapon()
+
+        elif key == 'f':
+            self.fight()
+
+        elif key == 'p':
+            self.solve_puzzle()
+
+        elif key == 'l':
+            self.look()
+
+        elif key == 'i':
+            self.ui.print(self.player.show_storage())
+
+        elif key == 'c':
+            self.ui.print(self.player.show_stats())
+
+        elif key == 'h':
+            self.print_help()
+
+        elif key == 'q':
+            self.game_over = True
+
+
 
 
     def process(self, command):
@@ -131,7 +182,7 @@ class Game:
             self.ui.print("That command is not implemented.")
             return False
 
-    def do_go(self, direction):
+    def move(self, direction):
         """
         Move player into room given the direction, and if exit doesn't exist;
         error message is displayed.
@@ -139,15 +190,11 @@ class Game:
         """
         room = self.player.current_room
 
-        if direction is None:
-            self.ui.print("Go where?")
-            return
-
-        if direction not in self.player.current_room.exits:
+        if direction not in room.exits:
             self.ui.print("You can't go that way!")
             return
 
-        next_room = self.player.current_room.get_exit(direction)
+        next_room = room.get_exit(direction)
 
         # checking if a monster blocks an exit
         for m in room.monsters.values():
@@ -185,6 +232,7 @@ class Game:
 
         if next_room is not None:
             self.player.current_room = next_room
+            self.ui.clear()
             self.ui.print(self.player.current_room.describe())
             return
 
@@ -565,7 +613,7 @@ class Game:
 def main():
     """Main entry point for the game."""
     game = Game()
-    game.play()
+    game.run()
 
 if __name__ == "__main__":
     main()

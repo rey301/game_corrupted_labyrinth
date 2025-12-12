@@ -29,3 +29,6 @@ class Parser:
             # Just ignore any other words
         return Command(verb, obj)
 
+    def get_key(self):
+        pass
+
