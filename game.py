@@ -49,7 +49,7 @@ class Game:
         start_room = self.world.build()
         self.player.set_current_room(start_room)
         self.ui.print("Welcome to the Labyrinth. \nType HELP to see available commands.\n")
-        self.ui.print(self.player.current_room.describe())
+        self.ui.draw_room(self.player.current_room.describe())
 
         # main game loop
         while not self.game_over and self.player.is_alive():
@@ -67,10 +67,11 @@ class Game:
         elif key == curses.KEY_RIGHT:
             self.move("east")
 
-        elif key == 's':
+        elif key == "s":
             self.scan_room()
-        elif key == 'u':
-            self.use_item()
+
+        elif key == 'e':
+            self.take_item()
 
         elif key == 'e':
             self.equip_weapon()
@@ -199,6 +200,7 @@ class Game:
         # checking if a monster blocks an exit
         for m in room.monsters.values():
             if m.blocks_exit == direction:
+                self.ui.clear_logs()
                 self.ui.print(f"{m.name} has blocked you!")
                 self.ui.print("Defeating it is the only way in...")
                 self.do_fight(m.name)
@@ -233,101 +235,61 @@ class Game:
         if next_room is not None:
             self.player.current_room = next_room
             self.ui.clear()
-            self.ui.print(self.player.current_room.describe())
+            self.ui.draw_room(self.player.current_room.describe())
             return
 
 
-    def do_scan(self, obj):
+    def scan_room(self):
         """
         Inspect an object which could be an item, a monster, a puzzle, or the whole room.
         :param obj: This is the object that the user defines (e.g. item name)
         :return: None
         """
-        room = self.player.current_room
-        if obj is None:
-            self.ui.print("Scan what?")
-            return
-
-        # inspecting an item in the room
-        if obj in room.items:
-            item = room.items[obj]
-            lines = [item.description]
-
-            if isinstance(item, Weapon):
-                lines.append(f" | ATTACK POWER {item.damage}")
-
-            if isinstance(item, Consumable):
-                lines.append(f" | HEALING {item.heal}")
-
-            if isinstance(item, Misc):
-                lines.append(f" | DATA SIGNATURE: {item.misc_id}")
-            self.ui.print("".join(lines))
-
-            return
-
-        # inspecting item in storage
-        if obj in self.player.storage:
-            item = self.player.storage[obj]
-            self.ui.print(f"{item.description}")
-            if isinstance(item, Weapon):
-                self.ui.print(f"ATTACK POWER {item.damage}")
-            return
-
-        # inspecting a monster
-        if obj in room.monsters:
-            monster = room.monsters[obj]
-            self.ui.print(f"{monster.description}")
-            self.ui.print(f"ATTACK POWER {monster.attack_power}")
-            return
+        self.ui.clear_logs()
 
         # inspect the room for everything
-        if obj == "room":
-            room = self.player.current_room
+        room = self.player.current_room
 
-            # If the room contains nothing of interest
-            if not room.items and not room.monsters and not room.puzzle:
-                self.ui.print("The room reveals nothing unusual.")
-                return
-
-            lines = ["======= SCANNING =======\n"]
-
-            # items
-            if room.items:
-                lines.append("[ Items Detected ]")
-                for item_name, item in room.items.items():
-                    lines.append(f" - {item_name}")
-                lines.append("")  # blank line
-            else:
-                lines.append("[ No Items Detected ]\n")
-
-            # monsters
-            if room.monsters:
-                lines.append("[ Hostile Entities ]")
-                for monster in room.monsters:
-                    lines.append(f" - {room.monsters[monster].name}")
-                lines.append("")
-            else:
-                lines.append("[ No Hostiles Present ]\n")
-
-            # puzzle
-            if room.puzzle:
-                puzzle = room.puzzle
-                lines.append("[ Corrupted Engram Detected ]")
-                lines.append(f" - {puzzle.name}\n")
-
-            # check if user has the phantom key
-            if "phantom_key" in self.player.storage:
-                lines.append("[ Spatial Anomaly Detected ]")
-                lines.append("A faint doorway signature is flickering here...\n")
-
-            lines.append("=== END OF ROOM SCAN ===")
-
-            self.ui.print("\n".join(lines))
+        # If the room contains nothing of interest
+        if not room.items and not room.monsters and not room.puzzle:
+            self.ui.print("The room reveals nothing unusual.")
             return
 
-        self.ui.print("Invalid string name, try again.")
+        lines = ["Scanning...\n"]
 
-    def do_take(self, item_name):
+        # items
+        if room.items:
+            lines.append("[ Items Detected ]")
+            for item_name, item in room.items.items():
+                lines.append(f" - {item_name}")
+            lines.append("")  # blank line
+        else:
+            lines.append("[ No Items Detected ]\n")
+
+            # monsters
+        if room.monsters:
+            lines.append("[ Hostile Entities ]")
+            for monster in room.monsters:
+                lines.append(f" - {room.monsters[monster].name}")
+            lines.append("")
+        else:
+            lines.append("[ No Hostiles Present ]\n")
+
+        # puzzle
+        if room.puzzle:
+            puzzle = room.puzzle
+            lines.append("[ Corrupted Engram Detected ]")
+            lines.append(f" - {puzzle.name}\n")
+
+        # check if user has the phantom key
+        if "phantom_key" in self.player.storage:
+            lines.append("[ Spatial Anomaly Detected ]")
+            lines.append("A faint doorway signature is flickering here...\n")
+
+        self.ui.print("\n".join(lines))
+        return
+
+    def take_item(self):
         """
         Attempt to pick up an item from the current room and put it in the
         player's backpack.
@@ -335,16 +297,28 @@ class Game:
         :return: None
         """
         room = self.player.current_room
-        if item_name is None:
-            self.ui.print("Take what?")
+        self.ui.clear_logs()
+        item_count = 1
+        room_items = {}
+
+        if room.items is None:
+            self.ui.print("There are no items to pick up.")
             return
-        if item_name not in room.items:
-            self.ui.print("That item is not here.")
+        else:
+            self.ui.print("Pick an item:\n")
+            for item_name in room.items:
+                self.ui.print(f"[{str(item_count)}] {item_name}")
+                room_items[str(item_count)] = room.items[item_name]
+                self.ui.print(room_items)
+                item_count += 1
+
+            key = self.ui.get_key()
+            chosen_item = room_items[key]
+            self.player.pick_up(room.items[chosen_item.name], self.ui)
             return
 
-        item = room.items[item_name]
-        msg, flag = self.player.pick_up(item, self.ui)
-        self.ui.print(msg)
+
+
 
     def do_drop(self, item_name):
         """
@@ -457,9 +431,9 @@ class Game:
             self.ui.print("  2. Heal")
             self.ui.print("  3. Retreat")
 
-            action = self.ui.input("> ").strip()
-
-            if action == "1" or action.lower() == "attack":
+            action = self.ui.get_key()
+            self.ui.clear_logs()
+            if action == "1":
                 # player attacks first
                 m_hp = monster.hp
                 p_damage = self.player.attack(monster)

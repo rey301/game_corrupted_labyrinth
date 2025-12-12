@@ -20,79 +20,77 @@ class WorldBuilder:
         a0 = Room(
             "boot_sector",
             """
-+----------------------------- BOOT SECTOR ------------------------------+
-    System booting...
+            
+                                    | BOOT SECTOR |
 
-        [ Initialising user shell ]
-        [ Loading visual layer    ]
-        [ Syncing input streams   ]
-
-    A plain-looking room forms around you, 
-    like the world is still loading.
-    Bits of code fall from the ceiling. 
-    Something small glints on the floor.
+                            System booting...
+                            [ Initialising user shell ]
+                            [ Loading visual layer    ]
+                            [ Syncing input streams   ]
+    
+        A plain-looking room forms around you, like the world is still loading.
+        Bits of code fall from the ceiling. Something small glints on the floor.
 
     Exits: NORTH -> Lost Cache, SOUTH -> Glitch Pit
-+------------------------------------------------------------------------+
             """
         )
 
         a1 = Room(
             "lost_cache",
             """
-+------------------------- LOST CACHE -----------------------------------+
-    Piles of old memory blocks are stacked everywhere. 
-    Some flicker, some don't load at all.
+            
+                                    | LOST CACHE |
 
-        < Rebuilding item data ... 12% >
-        < Warning: corrupted fragment >
-
-    A small terminal hums quietly. 
-    Something useful might be buried here.
+                            < Rebuilding item data ... 12% >
+                            < Warning: corrupted fragment >
+        
+        Piles of old memory blocks are stacked everywhere. Some flicker, some 
+        don't load at all. A small terminal hums quietly. 
+        Something useful might be buried here.
 
     Exits: SOUTH -> Boot Sector
-+------------------------------------------------------------------------+
             """
         )
 
         b0 = Room(
             "glitch_pit",
             """
-+-------------------------- GLITCH PIT ----------------------------------+
-    The ground seems unreliable here.  
-    Tiles appear late, and some just blink in and out of existence.
-
-        !! Terrain error: mesh failed to load !!
-        A twitching, half-rendered monster notices you.
-
-    This area feels dangerous.
+            
+                                    | GLITCH PIT |
+                                    
+                            ..+....>:>:..///...;;....;_///..<
+                            ||.,,,;....;_///..<---------------
+                            
+                        !! Terrain error: mesh failed to load !!
+                     A twitching, half-rendered monster notices you.
+                          
+        The ground seems unreliable here. Tiles appear late, and some just 
+        blink in and out of existence. This area feels dangerous.
 
     Exits: NORTH -> Boot Sector, EAST -> Data Well, WEST -> Dead Pixels
-+------------------------------------------------------------------------+
             """
         )
 
         b1 = Room(
             "data_well",
             """
-+--------------------------- DATA WELL ----------------------------------+
-    A column of falling numbers spills from the ceiling like a waterfall.
-    Binary streams flow along the floor.
-
-        010101... 011001... 010110...
-        A terminal nearby flashes: "LOG AVAILABLE"
-
-    A puzzle seems to be woven into the data flow itself.
+                          | DATA WELL |
+        A column of falling numbers spills from the ceiling like a waterfall.
+        Binary streams flow along the floor.
+    
+            010101... 011001... 010110...
+            A terminal nearby flashes: "LOG AVAILABLE"
+    
+        A puzzle seems to be woven into the data flow itself.
 
     Exits: WEST -> Glitch Pit, SOUTH -> Corrupted Arsenal
-+------------------------------------------------------------------------+
             """
         )
 
         b2 = Room(
             "corrupted_arsenal",
             """
-+------------------------- CORRUPTED ARSENAL ----------------------------+
+                          | CORRUPTED ARSENAL |
     Rusty-looking digital weapon models float in the air, 
     but many fail to render correctly.
 
