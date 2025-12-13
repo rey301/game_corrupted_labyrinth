@@ -59,6 +59,7 @@ class Game:
 
 
     def handle_key(self, key):
+        # movement
         if key == curses.KEY_UP:
             self.move("north")
         elif key == curses.KEY_DOWN:
@@ -68,14 +69,16 @@ class Game:
         elif key == curses.KEY_RIGHT:
             self.move("east")
 
+        # scanning room for entities
         elif key == "s":
             self.scan_room()
 
+        # list items in room and allow user to select an item to take
         elif key == 'e':
             self.take_item()
 
-        elif key == 'e':
-            self.equip_weapon()
+        elif key == 'r':
+            self.heal_player()
 
         elif key == 'f':
             self.fight()
@@ -100,90 +103,6 @@ class Game:
 
         self.ui.draw_hud(self.player)
 
-
-    def process(self, command):
-        """
-            Handles user commands and invokes an action method from
-            the command given (e.g. item interaction, problem solving).
-        :param command: Parse command object containing the verb and obj (optional)
-        :return: True if game should end (quit or player dies), otherwise False if game continues
-        """
-
-        verb = command.verb
-        obj = command.obj
-
-        # unknown command
-        if verb is None:
-            self.ui.print("I don't understand that command.")
-            return False
-
-        # movement
-        if verb == "go":
-            self.do_go(obj)
-            return False
-
-        elif verb == "look":
-            self.ui.print(self.player.current_room.describe())
-            return False
-
-        elif verb == "stats":
-            self.ui.print(self.player.show_stats())
-            return False
-
-        # looking for items in the room
-        elif verb == "scan":
-            self.do_scan(obj)
-            return False
-
-        # show storage
-        elif verb == "storage":
-            self.ui.print(self.player.show_storage())
-            return False
-
-        # take item
-        elif verb == "take":
-            self.do_take(obj)
-            return False
-
-        # drop item
-        elif verb == "drop":
-            self.do_drop(obj)
-            return False
-
-        # use item
-        elif verb == "use":
-            self.do_use(obj)
-            return False
-
-        # equip a weapon
-        elif verb == "equip":
-            self.do_equip(obj)
-            return False
-
-        # fight monster
-        elif verb == "fight":
-            self.do_fight(obj)
-            return False
-
-        # solve puzzle
-        elif verb == "solve":
-            self.do_solve()
-            return False
-
-        # help menu
-        elif verb == "help":
-            self.print_help()
-            return False
-
-        # quit game
-        elif verb == "quit":
-            return True  # This ends the game loop
-
-        # otherwise
-        else:
-            self.ui.print("That command is not implemented.")
-            return False
-
     def move(self, direction):
         """
         Move player into room given the direction, and if exit doesn't exist;
@@ -191,6 +110,7 @@ class Game:
         :param direction: Direction the player wishes to move (e.g. north, east)
         """
         room = self.player.current_room
+        self.ui.clear_logs()
 
         if direction not in room.exits:
             self.ui.print("You can't go that way!")
@@ -220,17 +140,16 @@ class Game:
                     break
 
             if key_item:
-                # ask user if they want to unlock it
-                answer = self.ui.input(f"Use {key_item.name} to unlock? (yes/no)\n> ").strip().lower()
+                self.ui.clear_logs()
+                self.ui.print(f"Use {key_item.name} to unlock?.\n")
+                self.ui.print("\n[1] Yes\n[2] No")
 
-                # unlock the door
-                if answer in ("yes", "y"):
+                key = self.ui.get_key()
+                if key == "1":
                     self.do_use(key_item.name) # use the item
-                    self.ui.print(f"You enter the {next_room.name}")
                     self.player.current_room = next_room
-                    self.ui.print(self.player.current_room.describe())
+                    self.ui.draw_room(self.player.current_room.describe())
                     return
-
             return
 
         if next_room is not None:
@@ -314,10 +233,26 @@ class Game:
 
             key = self.ui.get_key()
             chosen_item = selections[key]
-            msg, flag = self.player.pick_up(room.items[chosen_item.name], self.ui)
+            msg, flag = self.player.pick_up(chosen_item, self.ui)
             self.ui.clear_logs()
             self.ui.print(msg)
             return
+
+    def heal_player(self):
+        self.ui.clear_logs()
+        if self.player.equipped_med:
+            med = self.player.equipped_med
+            if self.player.hp == self.player.max_hp:
+                self.ui.print("You are at max hp!")
+            else:
+                msg, flag = med.use(self.player)
+                self.ui.print(f"You use {med.name}. {msg}")
+                if flag:
+                    remove_msg = self.player.remove_item(med.name)
+                    self.ui.print(remove_msg)
+        else:
+            self.ui.print("You don't have any meds equipped!")
+        return
 
     def do_drop(self, item_name):
         """
@@ -444,26 +379,13 @@ class Game:
                     p_weapon = self.player.equipped_weapon.name
                     self.ui.print(f"You strike the {monster.name} with {p_weapon} for {p_damage}")
             elif action == "2" or action.lower() == "heal":
-                consumables = self.player.get_consumables()
-
-                if not consumables:
-                    self.ui.print("You have no healing items!")
+                if self.player.equipped_med is None:
+                    self.ui.print("You have no healing item equipped!")
                     continue
-
-                self.ui.print("Choose a healing item:")
-                for name, item in consumables.items():
-                    self.ui.print(f" - {name} (+{item.heal} HP")
-
-                heal_choice = self.ui.input("> ").strip()
-
-                if heal_choice in consumables:
-                    item = consumables[heal_choice]
-                    message = item.use(self.player)
-                    self.ui.print(message)
-                    self.player.remove_item(item.name)
                 else:
-                    self.ui.print("Invalid healing item.")
-                    continue
+                    self.ui.print(self.heal_player())
+                    self.ui.draw_hud(self.player)
+
             elif action == "3" or action.lower() == "retreat":
                 escape_chance = 0.6  # 60% success rate
 

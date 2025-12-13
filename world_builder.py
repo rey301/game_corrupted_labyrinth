@@ -290,7 +290,9 @@ The path leads you back, back to the real world.
             "health_module",
             "A compact utility that repairs corrupted user data. Activating it restores a portion of your health.",
             weight=7,
-            heal=200
+            heal=200,
+            uses=3,
+            max_uses=3
         )
         self.rooms["a0"].add_item(health_module)
         self.rooms["a0"].add_item(fragmented_blade)
@@ -343,7 +345,9 @@ The path leads you back, back to the real world.
             "signal_tuner",
             "A device that stabilises your attacks temporarily.",
             weight="16",
-            heal=0
+            heal=0,
+            uses=3,
+            max_uses=3
         )
         self.rooms["c0"].add_item(signal_tuner)
 
@@ -406,7 +410,9 @@ The path leads you back, back to the real world.
                 name="health_container",
                 description="A large utility that immensely repairs corrupted user data. Activating it restores a large portion of your health.",
                 heal=500,
-                weight=8
+                weight=8,
+                uses=4,
+                max_uses=4
             )  # unlock a large health_container
         )
         self.rooms["b2"].puzzle = puzzle_b2

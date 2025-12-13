@@ -125,7 +125,11 @@ class TextUI:
         hp = f"HP: {player.hp}/{player.max_hp}"
         atk = f"ATK: {player.attack_power}"
         wpn = f"WPN: {player.equipped_weapon.name if player.equipped_weapon else 'Fists'}"
-        med = f"MED: {player.meds}"
+
+        if player.equipped_med is None:
+            med = f"MED: None"
+        else:
+            med = f"MED: {player.equipped_med.name} [{player.equipped_med.uses}/{player.equipped_med.max_uses}]"
         cap = f"CAP: {player.weight}/{player.max_weight}"
 
         hud_text = f"{hp}   {med}   {cap}   {atk}   {wpn}"

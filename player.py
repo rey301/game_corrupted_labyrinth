@@ -13,7 +13,7 @@ class Player(Character):
         self.current_room = None
         self.storage = {} # list of class Item
         self.weight = 0
-        self.meds = 0
+        self.equipped_med = None
         self.max_weight = 64
         self.scannable = False # when true the player can read logs
         self.equipped_weapon = None # what weapon the player is currently holding
@@ -58,11 +58,20 @@ class Player(Character):
 
                 key = ui.get_key()
                 if key == "1":
-                    msg = self.equip(item.name)
+                    msg = self.equip(item)
                     ui.print(msg)
 
         if isinstance(item, Consumable):
-            self.meds += 1
+            if self.equipped_med is None:
+                ui.clear_logs()
+                ui.print(f"\nYou don't have any meds equipped.\n")
+                ui.print("Equip?\n[1] Yes\n[2] No")
+
+                key = ui.get_key()
+                if key == "1":
+                    msg = self.equip(item)
+                    ui.print(msg)
+
         return "\n".join(lines), True
 
     def use(self, item):
@@ -125,27 +134,29 @@ class Player(Character):
         ]
         return "\n".join(lines)
 
-    def equip(self, weapon_name):
+    def equip(self, item):
         """
-        Equip a weapon from the player's storage.
-        :param weapon_name: String name of the weapon to equip.
+        Equip a weapon or meds from the player's storage.
+        :param item: String name of the weapon to equip.
         :return: String message describing what was equiped.
         """
         # check the storage if weapon is inside
-        if weapon_name not in self.storage:
-            return f"You don't have {weapon_name}"
+        if item.name not in self.storage:
+            return f"You don't have {item.name}"
 
-        item = self.storage[weapon_name]
+        stored_item = self.storage[item.name]
 
-        # check if it's a weapon
-        if not isinstance(item, Weapon):
-            return f"You can't equip {weapon_name}"
+        if isinstance(stored_item, Weapon):
+            # equip the weapon
+            self.equipped_weapon = stored_item
+            self.attack_power = stored_item.damage
 
-        # equip the weapon
-        self.equipped_weapon = item
-        self.attack_power = item.damage
-
-        return f"You equip {item.name}. Attack updated to {self.attack_power}."
+            return f"You equip {item.name}. Attack updated to {self.attack_power}."
+        elif isinstance(stored_item, Consumable):
+            self.equipped_med = stored_item
+            return f"You equip {stored_item.name}. Uses updated to {stored_item.uses}"
+        else:
+            return f"You can't equip {stored_item.name}"
 
     def unequip(self):
         """

@@ -1,9 +1,11 @@
 from item import Item
 
 class Consumable(Item):
-    def __init__(self, name, description, weight, heal):
+    def __init__(self, name, description, weight, heal, uses, max_uses):
         super().__init__(name, description, weight)
         self.heal = heal
+        self.uses = uses
+        self.max_uses = max_uses
 
     def use(self, player, room=None, world=None):
         """
@@ -15,10 +17,17 @@ class Consumable(Item):
         """
         prev_hp = player.hp
         player.hp += self.heal
+        self.uses -= 1
         # if overheal just set the player's health to the max hp
         if player.hp > player.max_hp:
             player.hp = player.max_hp
-            return f"HP recovered: {prev_hp}+{self.heal} (Overhealed) --> {player.hp}/{player.max_hp}", "remove"
+            if self.uses < 1:
+                return f"HP recovered: {prev_hp}+{self.heal} (Overhealed) --> {player.hp}/{player.max_hp}", "remove"
+            else:
+                return f"HP recovered: {prev_hp}+{self.heal} (Overhealed) --> {player.hp}/{player.max_hp}", "remove"
         else:
-            return f"HP recovered: {prev_hp}+{self.heal} --> {player.hp}/{player.max_hp}", "remove"
+            if self.uses < 1:
+                return f"HP recovered: {prev_hp}+{self.heal} --> {player.hp}/{player.max_hp}", "remove"
+            else:
+                return f"HP recovered: {prev_hp}+{self.heal} --> {player.hp}/{player.max_hp}", "remove"
 
