@@ -50,12 +50,13 @@ class Game:
         self.player.set_current_room(start_room)
         self.ui.print("Welcome to the Labyrinth. \nType HELP to see available commands.\n")
         self.ui.draw_room(self.player.current_room.describe())
+        self.ui.draw_hud(self.player)
 
         # main game loop
         while not self.game_over and self.player.is_alive():
             key = self.ui.get_key()
             self.handle_key(key)
-        print("Thank you for playing!")
+
 
     def handle_key(self, key):
         if key == curses.KEY_UP:
@@ -97,7 +98,7 @@ class Game:
         elif key == 'q':
             self.game_over = True
 
-
+        self.ui.draw_hud(self.player)
 
 
     def process(self, command):
@@ -299,26 +300,24 @@ class Game:
         room = self.player.current_room
         self.ui.clear_logs()
         item_count = 1
-        room_items = {}
+        selections = {}
 
-        if room.items is None:
+        if not bool(room.items):
             self.ui.print("There are no items to pick up.")
             return
         else:
             self.ui.print("Pick an item:\n")
             for item_name in room.items:
                 self.ui.print(f"[{str(item_count)}] {item_name}")
-                room_items[str(item_count)] = room.items[item_name]
-                self.ui.print(room_items)
+                selections[str(item_count)] = room.items[item_name]
                 item_count += 1
 
             key = self.ui.get_key()
-            chosen_item = room_items[key]
-            self.player.pick_up(room.items[chosen_item.name], self.ui)
+            chosen_item = selections[key]
+            msg, flag = self.player.pick_up(room.items[chosen_item.name], self.ui)
+            self.ui.clear_logs()
+            self.ui.print(msg)
             return
-
-
-
 
     def do_drop(self, item_name):
         """

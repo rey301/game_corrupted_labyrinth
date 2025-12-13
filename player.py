@@ -13,6 +13,7 @@ class Player(Character):
         self.current_room = None
         self.storage = {} # list of class Item
         self.weight = 0
+        self.meds = 0
         self.max_weight = 64
         self.scannable = False # when true the player can read logs
         self.equipped_weapon = None # what weapon the player is currently holding
@@ -51,12 +52,17 @@ class Player(Character):
             new = item.damage
 
             if new > current:
-                ui.print(f"\n{item.name} is stronger than your current attack power.")
-                answer = ui.input("Equip? (yes/no)\n> ").strip().lower()
+                ui.clear_logs()
+                ui.print(f"\n{item.name} is stronger than your current attack power.\n")
+                ui.print("Equip?\n[1] Yes\n[2] No")
 
-                if answer in ("yes", "y"):
+                key = ui.get_key()
+                if key == "1":
                     msg = self.equip(item.name)
                     ui.print(msg)
+
+        if isinstance(item, Consumable):
+            self.meds += 1
         return "\n".join(lines), True
 
     def use(self, item):

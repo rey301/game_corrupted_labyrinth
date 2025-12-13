@@ -58,8 +58,8 @@ class WorldBuilder:
             
                                     | GLITCH PIT |
                                     
-                            ..+....>:>:..///...;;....;_///..<
-                            ||.,,,;....;_///..<---------------
+                          ..+....>:>:..///...;;....;_///..<
+                          ||.,,,;....;_///..<---------------
                             
                         !! Terrain error: mesh failed to load !!
                      A twitching, half-rendered monster notices you.
@@ -74,7 +74,7 @@ class WorldBuilder:
         b1 = Room(
             "data_well",
             """
-                          | DATA WELL |
+                                    | DATA WELL |
         A column of falling numbers spills from the ceiling like a waterfall.
         Binary streams flow along the floor.
     
