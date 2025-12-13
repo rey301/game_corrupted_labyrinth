@@ -21,7 +21,7 @@ class Game:
         Initialises the game.
         """
 
-        self.player = Player("Lapel","",5, 5, 1)
+        self.player = Player("Lapel","",500, 500, 50)
         #self.parser = Parser(self.ui)
         self.ui = TextUI()
         self.world = WorldBuilder()

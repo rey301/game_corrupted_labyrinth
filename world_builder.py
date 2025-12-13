@@ -283,14 +283,14 @@ The path leads you back, back to the real world.
         fragmented_blade = Weapon(
             "fragmented_blade",
             "A weak blade formed from unstable data shards.",
-            damage=3,
+            damage=150,
             weight=20
         )
         health_module = Consumable(
             "health_module",
             "A compact utility that repairs corrupted user data. Activating it restores a portion of your health.",
             weight=7,
-            heal=2
+            heal=200
         )
         self.rooms["a0"].add_item(health_module)
         self.rooms["a0"].add_item(fragmented_blade)
@@ -331,7 +331,7 @@ The path leads you back, back to the real world.
         kernels_edge = Weapon(
             "kernels_edge",
             "A powerful blade formed from unstable data.",
-            damage=7,
+            damage=300,
             weight=64
         )
         self.rooms["b2"].add_item(backpack_upgrade)
@@ -391,7 +391,7 @@ The path leads you back, back to the real world.
             reward=Weapon(
                 name="debugging_lance",
                 description="A long digital spear forged from stabilised error logs. It hums with corrective energy.",
-                weight=32,
+                weight=200,
                 damage=5
             )  # reward is a weapon that defeats data_wraith
         )
@@ -405,7 +405,7 @@ The path leads you back, back to the real world.
             reward=Consumable(
                 name="health_container",
                 description="A large utility that immensely repairs corrupted user data. Activating it restores a large portion of your health.",
-                heal=5,
+                heal=500,
                 weight=8
             )  # unlock a large health_container
         )
@@ -438,9 +438,9 @@ The path leads you back, back to the real world.
         glitch_beast = Monster(
             name="glitch_beast",
             description="A twitching creature made of broken meshes and flickering polygons.",
-            hp=6,
-            max_hp=6,
-            attack_power=2,
+            hp=450,
+            max_hp=450,
+            attack_power=45,
             reward=Misc(
                 "data_key",
                 "A glowing access shard designed to unlock the Data Well gateway.",
@@ -455,9 +455,9 @@ The path leads you back, back to the real world.
         data_wraith = Monster(
             name="data_wraith",
             description="A humanoid shape made of streaming binary. Its form shifts unpredictably.",
-            hp=10,
-            max_hp=10,
-            attack_power=3,
+            hp=650,
+            max_hp=650,
+            attack_power=86,
             reward=Misc(
                 "integrity_recompiler",
                 description="An ancient subsystem tool once used by the system administrators. It rewrites part of your core, patching deep corruption and increases your maximum health.",
@@ -472,9 +472,9 @@ The path leads you back, back to the real world.
         corrupted_drone = Monster(
             name="corrupted_drone",
             description="A floating defense unit, its casing fractured and emitting sparks.",
-            hp=14,
-            max_hp=14,
-            attack_power=4,
+            hp=150,
+            max_hp=150,
+            attack_power=30,
             reward=None
         )
         self.rooms["b2"].add_monster(corrupted_drone)
@@ -483,9 +483,9 @@ The path leads you back, back to the real world.
         echo_shade = Monster(
             name="echo_shade",
             description="A faint silhouette, like a shadow of code that never fully loads.",
-            hp=12,
-            max_hp=12,
-            attack_power=4,
+            hp=800,
+            max_hp=800,
+            attack_power=200,
             reward=None
         )
         self.rooms["c0"].add_monster(echo_shade)
@@ -496,9 +496,9 @@ The path leads you back, back to the real world.
             description=(
                 "A massive corrupted guardian flickering between frames. It guards the kernel path."
             ),
-            hp=25,
-            max_hp=25,
-            attack_power=6,
+            hp=1500,
+            max_hp=1500,
+            attack_power=500,
             reward=Misc("kernel_key", "A critical system key dropped by the Gatekeeper.", weight="16", misc_id="k3rn3l")
         )
         self.rooms["c2"].add_monster(gatekeeper)
@@ -507,9 +507,9 @@ The path leads you back, back to the real world.
         memory_phantom = Monster(
             name="memory_phantom",
             description="A ghost formed from corrupted logs and broken memories.",
-            hp=15,
-            max_hp=15,
-            attack_power=5,
+            hp=700,
+            max_hp=700,
+            attack_power=135,
             reward=None
         )
         self.rooms["d0"].add_monster(memory_phantom)
