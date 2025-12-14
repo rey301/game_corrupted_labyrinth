@@ -80,8 +80,12 @@ class Game:
         elif key == 'r':
             self.heal_player()
 
-        elif key == 'f':
-            self.fight()
+        elif key == 'q':
+            self.ui.clear_logs()
+            self.ui.print(self.player.show_storage())
+
+        elif key == 'd':
+            self.drop_items()
 
         elif key == 'p':
             self.solve_puzzle()
@@ -97,9 +101,6 @@ class Game:
 
         elif key == 'h':
             self.print_help()
-
-        elif key == 'q':
-            self.game_over = True
 
         self.ui.draw_hud(self.player)
 
@@ -141,7 +142,7 @@ class Game:
 
             if key_item:
                 self.ui.clear_logs()
-                self.ui.print(f"Use {key_item.name} to unlock?.\n")
+                self.ui.print(f"Use {key_item.name} to unlock?")
                 self.ui.print("\n[1] Yes\n[2] No")
 
                 key = self.ui.get_key()
@@ -150,6 +151,8 @@ class Game:
                     self.player.current_room = next_room
                     self.ui.draw_room(self.player.current_room.describe())
                     return
+                else:
+                    self.ui.clear_logs()
             return
 
         if next_room is not None:
@@ -225,17 +228,18 @@ class Game:
             self.ui.print("There are no items to pick up.")
             return
         else:
-            self.ui.print("Pick an item:\n")
+            self.ui.print("Pick an item:")
             for item_name in room.items:
                 self.ui.print(f"[{str(item_count)}] {item_name}")
                 selections[str(item_count)] = room.items[item_name]
                 item_count += 1
 
             key = self.ui.get_key()
-            chosen_item = selections[key]
-            msg, flag = self.player.pick_up(chosen_item, self.ui)
-            self.ui.clear_logs()
-            self.ui.print(msg)
+            if key in selections:
+                chosen_item = selections[key]
+                msg, flag = self.player.pick_up(chosen_item, self.ui)
+                self.ui.clear_logs()
+                self.ui.print(msg)
             return
 
     def heal_player(self):
@@ -252,6 +256,31 @@ class Game:
                     self.ui.print(remove_msg)
         else:
             self.ui.print("You don't have any meds equipped!")
+        return
+
+    def drop_items(self):
+        self.ui.clear_logs()
+        room = self.player.current_room
+        item_count = 1
+        selections = {}
+
+        if not bool(self.player.storage):
+            self.ui.print("Your storage is empty.")
+        else:
+            self.ui.print("Pick an item to drop:")
+            for item_name in self.player.storage:
+                self.ui.print(f"[{str(item_count)}] {item_name}")
+                selections[str(item_count)] = self.player.storage[item_name]
+                item_count += 1
+
+            key = self.ui.get_key()
+            if key in selections:
+                chosen_item = selections[key]
+                msg = self.player.remove_item(chosen_item)
+                self.ui.clear_logs()
+                self.ui.print(msg)
+                room.add_item(chosen_item)
+                self.ui.print(f"{chosen_item.name} has fallen to the floor.")
         return
 
     def do_drop(self, item_name):
@@ -378,7 +407,7 @@ class Game:
                 else:
                     p_weapon = self.player.equipped_weapon.name
                     self.ui.print(f"You strike the {monster.name} with {p_weapon} for {p_damage}")
-            elif action == "2" or action.lower() == "heal":
+            elif action == "2":
                 if self.player.equipped_med is None:
                     self.ui.print("You have no healing item equipped!")
                     continue
@@ -386,7 +415,7 @@ class Game:
                     self.ui.print(self.heal_player())
                     self.ui.draw_hud(self.player)
 
-            elif action == "3" or action.lower() == "retreat":
+            elif action == "3":
                 escape_chance = 0.6  # 60% success rate
 
                 from random import random

@@ -71,7 +71,7 @@ class Misc(Item):
         if self.misc_id == "k3rn3l":
             if room.name == "Obsolete Hub":
                 room.unlock_exit("north")
-                return "The kernel key glows - heading towards door towards the system kernel, unlocking the final pathway.", "remove"
+                return "The kernel key glows - heading towards door towards the System Kernel, unlocking the final pathway.", "remove"
             return "The kernel key hums softly, but nothing happens here.", "keep"
 
         # lore items
