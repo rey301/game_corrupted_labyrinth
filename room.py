@@ -22,6 +22,7 @@ class Room(Entity):
         self.monsters = {} # monsters in the current room
         self.puzzle = puzzle
         self.locked_exits = {} # exits that are locked from the player
+        self.kernel_unlock = False
 
     def set_exit(self, dir, room):
         """

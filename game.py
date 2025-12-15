@@ -139,13 +139,19 @@ class Game:
                 self.ui.print("\n[1] Yes\n[2] No")
 
                 key = self.ui.get_key()
+                self.ui.clear_logs()
                 if key == "1":
-                    self.do_use(key_item) # use the item
-                    self.player.current_room = next_room
-                    self.ui.draw_room(self.player.current_room.describe())
+                    if room.name == "obsolete_hub" and not room.kernel_unlock:
+                        self.ui.print("You need the decrypter to find the door to"
+                                      "\nthe System Kernel.")
+                    else:
+                        # use the item
+                        self.do_use(key_item)
+                        self.player.current_room = next_room
+                        self.ui.draw_room(self.player.current_room.describe())
+
+
                     return
-                else:
-                    self.ui.clear_logs()
             return
 
         if next_room is not None:
@@ -380,10 +386,11 @@ class Game:
             self.ui.print("  3. Retreat")
 
             action = self.ui.get_key()
+            m_hp = monster.hp
+            attack = False
             self.ui.clear_logs()
             if action == "1":
                 # player attacks first
-                m_hp = monster.hp
                 p_damage = self.player.attack(monster)
                 # check if player has weapon
                 if self.player.equipped_weapon is None:
@@ -392,6 +399,7 @@ class Game:
                 else:
                     p_weapon = self.player.equipped_weapon.name
                     self.ui.print(f"You strike the {monster.name} with {p_weapon} for {p_damage}")
+                attack=True
             elif action == "2":
                 self.heal_player()
 
@@ -431,7 +439,8 @@ class Game:
 
             # show hp
             self.ui.print(f"Player HP: {p_hp} - {m_damage} --> {self.player.hp}/{self.player.max_hp}")
-            self.ui.print(f"{monster.name} HP: {m_hp} - {p_damage} --> {monster.hp}/{monster.max_hp}")
+            if attack:
+                self.ui.print(f"{monster.name} HP: {m_hp} - {p_damage} --> {monster.hp}/{monster.max_hp}")
             self.ui.draw_hud(self.player)
 
         # victory condition

@@ -27,8 +27,10 @@ class Character(Entity):
         :param target: The character being attacked.
         :return: Damage dealt as an integer
         """
-        damage = self.attack_power
-        target.hp -= damage
+        damage_dealt = self.attack_power
+        prev_hp = target.hp
+        target.hp -= damage_dealt
         if target.hp < 0:
+            damage_dealt = prev_hp
             target.hp = 0
-        return damage
+        return damage_dealt

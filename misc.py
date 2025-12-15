@@ -67,9 +67,16 @@ class Misc(Item):
             else:
                 return "The data key hums faintly, but nothing happens here.", "keep"
 
+        if self.misc_id == "decrypt":
+            if room.name == "obsolete_hub":
+                room.kernel_unlock = True
+                return ("The console beeps, static starts to unwind revealing"
+                        "\nthe door towards the System Kernel.", "remove")
+            return "You need to be at the obsolete_hub to decrypt the final console.","keep"
+
         # this key is only dropped by the gatekeeper once defeated, unlocking final exit
         if self.misc_id == "k3rn3l":
-            if room.name == "Obsolete Hub":
+            if room.name == "obsolete_hub" and room.kernel_unlock:
                 room.unlock_exit("north")
                 return "The kernel key glows - heading towards door towards the System Kernel, unlocking the final pathway.", "remove"
             return "The kernel key hums softly, but nothing happens here.", "keep"

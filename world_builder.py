@@ -331,14 +331,7 @@ The path leads you back, back to the real world.
             weight=8,
             misc_id="bag_upgrade"
         )
-        kernels_edge = Weapon(
-            "kernels_edge",
-            "A powerful blade formed from unstable data.",
-            damage=300,
-            weight=64
-        )
         self.rooms["b2"].add_item(backpack_upgrade)
-        self.rooms["b2"].add_item(kernels_edge)
 
         # c items
         # phantom node
@@ -360,14 +353,7 @@ The path leads you back, back to the real world.
             weight=8,
             misc_id="decrypt"
         )
-        fractured = Misc(
-            "fractured.log",
-            "A corrupted log showing pieces of the system's history.",
-            weight=4,
-            misc_id="lore4"
-        )
         self.rooms["d0"].add_item(decryptor)
-        self.rooms["d0"].add_item(fractured)
 
     def place_puzzles(self):
         """
@@ -397,7 +383,7 @@ The path leads you back, back to the real world.
                 name="debugging_lance",
                 description="A long digital spear forged from stabilised error logs.\nIt hums with corrective energy.",
                 weight=32,
-                damage=200
+                damage=300
             )  # reward is a weapon that defeats data_wraith
         )
         self.rooms["b1"].puzzle = puzzle_b1
@@ -432,7 +418,12 @@ The path leads you back, back to the real world.
             name="kernel_bypass",
             prompt="Enter the decryption key: XOR(7, 12) = ?",
             solution="11",
-            reward="kernel_key"  # unlocks passage to System Kernel
+            reward=Misc(
+                "fractured.log",
+                "A corrupted log showing pieces of the system's history.",
+                weight=4,
+                misc_id="lore4"
+            )  # unlocks passage to System Kernel
         )
         self.rooms["d1"].puzzle = puzzle_d1
 
@@ -447,7 +438,7 @@ The path leads you back, back to the real world.
             description="A twitching creature made of broken meshes and flickering polygons.",
             hp=450,
             max_hp=450,
-            attack_power=45,
+            attack_power=150,
             reward=Misc(
                 "data_key",
                 "A glowing access shard designed to unlock the Data Well gateway.",
@@ -464,7 +455,7 @@ The path leads you back, back to the real world.
             description="A humanoid shape made of streaming binary. Its form shifts unpredictably.",
             hp=650,
             max_hp=650,
-            attack_power=86,
+            attack_power=160,
             reward=Misc(
                 "integrity_recompiler",
                 description="An ancient subsystem tool once used by the system administrators. It rewrites part of your core, patching deep corruption and increases your maximum health.",
@@ -479,10 +470,16 @@ The path leads you back, back to the real world.
         corrupted_drone = Monster(
             name="corrupted_drone",
             description="A floating defense unit, its casing fractured and emitting sparks.",
-            hp=150,
-            max_hp=150,
-            attack_power=30,
-            reward=None
+            hp=700,
+            max_hp=700,
+            attack_power=300,
+            reward=Weapon(
+                "kernels_edge",
+                "A powerful blade formed from unstable data.",
+                damage=800,
+                weight=64
+            ),
+            blocks_exit="east"
         )
         self.rooms["b2"].add_monster(corrupted_drone)
 
@@ -506,7 +503,8 @@ The path leads you back, back to the real world.
             hp=1500,
             max_hp=1500,
             attack_power=500,
-            reward=Misc("kernel_key", "A critical system key dropped by the Gatekeeper.", weight="16", misc_id="k3rn3l")
+            reward=Misc("kernel_key", "A critical system key dropped by the Gatekeeper.", weight=16, misc_id="k3rn3l"),
+            blocks_exit="east"
         )
         self.rooms["c2"].add_monster(gatekeeper)
 
