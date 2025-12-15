@@ -32,6 +32,7 @@ class TextUI:
         curses.curs_set(0)
         curses.set_escdelay(self.ESC_DELAY_MS)
         self.stdscr.keypad(True)
+        self.stdscr.nodelay(True)  # Make getch() non-blocking
         self.started = True
 
     def stop(self):
@@ -182,6 +183,7 @@ class TextUI:
     def print(self, text, typing=None):
         """
         Print text to the log area with optional typing animation.
+        User can press any key to skip the animation.
 
         Args:
             text: Text to print
@@ -199,13 +201,30 @@ class TextUI:
                 break
 
             if use_typing:
-                # Type out character by character
+                # Type out character by character with skip detection
+                skipped = False
                 for i, char in enumerate(line):
                     if i >= w - 1:
                         break
+
                     self.safe_addstr(self.log_y, i, char)
                     self.stdscr.refresh()
+
+                    # Check if user pressed a key to skip
+                    if self._check_skip_input():
+                        # Print the rest of the line instantly
+                        remaining = line[i + 1:w - 1]
+                        if remaining:
+                            self.safe_addstr(self.log_y, i + 1, remaining)
+                            self.stdscr.refresh()
+                        skipped = True
+                        break
+
                     time.sleep(self.TYPING_SPEED)
+
+                # If animation was skipped, disable typing for remaining lines
+                if skipped:
+                    use_typing = False
             else:
                 # Print entire line at once
                 self.safe_addstr(self.log_y, 0, line, w - 1)
@@ -213,6 +232,30 @@ class TextUI:
             self.log_y += 1
 
         self.stdscr.refresh()
+
+    def _check_skip_input(self):
+        """Check if user pressed any key (non-blocking)."""
+        try:
+            key = self.stdscr.getch()
+            if key != -1:  # -1 means no key was pressed
+                return True
+        except:
+            pass
+        return False
+
+    def wait_for_key(self, prompt="Press any key to continue..."):
+        """
+        Display a message and wait for user to press any key.
+
+        Args:
+            prompt: Message to display
+        """
+        self.print(f"\n{prompt}", typing=False)
+
+        # Set blocking mode temporarily
+        self.stdscr.nodelay(False)
+        self.stdscr.getch()
+        self.stdscr.nodelay(True)
 
     def set_typing_speed(self, speed):
         """
@@ -265,10 +308,26 @@ class TextUI:
         """Get a line of text input from the user."""
         self.print(prompt)
 
-        curses.echo()
+        # --- ENTER TYPING MODE ---
+        curses.echo()  # Show typed characters
+        curses.curs_set(1)  # Show the blinking cursor
+        self.stdscr.nodelay(False)  # Force the program to WAIT for input
+
+        # Get current cursor position to type right after the prompt
         y, x = self.stdscr.getyx()
-        text = self.stdscr.getstr(y, x).decode("utf-8")
-        curses.noecho()
+
+        # Capture the input
+        try:
+            # getstr returns bytes, so we decode to string
+            input_bytes = self.stdscr.getstr(y, x)
+            text = input_bytes.decode("utf-8")
+        except Exception:
+            text = ""
+
+        # --- RESTORE GAME MODE ---
+        self.stdscr.nodelay(True)  # Return to non-blocking mode (game loop)
+        curses.curs_set(0)  # Hide the cursor again
+        curses.noecho()  # Stop echoing characters
 
         return text
 

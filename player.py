@@ -56,12 +56,23 @@ class Player(Character):
                 ui.print(f"{item.name} is stronger than your current attack power. Equip?")
                 ui.print("[1] Yes\n[2] No")
 
-                key = ui.get_key()
-                ui.clear_logs()
-                if key == "1":
-                    msg = self.equip(item)
-                    ui.clear_logs()
-                    ui.print(msg)
+                while True:
+                    key = ui.get_key()
+
+                    # If no key is pressed (and we are in non-blocking mode),
+                    # get_key returns -1. We must ignore it and keep waiting.
+                    if key == -1:
+                        continue
+
+                    # Check for valid item selection
+                    if key == "1":
+                        msg = self.equip(item)
+                        ui.clear_logs()
+                        ui.print(msg)
+                        break
+                    elif key == "2":
+                        ui.clear_logs()
+                        break
 
         if isinstance(item, Consumable):
             if self.equipped_med is None:
@@ -69,11 +80,24 @@ class Player(Character):
                 ui.print(f"You don't have any meds currently equipped. Equip?")
                 ui.print("[1] Yes\n[2] No")
 
-                key = ui.get_key()
-                ui.clear_logs()
-                if key == "1":
-                    msg = self.equip(item)
-                    ui.print(msg)
+                while True:
+                    key = ui.get_key()
+
+                    # If no key is pressed (and we are in non-blocking mode),
+                    # get_key returns -1. We must ignore it and keep waiting.
+                    if key == -1:
+                        continue
+
+                    # Check for valid item selection
+                    if key == "1":
+                        msg = self.equip(item)
+                        ui.clear_logs()
+                        ui.print(msg)
+                        break
+                    elif key == "2":
+                        ui.clear_logs()
+                        break
+
 
         return "\n".join(lines), True
 
@@ -111,7 +135,7 @@ class Player(Character):
         :return: The formatted string for the player's stats.
         """
         lines = [
-            "=== PLAYER STATUS ===",
+            "[ PLAYER STATUS ]",
             f"Name: {self.name}",
             f"HP: {self.hp}/{self.max_hp}",
             f"Attack Power: {self.attack_power}",
