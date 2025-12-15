@@ -152,4 +152,10 @@ class TextUI:
         self.log_y = self.room_start_y
         self.stdscr.refresh()
 
+    def get_inp(self, prompt="> "):
+        self.print(prompt)
+        curses.echo()
+        s = self.stdscr.getstr().decode("utf-8")
+        curses.noecho()
+        return s
 

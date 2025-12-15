@@ -57,11 +57,11 @@ class Player(Character):
                 ui.print("[1] Yes\n[2] No")
 
                 key = ui.get_key()
+                ui.clear_logs()
                 if key == "1":
                     msg = self.equip(item)
-                    ui.print(msg)
-                else:
                     ui.clear_logs()
+                    ui.print(msg)
 
         if isinstance(item, Consumable):
             if self.equipped_med is None:
@@ -70,48 +70,28 @@ class Player(Character):
                 ui.print("[1] Yes\n[2] No")
 
                 key = ui.get_key()
+                ui.clear_logs()
                 if key == "1":
                     msg = self.equip(item)
                     ui.print(msg)
 
         return "\n".join(lines), True
 
-    def use(self, item):
-        """
-            Use a chosen item and.
-        :param item: Item in which the player has in their backpack.
-        """
-
-    def show_storage(self):
-        """
-            Displays the storage.
-        :return: The string content of the player's backpack.
-        """
-        if self.weight == 0:
-            return "Your storage is empty."
-
-        res = ["[ STORAGE ]\n"]
-        for name, item in self.storage.items():
-            res.append(f"- {name} (Weight: {item.weight})")
-        res.append(f"\n[ CAPACITY <{self.weight}/{self.max_weight}>]")
-        return "\n".join(res)
-
     def remove_item(self, item):
         lines = []
         if item.name in self.storage:
             if self.equipped_weapon:
                 if item.name == self.equipped_weapon.name:
-                    lines.append(f"You have unequipped {self.equipped_weapon.name}")
-                    lines.append(self.unequip("weapon"))
-            elif self.equipped_med:
+                    lines.append(self.unequip(item))
+            if self.equipped_med:
                 if item.name == self.equipped_med.name:
-                    lines.append(f"You have unequipped {self.equipped_med.name}")
-                    lines.append(self.unequip("heal"))
+                    lines.append(self.unequip(item))
             item_weight = self.storage[item.name].weight
             prev_weight = self.weight
             self.weight -= item_weight
             self.storage.pop(item.name)
-            lines.append(f"{item.name} removed. \nCapacity updated: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes.\n")
+            lines.append(
+                f"{item.name} removed. \nCapacity updated: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes.\n")
             return "\n".join(lines)
         return "Item not found."
 
@@ -164,23 +144,22 @@ class Player(Character):
         else:
             return f"You can't equip {stored_item.name}"
 
-    def unequip(self, type):
+    def unequip(self, item):
         """
         Unequip a weapon from the player's storage.
         :return: String message describing what was unequipped.
         """
-        if type == "weapon":
+        if isinstance(item, Weapon):
             weapon_name = self.equipped_weapon.name
             self.equipped_weapon = None
             self.attack_power = 1
             return f"You unequip {weapon_name}. Attack updated to {self.attack_power}."
-        else:
+        if isinstance(item, Consumable):
             med_name = self.equipped_med.name
             self.equipped_med = None
             return f"You unequip {med_name}."
-
-        return "Unknown type."
-
+        else:
+            return "Unknown type."
 
     def get_consumables(self):
         consumables = {}

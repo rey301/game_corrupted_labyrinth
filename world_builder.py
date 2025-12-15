@@ -284,11 +284,12 @@ The path leads you back, back to the real world.
             "fragmented_blade",
             "A weak blade formed from unstable data shards.",
             damage=150,
-            weight=20
+            weight=24
         )
         health_module = Consumable(
             "health_module",
-            "A compact utility that repairs corrupted user data. Activating it restores a portion of your health.",
+            "A compact utility that repairs corrupted user data. "
+            "\nActivating it restores a portion of your health.",
             weight=7,
             heal=200,
             uses=3,
@@ -394,9 +395,9 @@ The path leads you back, back to the real world.
             solution="A",
             reward=Weapon(
                 name="debugging_lance",
-                description="A long digital spear forged from stabilised error logs. It hums with corrective energy.",
-                weight=200,
-                damage=5
+                description="A long digital spear forged from stabilised error logs.\nIt hums with corrective energy.",
+                weight=32,
+                damage=200
             )  # reward is a weapon that defeats data_wraith
         )
         self.rooms["b1"].puzzle = puzzle_b1

@@ -59,6 +59,7 @@ class Game:
 
 
     def handle_key(self, key):
+        self.ui.clear_logs()
         # movement
         if key == curses.KEY_UP:
             self.move("north")
@@ -70,8 +71,11 @@ class Game:
             self.move("east")
 
         # scanning room for entities
-        elif key == "s":
+        elif key == "q":
             self.scan_room()
+
+        elif key == "s":
+            self.do_solve()
 
         # list items in room and allow user to select an item to take
         elif key == 'e':
@@ -80,28 +84,17 @@ class Game:
         elif key == 'r':
             self.heal_player()
 
-        elif key == 'q':
-            self.ui.clear_logs()
-            self.ui.print(self.player.show_storage())
+        elif key == 'i':
+            self.show_player_storage()
 
         elif key == 'd':
             self.drop_items()
-
-        elif key == 'p':
-            self.solve_puzzle()
-
-        elif key == 'l':
-            self.look()
-
-        elif key == 'i':
-            self.ui.print(self.player.show_storage())
 
         elif key == 'c':
             self.ui.print(self.player.show_stats())
 
         elif key == 'h':
             self.print_help()
-
         self.ui.draw_hud(self.player)
 
     def move(self, direction):
@@ -147,7 +140,7 @@ class Game:
 
                 key = self.ui.get_key()
                 if key == "1":
-                    self.do_use(key_item.name) # use the item
+                    self.do_use(key_item) # use the item
                     self.player.current_room = next_room
                     self.ui.draw_room(self.player.current_room.describe())
                     return
@@ -168,8 +161,6 @@ class Game:
         :param obj: This is the object that the user defines (e.g. item name)
         :return: None
         """
-        self.ui.clear_logs()
-
         # inspect the room for everything
         room = self.player.current_room
 
@@ -220,7 +211,6 @@ class Game:
         :return: None
         """
         room = self.player.current_room
-        self.ui.clear_logs()
         item_count = 1
         selections = {}
 
@@ -236,14 +226,13 @@ class Game:
 
             key = self.ui.get_key()
             if key in selections:
+                self.ui.clear_logs()
                 chosen_item = selections[key]
                 msg, flag = self.player.pick_up(chosen_item, self.ui)
-                self.ui.clear_logs()
                 self.ui.print(msg)
             return
 
     def heal_player(self):
-        self.ui.clear_logs()
         if self.player.equipped_med:
             med = self.player.equipped_med
             if self.player.hp == self.player.max_hp:
@@ -251,15 +240,14 @@ class Game:
             else:
                 msg, flag = med.use(self.player)
                 self.ui.print(f"You use {med.name}. {msg}")
-                if flag:
-                    remove_msg = self.player.remove_item(med.name)
-                    self.ui.print(remove_msg)
+                if flag == "remove":
+                    self.ui.print("Med charges depleted!")
+                    self.ui.print(self.player.remove_item(med))
         else:
             self.ui.print("You don't have any meds equipped!")
         return
 
     def drop_items(self):
-        self.ui.clear_logs()
         room = self.player.current_room
         item_count = 1
         selections = {}
@@ -283,7 +271,7 @@ class Game:
                 self.ui.print(f"{chosen_item.name} has fallen to the floor.")
         return
 
-    def do_drop(self, item_name):
+    def do_drop(self, item):
         """
         Select an item to drop from player's storage and is place in the room.
         :param item_name: The item the player wishes to drop.
@@ -291,39 +279,36 @@ class Game:
         """
         room = self.player.current_room
 
-        if item_name is None:
+        if item.name is None:
             self.ui.print("Drop what?")
             return
 
-        if item_name not in self.player.storage:
+        if item.name not in self.player.storage:
             self.ui.print("You don't have that item.")
             return
 
         # remove from storage
-        item = self.player.storage[item_name]
-        self.ui.print(self.player.remove_item(item_name))
+        self.ui.print(self.player.remove_item(item))
 
         # add item to room
         room.add_item(item)
 
-        self.ui.print(f"{item_name} has fallen to the floor.")
+        self.ui.print(f"{item.name} has fallen to the floor.")
 
-    def do_use(self, item_name):
+    def do_use(self, item):
         """
         Allows player to use an item from their backpack, applying whatever
         effect the item has.
         :param item_name: Name of the item to use.
         :return: None
         """
-        if item_name is None:
+        if item.name is None:
             self.ui.print("Use what?")
             return
 
-        if item_name not in self.player.storage:
+        if item.name not in self.player.storage:
             self.ui.print("You don't have that item.")
             return
-
-        item = self.player.storage[item_name]
 
         # check if it's a weapon
         if isinstance(item, Weapon):
@@ -348,9 +333,9 @@ class Game:
             if result:
                 self.ui.print(result)
                 if flag == "remove":
-                    self.ui.print(self.player.remove_item(item.name))
+                    self.ui.print(self.player.remove_item(item))
             else:
-                self.ui.print(f"You can't use {item.name} here.")
+                self.ui.print(f"You can't use {item} here.")
             return
 
         self.ui.print("Nothing happens.")
@@ -408,12 +393,7 @@ class Game:
                     p_weapon = self.player.equipped_weapon.name
                     self.ui.print(f"You strike the {monster.name} with {p_weapon} for {p_damage}")
             elif action == "2":
-                if self.player.equipped_med is None:
-                    self.ui.print("You have no healing item equipped!")
-                    continue
-                else:
-                    self.ui.print(self.heal_player())
-                    self.ui.draw_hud(self.player)
+                self.heal_player()
 
             elif action == "3":
                 escape_chance = 0.6  # 60% success rate
@@ -452,6 +432,7 @@ class Game:
             # show hp
             self.ui.print(f"Player HP: {p_hp} - {m_damage} --> {self.player.hp}/{self.player.max_hp}")
             self.ui.print(f"{monster.name} HP: {m_hp} - {p_damage} --> {monster.hp}/{monster.max_hp}")
+            self.ui.draw_hud(self.player)
 
         # victory condition
         if monster.hp == 0:
@@ -503,6 +484,76 @@ class Game:
                 # add item to room
                 room.add_item(reward)
                 self.ui.print(f"{reward.name} has fallen to the floor.")
+
+    def show_player_storage(self):
+        storage = self.player.storage
+        player = self.player
+        ui = self.ui
+        if not storage:
+            ui.print("Your storage is empty.")
+            return
+
+        selections = {}
+        ui.print("[ STORAGE ]\n")
+
+        for i, (name, item) in enumerate(storage.items(), start=1):
+            ui.print(f"[{i}] {name} (W:{item.weight})")
+            selections[str(i)] = item
+
+        ui.print(f"\n[ CAP <{player.weight}/{player.max_weight}> ]")
+
+        key = ui.get_key()
+        if key in selections:
+            self.inspect_item(selections[key])
+
+    def inspect_item(self, item):
+        ui = self.ui
+        ui.clear_logs()
+
+        ui.print(f"[ {item.name} ]")
+        ui.print(f"{item.description}\n")
+
+        actions = self.get_item_actions(item)
+
+        for key, label, _ in actions:
+            ui.print(f"[{key}] {label}")
+
+        choice = ui.get_key()
+
+        for key, _, action in actions:
+            if choice == key:
+                self.ui.clear_logs()
+                msg = action()
+                if msg:
+                    ui.print(msg)
+                return
+
+    def get_item_actions(self, item):
+        player = self.player
+        actions = []
+
+        # ---------------- WEAPONS ----------------
+        if isinstance(item, Weapon):
+            actions.append(("1", "Equip" if player.equipped_weapon != item else "Unequip",
+                            lambda: self.ui.print(player.equip(item)) if player.equipped_weapon != item
+                            else self.ui.print(player.unequip(item))))
+            actions.append(("2", "Drop",
+                            lambda: self.do_drop(item)))
+
+        # ---------------- CONSUMABLES ----------------
+        elif isinstance(item, Consumable):
+            actions.append(("1", "Equip" if player.equipped_med != item else "Unequip",
+                            lambda: self.ui.print(player.equip(item)) if player.equipped_med != item
+                            else self.ui.print(player.unequip(item))))
+            actions.append(("2", "Use", lambda: self.heal_player()))
+            actions.append(("3", "Drop", lambda: self.do_drop(item)))
+
+        # ---------------- MISC ----------------
+        else:
+            actions.append(("1", "Use", lambda: self.do_use(item)))
+            actions.append(("2", "Drop", lambda: self.ui.print(player.remove_item(item))))
+
+        return actions
 
     def print_help(self):
         """

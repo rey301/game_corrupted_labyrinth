@@ -14,17 +14,19 @@ class Misc(Item):
         :param world: The world with attributes of the game.
         :return: The text that will be printed to the user, and the flag if the item gets removed.
         """
+        room = player.current_room
         # for expanding storage
         if self.misc_id == "bag_upgrade":
             prev_max = player.max_weight
             player.max_weight += 32
-            return f"Your storage expands. \n{prev_max}+5 --> {player.max_weight}", "remove"
+            return f"Your storage expands. \n{prev_max}+32 --> {player.max_weight}", "remove"
 
         # for increasing maximum health
         if self.misc_id == "health_upgrade":
             prev_max_hp = player.max_hp
-            player.max_hp += 5
-            return f"Your HP increases. \n{prev_max_hp}+5 --> {player.max_hp}", "remove"
+            player.max_hp += 300
+            player.hp = player.max_hp
+            return f"HP restored. \n{prev_max_hp}+300 --> {player.max_hp}", "remove"
 
         # once activated in the data well, the lore items can be read
         if self.misc_id == "log":
@@ -40,20 +42,18 @@ class Misc(Item):
             if room.name == "boot_sector":
                 room.unlock_exit("east")
                 room.update_description("""
-+----------------------------- BOOT SECTOR ------------------------------+
-    System booting...
+                
+                                    | BOOT SECTOR |
 
-        [ Initialising user shell ]
-        [ Loading visual layer    ]
-        [ Syncing input streams   ]
-
-    A plain-looking room forms around you, 
-    like the world is still loading.
-    Bits of code fall from the ceiling. 
-    Something small glints on the floor.
+                            System booting...
+                            [ Initialising user shell ]
+                            [ Loading visual layer    ]
+                            [ Syncing input streams   ]
+    
+        A plain-looking room forms around you, like the world is still loading.
+        Bits of code fall from the ceiling. Something small glints on the floor.
 
     Exits: NORTH -> Lost Cache, SOUTH -> Glitch Pit, EAST -> Phantom Node
-+------------------------------------------------------------------------+
                 """)
                 return "A hidden doorway flickers open to the east...", "remove"
             return "The key hums faintly, but nothing happens here.", "keep"
@@ -134,6 +134,8 @@ It was built to keep you from remembering why.
             return "You need to activate the scan module to read the logs.", "keep"
 
         return None
+
+
 
 
 

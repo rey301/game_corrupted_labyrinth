@@ -18,13 +18,13 @@ class Puzzle(Entity):
         if self.solved:
             return "You have already solved this puzzle.", None
 
+        ui.print(f"{self.name} opening...")
         ui.print(self.prompt)
-        answer = ui.input("> ")# retrieve answer from user
+        answer = ui.get_inp()# retrieve answer from user
 
         if answer == self.solution:
             self.solved = True
+            ui.clear_logs()
             if self.reward:
                 return "Engram has broken, it fizzles into air.", self.reward
-            return "Engram has broken, it fizzles into air", None
-
-        return "Incorrect.", None
+        return "Incorrect. Try again.", None
