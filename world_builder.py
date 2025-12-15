@@ -74,13 +74,14 @@ class WorldBuilder:
         b1 = Room(
             "data_well",
             """
+            
                                     | DATA WELL |
+        
+                              010101... 011001... 010110...
+                        A terminal nearby flashes: "LOG AVAILABLE"
+                        
         A column of falling numbers spills from the ceiling like a waterfall.
-        Binary streams flow along the floor.
-    
-            010101... 011001... 010110...
-            A terminal nearby flashes: "LOG AVAILABLE"
-    
+        Binary streams flow along the floor. 
         A puzzle seems to be woven into the data flow itself.
 
     Exits: WEST -> Glitch Pit, SOUTH -> Corrupted Arsenal
@@ -90,55 +91,55 @@ class WorldBuilder:
         b2 = Room(
             "corrupted_arsenal",
             """
-                          | CORRUPTED ARSENAL |
-    Rusty-looking digital weapon models float in the air, 
-    but many fail to render correctly.
-
-       [ locked slot       ]
-       [ missing texture   ]
-       [ weapon_error_4F   ]
-
-    A larger puzzle device sparks occasionally.
-    Your backpack system activates when entering this place.
+            
+                                    | CORRUPTED ARSENAL |
+    
+                                    [ locked slot       ]
+                                    [ missing texture   ]
+                                    [ weapon_error_4F   ]
+           
+        Rusty-looking digital weapon models float in the air, 
+        but many fail to render correctly. A larger puzzle device sparks occasionally.
+        Your backpack system activates when entering this place.
 
     Exits: NORTH -> Data Well, EAST -> Gatekeeper Node
-+------------------------------------------------------------------------+
             """
         )
 
         b3 = Room(
             "dead_pixels",
             """
-+------------------------------ DEAD PIXELS -----------------------------+
-    The walls here have broken into scattered pixel noise.  
-                                           
-               . . .     . # .   . . # # .    . # . .               
-                 #   . # .   . .   # .   #     .    .               
-               .   # # .   .   # #     .      # . . .               
-                                                        
-    Black and white squares flicker without a pattern.    
-    It feels like an unfinished part of the mysterious labyrinth.         
+            
+                                    | DEAD PIXELS |
+                     
+                       . . .     . # .   . . # # .    . # . .               
+                         #   . # .   . .   # .   #     .    .               
+                       .   # # .   .   # #     .      # . . .    
+                              
+        The walls here have broken into scattered pixel noise.  
+        Black and white squares flicker without a pattern.    
+        It feels like an unfinished part of the mysterious labyrinth.         
                                                         
     Exits: EAST -> Glitch Pit                              
-+------------------------------------------------------------------------+
             """
         )
 
         c0 = Room(
             "phantom_node",
             """
-+--------------------------- PHANTOM NODE -------------------------------+
-    This room shouldn't exist...  
-    Its walls are only half-there, fading in and out like a memory.
+            
+                                    | PHANTOM NODE |
 
-       You feel watched.
-       A strange object hovers silently.
-
-    A doorway flickers in and out of existence, revealing a direct
-    link to a powerful presence deeper in the system...
+                           You feel watched.
+                           A strange object hovers silently.
+    
+        This room shouldn't exist...  
+        Its walls are only half-there, fading in and out like a memory.
+    
+        A doorway flickers in and out of existence, revealing a direct
+        link to a powerful presence deeper in the system...
 
     Exits: SOUTH -> Gatekeeper Node, WEST -> Boot Sector
-+------------------------------------------------------------------------+
             """,
             locked = True
         )
@@ -146,68 +147,66 @@ class WorldBuilder:
         c2 = Room(
             "gatekeeper_node",
             """
-+-------------------------- GATEKEEPER NODE -----------------------------+
-    A massive corrupted guardian blocks the path ahead.
-    It flickers between frames, unfinished and unstable.
-
-       ACCESS DENIED: kernel key required
-       The creature roars and the whole room shudders.
-
-    This fight is unavoidable.
+            
+                                    | GATEKEEPER NODE |
+                        The creature roars and the whole room shudders.
+                
+        A massive corrupted guardian blocks the path ahead.
+        It flickers between frames, unfinished and unstable.
+    
+        This fight is unavoidable.
 
     Exits: WEST -> Corrupted Arsenal, EAST -> Fractured Archive
-+------------------------------------------------------------------------+
             """
         )
 
         d0 = Room(
             "fractured_archive",
             """
-+------------------------- FRACTURED ARCHIVE ----------------------------+
-    Broken bits of past events float around like ghosts.
-    Some logs replay wrong. Others don't load at all.
-
-       [ log_04: missing timestamp ]
-       [ memory chunk corrupted    ]
-
-    A console sits in the centre, but it needs a decryption item.
+            
+                                    | FRACTURED ARCHIVE |
+                                    
+                                [ log_04: missing timestamp ]
+                                [ memory chunk corrupted    ]
+                                    
+        Broken bits of past events float around like ghosts.
+        Some logs replay wrong. Others don't load at all.
+        
+        A console sits in the centre, but it needs a decryption item.
 
     Exits: WEST -> Gatekeeper Node, NORTH -> Obsolete Hub
-+------------------------------------------------------------------------+
             """
         )
 
         d1 = Room(
             "obsolete_hub",
             """
-+--------------------------- OBSOLETE HUB -------------------------------+
-    This room feels outdated. Old system functions lie everywhere,  
-    half-functional and flickering.
-
-       < deprecated_module >
-       < legacy API called >
-       < unsupported format >
-
-    A giant puzzle dominates the middle of the room.
+            
+                                    | OBSOLETE HUB |
+                                < deprecated_module >
+                                < legacy API called >
+                                < unsupported format >
+                                
+        This room feels outdated. Old system functions lie everywhere,  
+        half-functional and flickering.
+        
+        A giant puzzle dominates the middle of the room.
 
     Exits: SOUTH -> Fractured Archive, NORTH -> System Kernel
-+------------------------------------------------------------------------+
             """
         )
 
         d2 = Room(
             "system_kernel",
             """
-+---------------------------- SYSTEM KERNEL -----------------------------+
-Everything is suddenly calm.  
-The glitches are gone. The room is clean and bright.
+            
+                                    | SYSTEM KERNEL |
+                                    
+                            Everything is suddenly calm.  
+                            The glitches are gone. The room is clean and bright.
 
-   You hold the kernel key.
-   A door of pure white light waits for you.
-
-The path leads you back, back to the real world.
-
-+------------------------------------------------------------------------+
+            A door of pure white light waits for you.
+            The path leads you back, back to the real world.
             """
         )
 
