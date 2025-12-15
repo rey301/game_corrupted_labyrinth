@@ -21,17 +21,17 @@ class WorldBuilder:
             "boot_sector",
             """
             
-                                    | BOOT SECTOR |
+| BOOT SECTOR |
 
-                            System booting...
-                            [ Initialising user shell ]
-                            [ Loading visual layer    ]
-                            [ Syncing input streams   ]
+System booting...
+[ Initialising user shell ]
+[ Loading visual layer    ]
+[ Syncing input streams   ]
     
-        A plain-looking room forms around you, like the world is still loading.
-        Bits of code fall from the ceiling. Something small glints on the floor.
+A plain-looking room forms around you, like the world is still loading.
+ Bits of code fall from the ceiling. Something small glints on the floor.
 
-    Exits: NORTH -> Lost Cache, SOUTH -> Glitch Pit
+Exits: NORTH -> Lost Cache, SOUTH -> Glitch Pit
             """
         )
 
@@ -39,16 +39,16 @@ class WorldBuilder:
             "lost_cache",
             """
             
-                                    | LOST CACHE |
+| LOST CACHE |
 
-                            < Rebuilding item data ... 12% >
-                            < Warning: corrupted fragment >
+< Rebuilding item data ... 12% >
+< Warning: corrupted fragment >
         
-        Piles of old memory blocks are stacked everywhere. Some flicker, some 
-        don't load at all. A small terminal hums quietly. 
-        Something useful might be buried here.
+Piles of old memory blocks are stacked everywhere. 
+Some flicker, some don't load at all. A small terminal hums quietly. 
+Something useful might be buried here.
 
-    Exits: SOUTH -> Boot Sector
+Exits: SOUTH -> Boot Sector
             """
         )
 
@@ -56,18 +56,18 @@ class WorldBuilder:
             "glitch_pit",
             """
             
-                                    | GLITCH PIT |
+| GLITCH PIT |
                                     
-                          ..+....>:>:..///...;;....;_///..<
-                          ||.,,,;....;_///..<---------------
+..+....>:>:..///...;;....;_///..<
+||.,,,;....;_///..<---------------
                             
-                        !! Terrain error: mesh failed to load !!
-                     A twitching, half-rendered monster notices you.
+!! Terrain error: mesh failed to load !!
+A twitching, half-rendered monster notices you.
                           
-        The ground seems unreliable here. Tiles appear late, and some just 
-        blink in and out of existence. This area feels dangerous.
+The ground seems unreliable here. Tiles appear late, and some just 
+blink in and out of existence. This area feels dangerous.
 
-    Exits: NORTH -> Boot Sector, EAST -> Data Well, WEST -> Dead Pixels
+Exits: NORTH -> Boot Sector, EAST -> Data Well, WEST -> Dead Pixels
             """
         )
 
@@ -75,16 +75,16 @@ class WorldBuilder:
             "data_well",
             """
             
-                                    | DATA WELL |
+| DATA WELL |
         
-                              010101... 011001... 010110...
-                        A terminal nearby flashes: "LOG AVAILABLE"
+010101... 011001... 010110...
+A terminal nearby flashes: "LOG AVAILABLE"
                         
-        A column of falling numbers spills from the ceiling like a waterfall.
-        Binary streams flow along the floor. 
-        A puzzle seems to be woven into the data flow itself.
+A column of falling numbers spills from the ceiling like a waterfall.
+Binary streams flow along the floor. 
+A puzzle seems to be woven into the data flow itself.
 
-    Exits: WEST -> Glitch Pit, SOUTH -> Corrupted Arsenal
+Exits: WEST -> Glitch Pit, SOUTH -> Corrupted Arsenal
             """
         )
 
@@ -92,17 +92,17 @@ class WorldBuilder:
             "corrupted_arsenal",
             """
             
-                                    | CORRUPTED ARSENAL |
+| CORRUPTED ARSENAL |
     
-                                    [ locked slot       ]
-                                    [ missing texture   ]
-                                    [ weapon_error_4F   ]
+[ locked slot       ]
+[ missing texture   ]
+[ weapon_error_4F   ]
            
-        Rusty-looking digital weapon models float in the air, 
-        but many fail to render correctly. A larger puzzle device sparks occasionally.
-        Your backpack system activates when entering this place.
+Rusty-looking digital weapon models float in the air, 
+but many fail to render correctly. A larger puzzle device sparks occasionally.
+Your backpack system activates when entering this place.
 
-    Exits: NORTH -> Data Well, EAST -> Gatekeeper Node
+Exits: NORTH -> Data Well, EAST -> Gatekeeper Node
             """
         )
 
@@ -110,17 +110,17 @@ class WorldBuilder:
             "dead_pixels",
             """
             
-                                    | DEAD PIXELS |
+| DEAD PIXELS |
                      
-                       . . .     . # .   . . # # .    . # . .               
-                         #   . # .   . .   # .   #     .    .               
-                       .   # # .   .   # #     .      # . . .    
+            . . .     . # .   . . # # .    . # . .               
+            #   . # .   . .   # .   #     .    .               
+            .   # # .   .   # #     .      # . . .    
                               
-        The walls here have broken into scattered pixel noise.  
-        Black and white squares flicker without a pattern.    
+The walls here have broken into scattered pixel noise.  
+ Black and white squares flicker without a pattern.    
         It feels like an unfinished part of the mysterious labyrinth.         
                                                         
-    Exits: EAST -> Glitch Pit                              
+Exits: EAST -> Glitch Pit                              
             """
         )
 
@@ -128,18 +128,18 @@ class WorldBuilder:
             "phantom_node",
             """
             
-                                    | PHANTOM NODE |
+| PHANTOM NODE |
 
-                           You feel watched.
-                           A strange object hovers silently.
+You feel watched.
+A strange object hovers silently.
     
-        This room shouldn't exist...  
-        Its walls are only half-there, fading in and out like a memory.
+This room shouldn't exist...  
+Its walls are only half-there, fading in and out like a memory.
     
-        A doorway flickers in and out of existence, revealing a direct
-        link to a powerful presence deeper in the system...
+A doorway flickers in and out of existence, revealing a direct
+link to a powerful presence deeper in the system...
 
-    Exits: SOUTH -> Gatekeeper Node, WEST -> Boot Sector
+Exits: SOUTH -> Gatekeeper Node, WEST -> Boot Sector
             """,
             locked = True
         )
@@ -148,15 +148,15 @@ class WorldBuilder:
             "gatekeeper_node",
             """
             
-                                    | GATEKEEPER NODE |
-                        The creature roars and the whole room shudders.
+| GATEKEEPER NODE |
+The creature roars and the whole room shudders.
                 
-        A massive corrupted guardian blocks the path ahead.
-        It flickers between frames, unfinished and unstable.
+A massive corrupted guardian blocks the path ahead.
+It flickers between frames, unfinished and unstable.
     
-        This fight is unavoidable.
+This fight is unavoidable.
 
-    Exits: WEST -> Corrupted Arsenal, EAST -> Fractured Archive
+Exits: WEST -> Corrupted Arsenal, EAST -> Fractured Archive
             """
         )
 
@@ -164,17 +164,17 @@ class WorldBuilder:
             "fractured_archive",
             """
             
-                                    | FRACTURED ARCHIVE |
+| FRACTURED ARCHIVE |
                                     
-                                [ log_04: missing timestamp ]
-                                [ memory chunk corrupted    ]
+[ log_04: missing timestamp ]
+[ memory chunk corrupted    ]
                                     
-        Broken bits of past events float around like ghosts.
-        Some logs replay wrong. Others don't load at all.
+Broken bits of past events float around like ghosts.
+Some logs replay wrong. Others don't load at all.
         
-        A console sits in the centre, but it needs a decryption item.
+A console sits in the centre, but it needs a decryption item.
 
-    Exits: WEST -> Gatekeeper Node, NORTH -> Obsolete Hub
+Exits: WEST -> Gatekeeper Node, NORTH -> Obsolete Hub
             """
         )
 
@@ -182,17 +182,17 @@ class WorldBuilder:
             "obsolete_hub",
             """
             
-                                    | OBSOLETE HUB |
-                                < deprecated_module >
-                                < legacy API called >
-                                < unsupported format >
+| OBSOLETE HUB |
+< deprecated_module >
+< legacy API called >
+< unsupported format >
                                 
-        This room feels outdated. Old system functions lie everywhere,  
-        half-functional and flickering.
+This room feels outdated. Old system functions lie everywhere,  
+half-functional and flickering.
         
-        A giant puzzle dominates the middle of the room.
+A giant puzzle dominates the middle of the room.
 
-    Exits: SOUTH -> Fractured Archive, NORTH -> System Kernel
+Exits: SOUTH -> Fractured Archive, NORTH -> System Kernel
             """
         )
 
@@ -200,13 +200,13 @@ class WorldBuilder:
             "system_kernel",
             """
             
-                                    | SYSTEM KERNEL |
+| SYSTEM KERNEL |
                                     
-                            Everything is suddenly calm.  
-                            The glitches are gone. The room is clean and bright.
+Everything is suddenly calm.  
+The glitches are gone. The room is clean and bright.
 
-            A door of pure white light waits for you.
-            The path leads you back, back to the real world.
+A door of pure white light waits for you.
+The path leads you back, back to the real world.
             """
         )
 

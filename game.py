@@ -36,8 +36,9 @@ class Game:
         try:
             self.play()
             if self.game_over:
-                choice = self.game_over_menu()
-                return choice
+                if not self.player.is_alive():
+                    choice = self.game_over_menu()
+                    return choice
             return "quit"
         finally:
             self.ui.stop()
@@ -77,6 +78,32 @@ class Game:
             elif key == "q":
                 return "quit"
 
+    def pause_menu(self):
+        self.ui.draw_top(
+            "=== SYSTEM PAUSED ===\n\n"
+            "[ESC] Resume\n"
+            "[R] Restart\n"
+            "[Q] Quit",
+        )
+
+        while True:
+            key = self.ui.get_key()
+
+            if key == "ESC":
+                self.ui.redraw_game(self.player.current_room, self.player)  # redraw room + HUD
+                return
+
+            elif key == "r":
+                self.player = Player("Lapel", "", 500, 500, 50)
+                start_room = self.world.build()
+                self.player.set_current_room(start_room)
+                self.ui.clear()
+                self.ui.redraw_game(self.player.current_room, self.player)
+                return
+
+            elif key == "q":
+                self.game_over = True
+                return
 
     def handle_key(self, key):
         self.ui.clear_logs()
@@ -91,30 +118,33 @@ class Game:
             self.move("east")
 
         # scanning room for entities
-        elif key == "q":
+        elif key == "r":
             self.scan_room()
 
-        elif key == "s":
+        elif key == "p":
             self.do_solve()
 
         # list items in room and allow user to select an item to take
-        elif key == 'e':
+        elif key == 't':
             self.take_item()
 
-        elif key == 'r':
+        elif key == 'h':
             self.heal_player()
 
-        elif key == 'i':
+        elif key == 's':
             self.show_player_storage()
 
-        elif key == 'd':
-            self.drop_items()
-
-        elif key == 'c':
+        elif key == 'i':
             self.ui.print(self.player.show_stats())
 
-        elif key == 'h':
+        elif key == '/':
             self.print_help()
+
+        elif key == "ESC":
+            self.pause_menu()
+            return
+        else:
+            self.ui.print("Unknown command.")
         self.ui.draw_hud(self.player)
 
     def move(self, direction):
@@ -592,27 +622,22 @@ class Game:
         self.ui.print("\nAvailable commands:\n")
 
         self.ui.print("Player:")
-        self.ui.print("  go <direction>     - Move to another room (north, south, east, west)")
-        self.ui.print("  look               - Reprint the current room's description")
-        self.ui.print("  stats              - View player's statistics")
+        self.ui.print("  [ARROW KEYS]       - Move to another room (north, south, east, west)")
+        self.ui.print("  [I]                - View player's statistics")
+        self.ui.print("  [S]                - View player's storage")
+        self.ui.print("  [H]                - Heal player if healing item equipped")
 
         self.ui.print("\nItem Interaction:")
-        self.ui.print("  take <item>        - Pick up an item in the room")
-        self.ui.print("  use <item>         - Use a misc or consumable item")
-        self.ui.print("  equip <weapon>     - Equip a weapon from your backpack")
-        self.ui.print("  storage            - Show items you're carrying")
-        self.ui.print("  scan room          - List all entities in the room")
-        self.ui.print("  scan <entity>      - Examine an entity in the room or in your storage")
-
-        self.ui.print("\nCombat:")
-        self.ui.print("  fight              - Engage in combat with the monster here")
+        self.ui.print("  [T]                - Pick up an item in the room")
+        self.ui.print("  [S]                - Show items you're carrying")
+        self.ui.print("  [R]                - List all entities in the room")
 
         self.ui.print("\nPuzzles:")
-        self.ui.print("  solve              - Attempt to solve the room's puzzle")
+        self.ui.print("  [P]                - Attempt to solve the room's puzzle")
 
         self.ui.print("\nSystem:")
-        self.ui.print("  help               - Show this help message")
-        self.ui.print("  quit               - Exit the game\n")
+        self.ui.print("  [/]                - Show this help message")
+        self.ui.print("  [Q]                - Exit the game\n")
 
 def main():
     """Main entry point for the game."""
