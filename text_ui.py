@@ -39,6 +39,23 @@ class TextUI:
         self.stdscr.clear()
         self.stdscr.refresh()
 
+    def draw_top(self, text, y=0, clear=True):
+        if clear:
+            self.stdscr.clear()
+
+        h, w = self.stdscr.getmaxyx()
+        lines = str(text).split("\n")
+
+        for i, line in enumerate(lines):
+            if y + i >= h:
+                break
+            try:
+                self.stdscr.addstr(y + i, 0, line[:w - 1])
+            except curses.error:
+                pass
+
+        self.stdscr.refresh()
+
     def print(self, text):
         h, w = self.stdscr.getmaxyx()
         lines = str(text).split("\n")

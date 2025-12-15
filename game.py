@@ -32,9 +32,13 @@ class Game:
         Entry point for the game.
         Handles UI lifecycle safely.
         """
+        self.ui.start()
         try:
-            self.ui.start()
             self.play()
+            if self.game_over:
+                choice = self.game_over_menu()
+                return choice
+            return "quit"
         finally:
             self.ui.stop()
 
@@ -56,6 +60,22 @@ class Game:
         while not self.game_over and self.player.is_alive():
             key = self.ui.get_key()
             self.handle_key(key)
+
+    def game_over_menu(self):
+        text = (
+            "=== SYSTEM FAILURE ===\n"
+            "You have been terminated.\n\n"
+            "[R] Restart\n"
+            "[Q] Quit"
+        )
+        self.ui.draw_top(text)
+
+        while True:
+            key = self.ui.get_key().lower()
+            if key == "r":
+                return "restart"
+            elif key == "q":
+                return "quit"
 
 
     def handle_key(self, key):
@@ -596,8 +616,12 @@ class Game:
 
 def main():
     """Main entry point for the game."""
-    game = Game()
-    game.run()
+    while True:
+        game = Game()
+        result = game.run()
+
+        if result == "quit":
+            break
 
 if __name__ == "__main__":
     main()
