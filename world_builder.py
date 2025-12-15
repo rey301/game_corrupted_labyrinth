@@ -149,6 +149,7 @@ Exits: SOUTH -> Gatekeeper Node, WEST -> Boot Sector
             """
             
 | GATEKEEPER NODE |
+
 The creature roars and the whole room shudders.
                 
 A massive corrupted guardian blocks the path ahead.
@@ -171,8 +172,6 @@ Exits: WEST -> Corrupted Arsenal, EAST -> Fractured Archive
                                     
 Broken bits of past events float around like ghosts.
 Some logs replay wrong. Others don't load at all.
-        
-A console sits in the centre, but it needs a decryption item.
 
 Exits: WEST -> Gatekeeper Node, NORTH -> Obsolete Hub
             """
@@ -183,14 +182,15 @@ Exits: WEST -> Gatekeeper Node, NORTH -> Obsolete Hub
             """
             
 | OBSOLETE HUB |
+
 < deprecated_module >
 < legacy API called >
-< unsupported format >
+ < unsupported format >
                                 
 This room feels outdated. Old system functions lie everywhere,  
 half-functional and flickering.
         
-A giant puzzle dominates the middle of the room.
+A console sits in the centre, but it needs a decryption item.
 
 Exits: SOUTH -> Fractured Archive, NORTH -> System Kernel
             """
@@ -332,27 +332,15 @@ The path leads you back, back to the real world.
         )
         self.rooms["b2"].add_item(backpack_upgrade)
 
-        # c items
-        # phantom node
-        signal_tuner = Consumable(
-            "signal_tuner",
-            "A device that stabilises your attacks temporarily.",
-            weight="16",
-            heal=0,
-            uses=3,
-            max_uses=3
-        )
-        self.rooms["c0"].add_item(signal_tuner)
-
         # d tier items
         # fractured archive
-        decryptor = Misc(
+        decrypter = Misc(
             "decrypter",
             "Required to operate the final console in the Obsolete Hub.",
             weight=8,
             misc_id="decrypt"
         )
-        self.rooms["d0"].add_item(decryptor)
+        self.rooms["d0"].add_item(decrypter)
 
     def place_puzzles(self):
         """
@@ -489,7 +477,8 @@ The path leads you back, back to the real world.
             hp=800,
             max_hp=800,
             attack_power=200,
-            reward=None
+            reward=Weapon("code_breaker", "A powerful system weapon designed to destroy all data.", weight=32, damage=1000),
+            blocks_exit="south"
         )
         self.rooms["c0"].add_monster(echo_shade)
 
@@ -513,8 +502,9 @@ The path leads you back, back to the real world.
             description="A ghost formed from corrupted logs and broken memories.",
             hp=700,
             max_hp=700,
-            attack_power=135,
-            reward=None
+            attack_power=350,
+            reward=Misc("origin_gatekeeper.log", "A corrupted log revealing the origins of the gatekeeper.", weight=4, misc_id="lore3"),
+            blocks_exit="north"
         )
         self.rooms["d0"].add_monster(memory_phantom)
 

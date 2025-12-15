@@ -1,4 +1,5 @@
 import curses
+import time
 
 
 class TextUI:
@@ -9,6 +10,7 @@ class TextUI:
     SEPARATOR_LENGTH = 90
     HUD_HEIGHT = 1
     BOTTOM_MARGIN = 5  # Space reserved for logs and input
+    TYPING_SPEED = 0.03  # Seconds per character (adjustable)
 
     def __init__(self):
         self.stdscr = None
@@ -18,6 +20,9 @@ class TextUI:
         self.hud_y = None
         self.room_start_y = 1
         self.log_y = 0
+
+        # Typing animation toggle
+        self.typing_enabled = True
 
     def start(self):
         """Initialize the curses screen and configure settings."""
@@ -147,7 +152,7 @@ class TextUI:
         self.stdscr.refresh()
 
     def draw_hud(self, player):
-        """Draw the heads-up display with player stats."""
+        """Draw the heads-up display with player stats, centered."""
         h, w = self.get_screen_size()
 
         # Build HUD components
@@ -163,27 +168,72 @@ class TextUI:
 
         hud_text = f"{hp}   {med}   {cap}   {atk}   {wpn}"
 
-        # Clear and redraw HUD line
+        # Clear HUD line
         self.stdscr.move(self.hud_y, 0)
         self.stdscr.clrtoeol()
-        self.safe_addstr(self.hud_y, 0, hud_text, w - 1)
+
+        # Calculate centered x position and draw HUD
+        hud_length = len(hud_text)
+        x = max(0, (w - hud_length) // 2)
+        self.safe_addstr(self.hud_y, x, hud_text, w - x)
 
         self.stdscr.refresh()
 
-    def print(self, text):
-        """Print text to the log area, with automatic overflow handling."""
+    def print(self, text, typing=None):
+        """
+        Print text to the log area with optional typing animation.
+
+        Args:
+            text: Text to print
+            typing: Override typing animation (True/False/None for default)
+        """
         h, w = self.get_screen_size()
         lines = str(text).split("\n")
+
+        # Determine if typing animation should be used
+        use_typing = self.typing_enabled if typing is None else typing
 
         for line in lines:
             if self.log_y >= h - 1:
                 self.clear_logs()
                 break
 
-            self.safe_addstr(self.log_y, 0, line, w - 1)
+            if use_typing:
+                # Type out character by character
+                for i, char in enumerate(line):
+                    if i >= w - 1:
+                        break
+                    self.safe_addstr(self.log_y, i, char)
+                    self.stdscr.refresh()
+                    time.sleep(self.TYPING_SPEED)
+            else:
+                # Print entire line at once
+                self.safe_addstr(self.log_y, 0, line, w - 1)
+
             self.log_y += 1
 
         self.stdscr.refresh()
+
+    def set_typing_speed(self, speed):
+        """
+        Set the typing animation speed.
+
+        Args:
+            speed: Seconds per character (e.g., 0.05 for slower, 0.01 for faster)
+        """
+        self.TYPING_SPEED = speed
+
+    def toggle_typing(self, enabled=None):
+        """
+        Enable or disable typing animation.
+
+        Args:
+            enabled: True to enable, False to disable, None to toggle
+        """
+        if enabled is None:
+            self.typing_enabled = not self.typing_enabled
+        else:
+            self.typing_enabled = enabled
 
     def clear_logs(self):
         """Clear the log area below the HUD."""

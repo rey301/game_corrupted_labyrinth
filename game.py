@@ -6,6 +6,7 @@ from text_ui import TextUI
 from weapon import Weapon
 from consumable import Consumable
 from misc import Misc
+import time
 
 class Game:
     """
@@ -53,9 +54,29 @@ class Game:
         # initialise world and intro messages
         start_room = self.world.build()
         self.player.set_current_room(start_room)
-        self.ui.print("Welcome to the Labyrinth. \nType HELP to see available commands.\n")
+        self.ui.print("""
+> INITIALISING SESSION...
+> LOADING USER MEMORY.............FAILED
+> CHECKSUM ERROR IN SECTOR 0
+
+[ WARNING ]
+Your consciousness has been loaded into an unstable system.
+
+Fragments of memory are missing.
+Paths are corrupted.
+Something hostile is running in the background.
+
+You don’t remember how you got here.
+You don’t remember who you were.
+
+You only know one thing:
+YOU MUST REACH THE KERNEL
+AND ESCAPE BEFORE THE SYSTEM COLLAPSES""")
+        time.sleep(5)
         self.ui.draw_room(self.player.current_room.describe())
         self.ui.draw_hud(self.player)
+        time.sleep(2)
+        self.ui.print("Press '/' for available commands.")
 
         # main game loop
         while not self.game_over and self.player.is_alive():
@@ -192,8 +213,7 @@ class Game:
                 self.ui.clear_logs()
                 if key == "1":
                     if room.name == "obsolete_hub" and not room.kernel_unlock:
-                        self.ui.print("You need the decrypter to find the door to"
-                                      "\nthe System Kernel.")
+                        self.ui.print("You need the activate the decrypter.")
                     else:
                         # use the item
                         self.do_use(key_item)
