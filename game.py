@@ -7,9 +7,7 @@ from text_ui import TextUI
 from world_builder import WorldBuilder
 from weapon import Weapon
 from consumable import Consumable
-from upgrade import Upgrade
 from key import Key
-from lore import Lore
 
 
 class Game:
@@ -661,19 +659,41 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
     def do_solve(self):
         """Attempt to solve the puzzle in the current room."""
         room = self.player.current_room
+        puzzle = room.puzzle
 
-        if room.puzzle is None:
+        if puzzle is None:
             self.ui.print("There is no puzzle here.")
             return
 
-        message, reward = room.puzzle.attempt(self.ui)
-        self.ui.print(message)
+        if puzzle.solved:
+            self.ui.print("You have already solved this puzzle.")
+
+        self.ui.print(f"{puzzle.name} opening", end="")
+        for i in range(3):
+            time.sleep(0.5)
+            self.ui.print(".", end="")
+        self.ui.print("")
+        time.sleep(0.5)
+        while not puzzle.solved:
+            self.ui.clear_logs()
+            self.ui.print(puzzle.prompt)
+            answer = self.ui.get_inp()# retrieve answer from user
+
+            if answer == puzzle.solution:
+                puzzle.solved = True
+                self.ui.clear_logs()
+                self.ui.print("Engram has broken, it fizzles into air.")
+            else:
+                self.ui.print("Incorrect. Try again.")
+            time.sleep(0.5)
+
+        self.ui.clear_logs()
 
         if room.puzzle.solved:
             room.remove_puzzle()
 
-        if reward:
-            self._handle_puzzle_reward(reward, room)
+        if puzzle.reward:
+            self._handle_puzzle_reward(puzzle.reward, room)
 
     def _handle_puzzle_reward(self, reward, room):
         """Handle reward from solving a puzzle."""

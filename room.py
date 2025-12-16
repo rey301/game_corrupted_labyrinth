@@ -4,7 +4,6 @@ Create a room described "description". Initially, it has no exits. The
 """
 
 from entity import Entity
-import time
 
 class Room(Entity):
     """A room in the game."""

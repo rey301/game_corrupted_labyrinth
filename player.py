@@ -52,7 +52,6 @@ class Player(Character):
             new = item.damage
 
             if new > current:
-                ui.clear_logs()
                 ui.print(f"{item.name} is stronger than your current attack power. Equip?")
                 ui.print("[1] Yes\n[2] No")
 
