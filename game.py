@@ -3,12 +3,13 @@ import time
 
 from entities.characters.player import Player
 from systems.inventory import Inventory
-from text_ui import TextUI
+from systems.text_ui import TextUI
 from world.world_builder import WorldBuilder
 from entities.items.key import Key
 from systems.combat import Combat
 from systems.menu import Menu
-from systems.command import Command
+from systems.input_handler import InputHandler
+from systems.solver import Solver
 
 
 class Game:
@@ -34,14 +35,19 @@ class Game:
         self.world = WorldBuilder()
         self.game_over = False
         self.menu = Menu(self.ui, self)
-        self.command = Command(self)
+        self.input_handler = InputHandler(self)
         self.inventory = Inventory(self.ui, self)
+        self.solver = Solver(self.ui, self.player, self)
+        self.pause = False
 
     def run(self):
         """Entry point for the game. Handles UI lifecycle safely."""
         self.ui.start()
         try:
-            self.play()
+            result = self.play()
+            if result:
+                return result
+
             if self.game_over and not self.player.is_alive():
                 return self.menu.game_over()
             return "quit"
@@ -52,10 +58,23 @@ class Game:
         """Main game loop."""
         self._initialize_game()
 
-        while not self.game_over and self.player.is_alive():
+        while not self.game_over:
+            # Check for pause BEFORE getting new input
+            if self.pause:
+                # Trigger the pause menu
+                action = self.menu.pause()
+
+                # Handle the menu's return value
+                if action == "restart":
+                    return "restart"  # Exit play immediately to restart
+                elif action == "quit":
+                    return "quit"  # Exit play immediately to quit
+                # If action is None, we simply loop again (Resume)
+
             self.ui.draw_hud(self.player)
             key = self.ui.get_key()
-            self.command.handle(key)
+            self.input_handler.handle(key)
+        return None
 
     def _initialize_game(self):
         """Set up the game world and display intro."""
@@ -252,7 +271,6 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         selections = self.display_item_menu(room.items, "Pick an item:")
 
         key = self.wait_for_valid_key()
-
         if key == "ESC":
             self.menu.pause()
 
@@ -281,6 +299,26 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
 
         return selections
 
+    def heal_player(self):
+        """Use equipped medical item to heal player."""
+        if not self.player.equipped_med:
+            self.ui.print("You don't have any meds equipped!")
+            return False
+
+        med = self.player.equipped_med
+
+        if self.player.hp == self.player.max_hp:
+            self.ui.print("You are at max hp!")
+            return False
+
+        msg, flag = med.use(self.player)
+        self.ui.print(f"You use {med.name}. {msg}")
+
+        if flag == "remove":
+            self.ui.print("Med charges depleted!")
+            self.ui.print(self.player.remove_item(med))
+        return True
+
     # __combat__
 
     def do_fight(self, monster_name):
@@ -296,25 +334,28 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
             return
 
         monster = room.monsters[monster_name]
-        battle = Combat(self.ui, self.player, monster)
+        battle = Combat(self.ui, self.player, monster, self)
         battle.start()
 
         self.handle_combat_end(monster, self.player.current_room)
 
     def handle_combat_end(self, monster, room):
         """Handle post-combat rewards and consequences."""
+        time.sleep(2)
+        self.ui.clear_logs()
+
         if monster.hp == 0:
             self.ui.print(f"{monster.name} has fallen.")
-            time.sleep(2)
-            self.ui.clear_logs()
             self.handle_monster_reward(monster, room)
             room.remove_monster(monster)
 
         if self.player.hp == 0:
-            self.ui.print(f"{monster.name} delivers a final blow.")
-            self.ui.print("You have been defeated...")
+            self.ui.clear_logs()
+            self.ui.print("The pixels start to fade...")
+            time.sleep(1)
+            self.ui.print("OBJECTIVE FAILED")
             self.game_over = True
-            time.sleep(2)
+            time.sleep(3)
 
     def handle_monster_reward(self, monster, room):
         """Handle monster reward drops."""
@@ -328,27 +369,6 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         if not picked_up:
             room.add_item(monster.reward)
             self.ui.print(f"{monster.reward.name} has fallen to the floor.")
-
-    # item management
-
-    def heal_player(self):
-        """Use equipped medical item to heal player."""
-        if not self.player.equipped_med:
-            self.ui.print("You don't have any meds equipped!")
-            return
-
-        med = self.player.equipped_med
-
-        if self.player.hp == self.player.max_hp:
-            self.ui.print("You are at max hp!")
-            return
-
-        msg, flag = med.use(self.player)
-        self.ui.print(f"You use {med.name}. {msg}")
-
-        if flag == "remove":
-            self.ui.print("Med charges depleted!")
-            self.ui.print(self.player.remove_item(med))
 
     def do_use(self, item):
         """Use an item from player's inventory."""
@@ -373,57 +393,6 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         self.ui.print(self.player.remove_item(item))
         room.add_item(item)
         self.ui.print(f"{item.name} has fallen to the floor.")
-
-    # ==================== PUZZLE SYSTEM ====================
-
-    def do_solve(self):
-        """Attempt to solve the puzzle in the current room."""
-        room = self.player.current_room
-        puzzle = room.puzzle
-
-        if puzzle is None:
-            self.ui.print("There is no puzzle here.")
-            return
-
-        if puzzle.solved:
-            self.ui.print("You have already solved this puzzle.")
-
-        self.ui.print(f"{puzzle.name} opening", end="")
-        for i in range(3):
-            time.sleep(0.5)
-            self.ui.print(".", end="")
-        self.ui.print("")
-        time.sleep(0.5)
-        while not puzzle.solved:
-            self.ui.clear_logs()
-            self.ui.print(puzzle.prompt)
-            answer = self.ui.get_inp()# retrieve answer from user
-
-            if answer == puzzle.solution:
-                puzzle.solved = True
-                self.ui.clear_logs()
-                self.ui.print("Engram has broken, it fizzles into air.")
-            else:
-                self.ui.print("Incorrect. Try again.")
-            time.sleep(0.5)
-
-        self.ui.clear_logs()
-
-        if room.puzzle.solved:
-            room.remove_puzzle()
-
-        if puzzle.reward:
-            self._handle_puzzle_reward(puzzle.reward, room)
-
-    def _handle_puzzle_reward(self, reward, room):
-        """Handle reward from solving a puzzle."""
-        self.ui.print(f"You have received: {reward.name}")
-        msg, picked_up = self.player.pick_up(reward, ui=self.ui)
-        self.ui.print(msg)
-
-        if not picked_up:
-            room.add_item(reward)
-            self.ui.print(f"{reward.name} has fallen to the floor.")
 
     # ==================== HELP SYSTEM ====================
 

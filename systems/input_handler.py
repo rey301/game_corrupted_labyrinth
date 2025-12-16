@@ -1,6 +1,6 @@
 import curses
 
-class Command:
+class InputHandler:
     def __init__(self, game):
         self.game = game
 
@@ -13,7 +13,7 @@ class Command:
 
         self.actions = {
             "r": game.scan_room,
-            "p": game.do_solve,
+            "p": lambda: game.solver.do_solve(),
             "t": game.take_item,
             "h": game.heal_player,
             "s": lambda: game.inventory.show_player_storage(),
@@ -27,7 +27,7 @@ class Command:
         else:
             self.game.ui.clear_logs()
             if key == "ESC":
-                self.game.menu.pause()
+                self.game.pause = True
                 return
 
             if key in self.movement:

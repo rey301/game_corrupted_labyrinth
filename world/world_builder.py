@@ -420,7 +420,13 @@ and the world began rewriting itself without supervision.
             name="faded_data",
             prompt="A whisper: 'What remains when memory fades?'",
             solution="echo",
-            reward=None  # optional: can spawn lore item if you want
+            reward=Consumable("health_package",
+                              "An extremely large utility that repairs all corruption.\nActivating it restores health to maximum.",
+                              heal=-1,
+                              weight=12,
+                              uses=5,
+                              max_uses=5
+                              )
         )
         self.rooms["c0"].puzzle = puzzle_c0
 

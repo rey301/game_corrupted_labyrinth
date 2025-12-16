@@ -15,9 +15,16 @@ class Consumable(Item):
         :param world: The world that the player is in.
         :return: The amount of hp recovered
         """
+
+
+
         prev_hp = player.hp
-        # Heals player, but caps at max_hp using min()
-        player.hp = min(player.max_hp, player.hp + self.heal)
+        # if a max heal item detected then heal player to maximum
+        if self.heal == -1:
+            player.hp = player.max_hp
+        else:
+            # Heals player, but caps at max_hp using min()
+            player.hp = min(player.max_hp, player.hp + self.heal)
 
         self.uses -= 1
         recover_amount = player.hp - prev_hp

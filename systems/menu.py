@@ -4,6 +4,7 @@ class Menu:
         self.game = game
 
     def pause(self):
+        self.game.pause = True
         self.ui.draw_top(
             "=== SYSTEM PAUSED ===\n\n"
             "[ESC] Resume\n"
@@ -17,13 +18,13 @@ class Menu:
                     self.game.player.current_room,
                     self.game.player
                 )
-                return
+                self.game.pause = False
+                return None
             if key == "r":
-                self.game.restart_game()
-                return
+                self.ui.clear()
+                return "restart"
             if key == "q":
-                self.game.game_over = True
-                return
+                return "quit"
 
     def game_over(self):
         """Display game over menu and handle selection."""
