@@ -10,7 +10,7 @@ class TextUI:
     SEPARATOR_LENGTH = 90
     HUD_HEIGHT = 1
     BOTTOM_MARGIN = 5  # Space reserved for logs and input
-    TYPING_SPEED = 0.03  # Seconds per character (adjustable)
+    TYPING_SPEED = 0.03 # Seconds per character (adjustable)
 
     def __init__(self):
         self.stdscr = None
@@ -211,7 +211,7 @@ class TextUI:
                     self.stdscr.refresh()
 
                     # Check if user pressed a key to skip
-                    if self._check_skip_input():
+                    if self.get_key() == " ":
                         # Print the rest of the line instantly
                         remaining = line[i + 1:w - 1]
                         if remaining:
@@ -336,6 +336,7 @@ class TextUI:
         self.clear()
         self.draw_room(room.description)
         self.draw_hud(player)
+
 
     # Legacy methods (kept for compatibility)
     def input(self, prompt=""):

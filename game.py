@@ -75,6 +75,7 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         self.ui.draw_hud(self.player)
         self.ui.clear_logs()
         self.ui.print("Press '/' for available commands.")
+        self.ui.print("Hint: use arrow keys to move and [R] to scan room.")
 
     # ==================== MENU SYSTEMS ====================
 
@@ -235,7 +236,8 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
 
         while True:
             key = self.ui.get_key()
-
+            if key == "ESC":
+                self.pause_menu()
             # If no key is pressed (and we are in non-blocking mode),
             # get_key returns -1. We must ignore it and keep waiting.
             if key == -1:
@@ -243,10 +245,10 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
 
             # Check for valid item selection
             if key == "1":
+                self.ui.clear_logs()
                 if room.name == "obsolete_hub" and not room.kernel_unlock:
                     self.ui.print("You need to activate the decrypter.")
                 else:
-                    self.ui.clear_logs()
                     self.do_use(key_item)
                     time.sleep(1)
                     self.player.current_room = next_room
@@ -320,6 +322,9 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         while True:
             key = self.ui.get_key()
 
+            if key == "ESC":
+                self.pause_menu()
+
             # If no key is pressed (and we are in non-blocking mode),
             # get_key returns -1. We must ignore it and keep waiting.
             if key == -1:
@@ -346,6 +351,7 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         for i, (item_name, item) in enumerate(items.items(), start=1):
             self.ui.print(f"[{i}] {item_name}")
             selections[str(i)] = item
+        self.ui.print("[B] Back")
 
         return selections
 
@@ -409,6 +415,8 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         while True:
 
             action = self.ui.get_key()
+            if action == "ESC":
+                self.pause_menu()
 
             if action == -1:
                 continue
@@ -571,12 +579,15 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
             self.ui.print(f"[{i}] {name} (W:{item.weight})")
             selections[str(i)] = item
 
-        self.ui.print("[B] Go back")
+        self.ui.print("[B] Back")
         self.ui.print(f"\n[ CAP <{self.player.weight}/{self.player.max_weight}> ]")
 
         # 2. THE FIX: Loop specifically for this menu
         while True:
             key = self.ui.get_key()
+
+            if key == "ESC":
+                self.pause_menu()
 
             # If no key is pressed (and we are in non-blocking mode),
             # get_key returns -1. We must ignore it and keep waiting.
@@ -604,10 +615,13 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
 
         for key, label, _ in actions:
             self.ui.print(f"[{key}] {label}")
-        self.ui.print("[B] Go back")
+        self.ui.print("[B] Back")
 
         while True:
             choice = self.ui.get_key()
+
+            if choice == "ESC":
+                self.pause_menu()
 
             if choice == -1:
                 continue
