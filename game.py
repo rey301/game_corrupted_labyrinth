@@ -9,6 +9,7 @@ from weapon import Weapon
 from consumable import Consumable
 from upgrade import Upgrade
 from key import Key
+from lore import Lore
 
 
 class Game:
@@ -526,38 +527,15 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
 
     def do_use(self, item):
         """Use an item from player's inventory."""
-        if item.name not in self.player.storage:
-            self.ui.print("You don't have that item.")
-            return
 
-        # Weapons can't be used, only equipped
-        if isinstance(item, Weapon):
-            self.ui.print(f"You can't 'use' {item.name}. Try equipping it instead.")
-            return
+        result, flag = item.use(player=self.player, room=self.player.current_room)
 
-        # Consumables heal the player
-        if isinstance(item, Consumable):
-            if self.player.hp == self.player.max_hp:
-                self.ui.print("You are at max hp!")
-            else:
-                healed, _ = item.use(self.player)
-                self.ui.print(f"You use {item.name}. {healed}")
-                self.ui.print(self.player.remove_item(item.name))
-            return
-
-        # Key items
-        if isinstance(item, Key):
-            result, flag = item.use(room=self.player.current_room)
-
-            if result:
-                self.ui.print(result)
-                if flag == "remove":
-                    self.ui.print(self.player.remove_item(item))
-            else:
-                self.ui.print(f"You can't use {item.name} here.")
-            return
-
-        self.ui.print("Nothing happens.")
+        if result:
+            self.ui.print(result)
+            if flag == "remove":
+                self.ui.print(self.player.remove_item(item))
+        else:
+            self.ui.print(f"You can't use {item.name} here.")
 
     def do_drop(self, item):
         """Drop an item from inventory into the current room."""
