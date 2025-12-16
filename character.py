@@ -14,13 +14,6 @@ class Character(Entity):
         """
         return self.hp > 0
 
-    def take_damage(self, amount):
-        """
-            Reduce the amount of hp by a given amount.
-        :param amount: Damage dealt.
-        :return: None
-        """
-
     def attack(self, target):
         """
             Perform attack on another character.

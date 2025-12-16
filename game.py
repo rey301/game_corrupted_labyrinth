@@ -7,7 +7,8 @@ from text_ui import TextUI
 from world_builder import WorldBuilder
 from weapon import Weapon
 from consumable import Consumable
-from misc import Misc
+from upgrade import Upgrade
+from key import Key
 
 
 class Game:
@@ -182,7 +183,7 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         room = self.player.current_room
 
         if direction not in room.exits:
-            self.ui.print("You can't go that way!")
+            self.ui.print("You can't go that way!", False)
             return
 
         next_room = room.get_exit(direction)
@@ -263,7 +264,7 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
     def _find_key_for_lock(self, lock_id):
         """Find a key item matching the lock ID in player's inventory."""
         for item in self.player.storage.values():
-            if isinstance(item, Misc) and item.misc_id == lock_id:
+            if isinstance(item, Key) and item.key_id == lock_id:
                 return item
         return None
 
@@ -277,37 +278,45 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
             self.ui.print("The room reveals nothing unusual.")
             return
 
-        lines = ["Scanning...\n"]
+        self.ui.print("Scanning", end="")
+        for i in range(3):
+            time.sleep(0.5)
+            self.ui.print(".", end="")
+
+        self.ui.print("\n", False)
+        time.sleep(0.5)
 
         # Display items
         if room.items:
-            lines.append("[ Items Detected ]")
+            self.ui.print("[ Items Detected ]", False)
             for item_name in room.items:
-                lines.append(f" - {item_name}")
-            lines.append("")
+                self.ui.print(f" - {item_name}")
+            self.ui.print("")
         else:
-            lines.append("[ No Items Detected ]\n")
+            self.ui.print("\n[ No Items Detected ]\n", False)
+            self.ui.print("")
 
         # Display monsters
         if room.monsters:
-            lines.append("[ Hostile Entities ]")
+            self.ui.print("[ Hostile Entities ]", False)
             for monster in room.monsters.values():
-                lines.append(f" - {monster.name}")
-            lines.append("")
+                self.ui.print(f" - {monster.name}")
+            self.ui.print("")
         else:
-            lines.append("[ No Hostiles Present ]\n")
+            self.ui.print("[ No Hostiles Present ]\n", False)
+            self.ui.print("")
 
         # Display puzzle
         if room.puzzle:
-            lines.append("[ Corrupted Engram Detected ]")
-            lines.append(f" - {room.puzzle.name}\n")
+            self.ui.print("[ Corrupted Engram Detected ]", False)
+            self.ui.print(f" {room.puzzle.name}\n")
+            self.ui.print("")
 
         # Check for phantom key
         if "phantom_key" in self.player.storage:
-            lines.append("[ Spatial Anomaly Detected ]")
-            lines.append("A faint doorway signature is flickering here...\n")
-
-        self.ui.print("\n".join(lines))
+            self.ui.print("[ Spatial Anomaly Detected ]", False)
+            self.ui.print("A faint doorway signature is flickering here...\n")
+            self.ui.print("")
 
     def take_item(self):
         """Pick up an item from the current room."""
@@ -536,9 +545,9 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
                 self.ui.print(self.player.remove_item(item.name))
             return
 
-        # Misc items have special uses
-        if isinstance(item, Misc):
-            result, flag = item.use(self.player, self.player.current_room, self.world)
+        # Key items
+        if isinstance(item, Key):
+            result, flag = item.use(room=self.player.current_room)
 
             if result:
                 self.ui.print(result)
@@ -711,7 +720,7 @@ Player:
 
 Item Interaction:
   [T]                - Pick up an item in the room
-  [R]                - List all entities in the room
+  [R]                - Scan all entities in the room
 
 Puzzles:
   [P]                - Attempt to solve the room's puzzle

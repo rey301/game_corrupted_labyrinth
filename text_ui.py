@@ -20,6 +20,7 @@ class TextUI:
         self.hud_y = None
         self.room_start_y = 1
         self.log_y = 0
+        self.log_x = 0
 
         # Typing animation toggle
         self.typing_enabled = True
@@ -180,56 +181,83 @@ class TextUI:
 
         self.stdscr.refresh()
 
-    def print(self, text, typing=None):
+    def print(self, text, typing=None, end="\n"):
         """
-        Print text to the log area with optional typing animation.
-        User can press any key to skip the animation.
-
         Args:
             text: Text to print
-            typing: Override typing animation (True/False/None for default)
+            typing: Override typing animation
+            end: Character to print at the end (default "\n").
+                 Pass end="" to stay on the same line.
         """
         h, w = self.get_screen_size()
+
+        # We don't split by newline immediately if we want to support partial lines.
+        # Instead, we handle the text as a stream or simple line for this implementation.
+        # To keep it compatible with your logic, we will assume 'text' might have newlines.
         lines = str(text).split("\n")
 
-        # Determine if typing animation should be used
         use_typing = self.typing_enabled if typing is None else typing
 
-        for line in lines:
+        for line_idx, line in enumerate(lines):
+            # clear logs if we hit the bottom
             if self.log_y >= h - 1:
                 self.clear_logs()
+                self.log_y = 0
+                self.log_x = 0
                 break
 
+            # Calculate available width on current line
+            # If we are starting a new line, log_x is 0. If appending, it's > 0.
+            available_w = w - self.log_x
+
             if use_typing:
-                # Type out character by character with skip detection
                 skipped = False
+                # Offset the character index by the current log_x position
                 for i, char in enumerate(line):
-                    if i >= w - 1:
+                    if i >= available_w - 1:
                         break
 
-                    self.safe_addstr(self.log_y, i, char)
+                    # Print at log_y, log_x + i
+                    self.safe_addstr(self.log_y, self.log_x + i, char)
                     self.stdscr.refresh()
 
-                    # Check if user pressed a key to skip
                     if self.get_key() == " ":
-                        # Print the rest of the line instantly
-                        remaining = line[i + 1:w - 1]
+                        remaining = line[i + 1:available_w - 1]
                         if remaining:
-                            self.safe_addstr(self.log_y, i + 1, remaining)
+                            self.safe_addstr(self.log_y, self.log_x + i + 1, remaining)
                             self.stdscr.refresh()
                         skipped = True
                         break
 
                     time.sleep(self.TYPING_SPEED)
 
-                # If animation was skipped, disable typing for remaining lines
                 if skipped:
                     use_typing = False
             else:
-                # Print entire line at once
-                self.safe_addstr(self.log_y, 0, line, w - 1)
+                # Print entire line starting at self.log_x
+                # ensure we don't overflow width
+                self.safe_addstr(self.log_y, self.log_x, line, w - 1)
 
-            self.log_y += 1
+            # Update log_x based on the length of text we just printed
+            self.log_x += len(line)
+
+            # Handle Newlines
+            # If this is NOT the last segment of the text, it implies an explicit \n in the input
+            if line_idx < len(lines) - 1:
+                self.log_y += 1
+                self.log_x = 0
+
+            # If this IS the last segment, check the 'end' parameter
+            elif line_idx == len(lines) - 1:
+                if end == "\n":
+                    self.log_y += 1
+                    self.log_x = 0
+                else:
+                    # If end is not a newline (e.g., ""), we stay on this line.
+                    # Just add the 'end' char if it exists and update X
+                    if end:
+                        self.safe_addstr(self.log_y, self.log_x, end)
+                        self.log_x += len(end)
 
         self.stdscr.refresh()
 
@@ -243,7 +271,7 @@ class TextUI:
             pass
         return False
 
-    def wait_for_key(self, prompt="Press any key to continue..."):
+    def wait_for_key(self, prompt="Press SPACE to continue..."):
         """
         Display a message and wait for user to press any key.
 
@@ -361,3 +389,13 @@ class TextUI:
     def get_inp(self, prompt="> "):
         """Legacy method - alias for get_text()."""
         return self.get_text(prompt)
+
+        while True:
+            game = Game()
+            result = game.run()
+
+            if result == "quit":
+                break
+
+    if __name__ == "__main__":
+        main()

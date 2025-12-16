@@ -3,7 +3,9 @@ from puzzle import Puzzle
 from monster import Monster
 from weapon import Weapon
 from consumable import Consumable
-from misc import Misc
+from upgrade import Upgrade
+from key import Key
+from lore import Lore
 
 class WorldBuilder:
     def __init__(self):
@@ -299,46 +301,68 @@ The path leads you back, back to the real world.
 
         # b items
         # dead pixels
-        first_corruption = Misc(
+        first_corruption = Lore(
             "first_corruption.log",
             "A corrupted monster's log containing forgotten memories.",
             weight=4,
-            misc_id="lore2"
+            content="""Memory Fragment Recovered: The First Corruption
+
+Corruption log: Severity Red.
+
+An unknown signal entered the simulation.
+A user connection was forcibly hijacked.
+Subsystems responded by sealing pathways and
+creating defensive entities to contain the breach.
+
+The system was trying to protect you…
+or protect itself from you.
+            """
         )
         self.rooms["b3"].add_item(first_corruption)
 
         # data well
-        log_module = Misc(
-            "log_module",
+        scan_module = Upgrade(
+            "scan_module",
             "Allows you to read corrupted logs and system terminals.",
             weight=8,
-            misc_id="log"
+            upgrade_type="scan"
         )
-        data_chip = Misc(
+        data_chip = Lore(
             "data_chip.log",
             "A broken memory chip containing a fragment of origins.",
             weight=4,
-            misc_id="lore1"
+            content="""Memory Fragment Recovered: The Fall of the System
+
+Users once navigated freely here.
+This labyrinth was never meant to imprison —
+it was a learning environment,
+a controlled simulation for exploring unstable data structures.
+
+Then something changed.
+The system kernel fractured,
+and the world began rewriting itself without supervision.
+            """
+
         )
-        self.rooms["b1"].add_item(log_module)
+        self.rooms["b1"].add_item(scan_module)
         self.rooms["b1"].add_item(data_chip)
 
         # corrupted arsenal
-        backpack_upgrade = Misc(
+        backpack_upgrade = Upgrade(
             "storage_expansion",
             "Upgrades your inventory capacity using adaptive memory compression.",
             weight=8,
-            misc_id="bag_upgrade"
+            upgrade_type="storage"
         )
         self.rooms["b2"].add_item(backpack_upgrade)
 
         # d tier items
         # fractured archive
-        decrypter = Misc(
+        decrypter = Key(
             "decrypter",
             "Required to operate the final console in the Obsolete Hub.",
             weight=8,
-            misc_id="decrypt"
+            key_id="decrypt"
         )
         self.rooms["d0"].add_item(decrypter)
 
@@ -352,11 +376,11 @@ The path leads you back, back to the real world.
             name="reconstruction",
             prompt="Reconstruct the missing byte: 101_01 → what number completes the sequence?",
             solution="0",
-            reward=Misc(
+            reward=Key(
                 "phantom_key",
                 "A strange shard that faints in and out of existence.",
                 weight=4,
-                misc_id="unlock_c0"
+                key_id="unlock_c0"
             )
         )
         self.rooms["a1"].puzzle = puzzle_a1
@@ -405,11 +429,21 @@ The path leads you back, back to the real world.
             name="kernel_bypass",
             prompt="Enter the decryption key: XOR(7, 12) = ?",
             solution="11",
-            reward=Misc(
+            reward=Lore(
                 "fractured.log",
                 "A corrupted log showing pieces of the system's history.",
                 weight=4,
-                misc_id="lore4"
+                content="""Memory Fragment Recovered: The Truth
+
+The labyrinth was not corrupted by accident.
+Someone rewrote the rules.
+Someone wanted you trapped.
+
+And the Gatekeeper…
+was created from your own user profile.
+
+It was built to keep you from remembering why.
+                """
             )  # unlocks passage to System Kernel
         )
         self.rooms["d1"].puzzle = puzzle_d1
@@ -426,11 +460,11 @@ The path leads you back, back to the real world.
             hp=450,
             max_hp=450,
             attack_power=150,
-            reward=Misc(
+            reward=Key(
                 "data_key",
                 "A glowing access shard designed to unlock the Data Well gateway.",
                 weight=8,
-                misc_id="4rch1ve"
+                key_id="4rch1ve"
             ),
             blocks_exit="east"
         )
@@ -443,11 +477,11 @@ The path leads you back, back to the real world.
             hp=650,
             max_hp=650,
             attack_power=160,
-            reward=Misc(
+            reward=Upgrade(
                 "integrity_recompiler",
                 description="An ancient subsystem tool once used by the system administrators. It rewrites part of your core, patching deep corruption and increases your maximum health.",
                 weight=16,
-                misc_id="health_upgrade"
+                upgrade_type="health"
             ),
             blocks_exit="south"
         )
@@ -491,7 +525,7 @@ The path leads you back, back to the real world.
             hp=1500,
             max_hp=1500,
             attack_power=500,
-            reward=Misc("kernel_key", "A critical system key dropped by the Gatekeeper.", weight=16, misc_id="k3rn3l"),
+            reward=Key("kernel_key", "A critical system key dropped by the Gatekeeper.", weight=16, key_id="k3rn3l"),
             blocks_exit="east"
         )
         self.rooms["c2"].add_monster(gatekeeper)
@@ -503,7 +537,22 @@ The path leads you back, back to the real world.
             hp=700,
             max_hp=700,
             attack_power=350,
-            reward=Misc("origin_gatekeeper.log", "A corrupted log revealing the origins of the gatekeeper.", weight=4, misc_id="lore3"),
+            reward=Lore("origin_gatekeeper.log",
+                        "A corrupted log revealing the origins of the gatekeeper.",
+                        weight=4,
+                        content="""Memory Fragment Recovered: Origin of the Gatekeeper
+
+Architect Note:
+If the kernel is ever compromised,
+an autonomous guardian will be instantiated.
+
+It will not understand trust.
+It will not negotiate.
+
+It will defend the kernel until the system resets…
+or until it is destroyed.
+                        """
+                        ),
             blocks_exit="north"
         )
         self.rooms["d0"].add_monster(memory_phantom)
