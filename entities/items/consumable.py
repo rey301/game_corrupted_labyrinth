@@ -1,4 +1,4 @@
-from item import Item
+from entities.item import Item
 
 class Consumable(Item):
     def __init__(self, name, description, weight, heal, uses, max_uses):

@@ -1,4 +1,4 @@
-from item import Item
+from entities.item import Item
 
 class Upgrade(Item):
     def __init__(self, name, description, weight, upgrade_type):

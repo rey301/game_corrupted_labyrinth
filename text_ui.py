@@ -10,7 +10,7 @@ class TextUI:
     SEPARATOR_LENGTH = 90
     HUD_HEIGHT = 1
     BOTTOM_MARGIN = 5  # Space reserved for logs and input
-    TYPING_SPEED = 0.03 # Seconds per character (adjustable)
+    TYPING_SPEED = 0.03 # Seconds per characters (adjustable)
 
     def __init__(self):
         self.stdscr = None
@@ -212,7 +212,7 @@ class TextUI:
 
             if use_typing:
                 skipped = False
-                # Offset the character index by the current log_x position
+                # Offset the characters index by the current log_x position
                 for i, char in enumerate(line):
                     if i >= available_w - 1:
                         break
@@ -290,7 +290,7 @@ class TextUI:
         Set the typing animation speed.
 
         Args:
-            speed: Seconds per character (e.g., 0.05 for slower, 0.01 for faster)
+            speed: Seconds per characters (e.g., 0.05 for slower, 0.01 for faster)
         """
         self.TYPING_SPEED = speed
 

@@ -1,10 +1,10 @@
-from character import Character
-from weapon import Weapon
-from consumable import Consumable
+from entities.character import Character
+from entities.items.weapon import Weapon
+from entities.items.consumable import Consumable
 
 class Player(Character):
     """
-    The user-controlled character, who can move through rooms,
+    The user-controlled characters, who can move through rooms,
     use items, pick up rewards, and engage in combat with monsters.
     """
 

@@ -1,11 +1,11 @@
-from room import Room
-from puzzle import Puzzle
-from monster import Monster
-from weapon import Weapon
-from consumable import Consumable
-from upgrade import Upgrade
-from key import Key
-from lore import Lore
+from world.room import Room
+from entities.puzzle import Puzzle
+from entities.characters.monster import Monster
+from entities.items.weapon import Weapon
+from entities.items.consumable import Consumable
+from entities.items.upgrade import Upgrade
+from entities.items.key import Key
+from entities.items.lore import Lore
 
 class WorldBuilder:
     def __init__(self):

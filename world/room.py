@@ -3,7 +3,7 @@ Create a room described "description". Initially, it has no exits. The
 'description' is something like 'kitchen' or 'an open court yard'.
 """
 
-from entity import Entity
+from entities.entity import Entity
 
 class Room(Entity):
     """A room in the game."""

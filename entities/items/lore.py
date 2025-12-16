@@ -1,4 +1,4 @@
-from item import Item
+from entities.item import Item
 
 class Lore(Item):
     def __init__(self, name, description, weight, content, req_scanner=False):

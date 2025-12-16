@@ -1,4 +1,4 @@
-from entity import Entity
+from entities.entity import Entity
 
 class Character(Entity):
     def __init__(self, name, description, hp, max_hp, attack_power):
@@ -9,15 +9,15 @@ class Character(Entity):
 
     def is_alive(self):
         """
-            Returns whether the character's hp is < 0
-        :return: True if character's hp is > 0, False otherwise.
+            Returns whether the characters's hp is < 0
+        :return: True if characters's hp is > 0, False otherwise.
         """
         return self.hp > 0
 
     def attack(self, target):
         """
-            Perform attack on another character.
-        :param target: The character being attacked.
+            Perform attack on another characters.
+        :param target: The characters being attacked.
         :return: Damage dealt as an integer
         """
         damage_dealt = self.attack_power
