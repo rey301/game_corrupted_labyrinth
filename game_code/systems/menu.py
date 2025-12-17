@@ -7,7 +7,7 @@ class Menu:
         self.game = game
 
     def pause_menu(self):
-        self.game.pause_menu = True
+        self.game.pause = True
         self.ui.draw_top(
             "=== SYSTEM PAUSED ===\n\n"
             "[ESC] Resume\n"
@@ -21,7 +21,7 @@ class Menu:
                     self.game.player.current_room,
                     self.game.player
                 )
-                self.game.pause_menu = False
+                self.game.pause = False
                 return None
             if key == "r":
                 self.ui.clear()
