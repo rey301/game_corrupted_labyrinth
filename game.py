@@ -105,7 +105,7 @@ class Game:
         :return: None
         """
         if self.movement.try_move(self.player, direction):
-            logging.info(f"Player moved {direction}")
+            logging.info(f"Player moved {direction} to {self.player.current_room.name}")
             self.ui.clear()
             self.ui.draw_room(self.player.current_room.describe())
 
@@ -126,6 +126,8 @@ class Game:
         if not room.items and not room.monsters and not room.puzzle:
             self.ui.clear_logs()
             self.ui.display_text("The room reveals nothing unusual.")
+            time.sleep(1)
+            self.ui.clear_logs()
             return
 
         # display items
@@ -198,6 +200,8 @@ class Game:
                 self.ui.display_text(f"{chosen_item.name} added to storage.")
                 self.ui.display_text(f"Storage: {prev_weight} + {chosen_item.weight} --> "
                                      f"{self.player.weight}/{self.player.max_weight} bytes")
+                time.sleep(1)
+                self.ui.clear_logs()
                 logging.info(f"Player picked up {chosen_item.name}")
 
                 prompt_msg = None
@@ -208,8 +212,6 @@ class Game:
                     prompt_msg = "You don't have any meds currently equipped. Equip?"
 
                 if prompt_msg:
-                    time.sleep(1)
-                    self.ui.clear_logs()
                     self.ui.display_text(prompt_msg)
                     self.ui.display_text("[1] Yes\n[2] No")
 
