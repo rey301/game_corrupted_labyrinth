@@ -17,8 +17,8 @@ class InputHandler:
             "t": game.take_item,
             "h": game.heal_player,
             "s": lambda: game.inventory.show_player_storage(),
-            "i": lambda: game.ui.print(game.player.show_stats()),
-            "/": game.print_help,
+            "i": lambda: game.ui.display_text(game.player.show_stats()),
+            "/": game.ui.print_help,
         }
 
     def handle(self, key):
@@ -38,4 +38,5 @@ class InputHandler:
                 self.actions[key]()
                 return
 
-            self.game.ui.print("Unknown command.\nPress '/' for available commands.")
+            self.game.ui.display_text("Unknown command.\nPress '/' for available commands.")
+

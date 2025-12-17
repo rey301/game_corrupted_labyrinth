@@ -12,20 +12,20 @@ class Inventory:
         storage = self.game.player.storage
 
         if not storage:
-            self.ui.print("Your storage is empty.")
+            self.ui.display_text("Your storage is empty.")
             return
 
         selections = {}
-        self.ui.print("[ STORAGE ]\n")
+        self.ui.display_text("[ STORAGE ]\n")
 
         for i, (name, item) in enumerate(storage.items(), start=1):
-            self.ui.print(f"[{i}] {name} (W:{item.weight})")
+            self.ui.display_text(f"[{i}] {name} (W:{item.weight})")
             selections[str(i)] = item
 
-        self.ui.print("[B] Back")
-        self.ui.print(f"\n[ CAP <{self.game.player.weight}/{self.game.player.max_weight}> ]")
+        self.ui.display_text("[B] Back")
+        self.ui.display_text(f"\n[ CAP <{self.game.player.weight}/{self.game.player.max_weight}> ]")
 
-        key = self.game.wait_for_valid_key()
+        key = self.game.menu.wait_for_key()
 
         if key == "ESC":
             self.game.menu.pause()
@@ -44,16 +44,16 @@ class Inventory:
         """Display item details and available actions."""
         self.ui.clear_logs()
 
-        self.ui.print(f"[ {item.name} ]")
-        self.ui.print(f"{item.description}\n")
+        self.ui.display_text(f"[ {item.name} ]")
+        self.ui.display_text(f"{item.description}\n")
 
         actions = self.get_item_actions(item)
 
         for key, label, _ in actions:
-            self.ui.print(f"[{key}] {label}")
-        self.ui.print("[B] Back")
+            self.ui.display_text(f"[{key}] {label}")
+        self.ui.display_text("[B] Back")
 
-        key = self.game.wait_for_valid_key()
+        key = self.game.menu.wait_for_key()
 
         if key == "ESC":
             self.game.menu.pause()
@@ -63,7 +63,7 @@ class Inventory:
                 self.ui.clear_logs()
                 msg = action()
                 if msg:
-                    self.ui.print(msg)
+                    self.ui.display_text(msg)
                 return
             # Check for Exit command
             if key == "b":
@@ -97,6 +97,6 @@ class Inventory:
 
         else:  # Misc items
             actions.append(("1", "Use", lambda: self.game.do_use(item)))
-            actions.append(("2", "Drop", lambda: self.ui.print(player.remove_item(item))))
+            actions.append(("2", "Drop", lambda: self.ui.display_text(player.remove_item(item))))
 
         return actions

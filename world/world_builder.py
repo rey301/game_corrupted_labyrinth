@@ -1,4 +1,4 @@
-from world.room import Room
+from entities.room import Room
 from entities.puzzle import Puzzle
 from entities.characters.monster import Monster
 from entities.items.weapon import Weapon

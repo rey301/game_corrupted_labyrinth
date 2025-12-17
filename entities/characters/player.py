@@ -52,8 +52,8 @@ class Player(Character):
             new = item.damage
 
             if new > current:
-                ui.print(f"{item.name} is stronger than your current attack power. Equip?")
-                ui.print("[1] Yes\n[2] No")
+                ui.display_text(f"{item.name} is stronger than your current attack power. Equip?")
+                ui.display_text("[1] Yes\n[2] No")
 
                 while True:
                     key = ui.get_key()
@@ -67,7 +67,7 @@ class Player(Character):
                     if key == "1":
                         msg = self.equip(item)
                         ui.clear_logs()
-                        ui.print(msg)
+                        ui.display_text(msg)
                         break
                     elif key == "2":
                         ui.clear_logs()
@@ -76,8 +76,8 @@ class Player(Character):
         if isinstance(item, Consumable):
             if self.equipped_med is None:
                 ui.clear_logs()
-                ui.print(f"You don't have any meds currently equipped. Equip?")
-                ui.print("[1] Yes\n[2] No")
+                ui.display_text(f"You don't have any meds currently equipped. Equip?")
+                ui.display_text("[1] Yes\n[2] No")
 
                 while True:
                     key = ui.get_key()
@@ -91,7 +91,7 @@ class Player(Character):
                     if key == "1":
                         msg = self.equip(item)
                         ui.clear_logs()
-                        ui.print(msg)
+                        ui.display_text(msg)
                         break
                     elif key == "2":
                         ui.clear_logs()

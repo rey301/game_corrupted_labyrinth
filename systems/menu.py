@@ -26,7 +26,7 @@ class Menu:
             if key == "q":
                 return "quit"
 
-    def game_over(self):
+    def game_over_menu(self):
         """Display game over menu and handle selection."""
         text = (
             "=== SYSTEM FAILURE ===\n"
@@ -43,3 +43,22 @@ class Menu:
                 return "restart"
             elif key == "q":
                 return "quit"
+
+
+    def display_item_menu(self, items, prompt):
+        """Display numbered menu of items and return selection mapping."""
+        selections = {}
+        self.ui.display_text(prompt)
+
+        for i, (item_name, item) in enumerate(items.items(), start=1):
+            self.ui.display_text(f"[{i}] {item_name}")
+            selections[str(i)] = item
+        self.ui.display_text("[B] Back")
+
+        return selections
+
+    def wait_for_key(self):
+        while True:
+            key = self.ui.get_key()
+            if key != -1:
+                return key

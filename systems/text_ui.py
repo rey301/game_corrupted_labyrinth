@@ -181,7 +181,7 @@ class TextUI:
 
         self.stdscr.refresh()
 
-    def print(self, text, typing=None, end="\n"):
+    def display_text(self, text, typing=None, end="\n"):
         """
         Args:
             text: Text to print
@@ -264,9 +264,11 @@ class TextUI:
     def _check_skip_input(self):
         """Check if user pressed any key (non-blocking)."""
         try:
-            key = self.stdscr.getch()
+            key = self.get_key()
             if key != -1:  # -1 means no key was pressed
                 return True
+            if key == " ":
+                return False
         except:
             pass
         return False
@@ -278,7 +280,7 @@ class TextUI:
         Args:
             prompt: Message to display
         """
-        self.print(f"\n{prompt}", typing=False)
+        self.display_text(f"\n{prompt}", typing=False)
 
         # Set blocking mode temporarily
         self.stdscr.nodelay(False)
@@ -334,7 +336,7 @@ class TextUI:
 
     def get_text(self, prompt="> "):
         """Get a line of text input from the user."""
-        self.print(prompt)
+        self.display_text(prompt)
 
         # --- ENTER TYPING MODE ---
         curses.echo()  # Show typed characters
@@ -390,12 +392,46 @@ class TextUI:
         """Legacy method - alias for get_text()."""
         return self.get_text(prompt)
 
-        while True:
-            game = Game()
-            result = game.run()
+    def print_welcome(self):
+        self.display_text("""> INITIALISING SESSION...
+> LOADING USER MEMORY.............
+> CHECKSUM ERROR IN SECTOR 0
 
-            if result == "quit":
-                break
+[ WARNING ]
+Your consciousness has been loaded into an unstable system.
+
+Fragments of memory are missing.
+Paths are corrupted.
+Something hostile is running in the background.
+
+You don't remember how you got here.
+You don't remember who you were.
+
+You only know one thing:
+YOU MUST REACH THE KERNEL
+AND ESCAPE BEFORE THE SYSTEM COLLAPSES
+        """)
+
+    def print_help(self):
+            """Display all available commands."""
+            self.display_text("""COMMANDS:
+Player:
+  [ARROW KEYS]       - Move to another room
+  [I]                - View player's statistics
+  [S]                - View player's storage
+  [H]                - Heal player if healing item equipped
+
+Item Interaction:
+  [T]                - Pick up an item in the room
+  [R]                - Scan all entities in the room
+
+Puzzles:
+  [P]                - Attempt to solve the room's puzzle
+
+System:
+  [/]                - Show this help message
+  [ESC]              - Pause menu
+            """, False)
 
     if __name__ == "__main__":
         main()

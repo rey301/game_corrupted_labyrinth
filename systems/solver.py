@@ -12,29 +12,29 @@ class Solver:
         puzzle = room.puzzle
 
         if puzzle is None:
-            self.ui.print("There is no puzzle here.")
+            self.ui.display_text("There is no puzzle here.")
             return
 
         if puzzle.solved:
-            self.ui.print("You have already solved this puzzle.")
+            self.ui.display_text("You have already solved this puzzle.")
 
-        self.ui.print(f"{puzzle.name} opening", end="")
+        self.ui.display_text(f"{puzzle.name} opening", end="")
         for i in range(3):
             time.sleep(0.5)
-            self.ui.print(".", end="")
-        self.ui.print("")
+            self.ui.display_text(".", end="")
+        self.ui.display_text("")
         time.sleep(0.5)
         while not puzzle.solved:
             self.ui.clear_logs()
-            self.ui.print(puzzle.prompt)
+            self.ui.display_text(puzzle.prompt)
             answer = self.ui.get_inp()# retrieve answer from user
 
             if answer == puzzle.solution:
                 puzzle.solved = True
                 self.ui.clear_logs()
-                self.ui.print("Engram has broken, it fizzles into air.")
+                self.ui.display_text("Engram has broken, it fizzles into air.")
             else:
-                self.ui.print("Incorrect. Try again.")
+                self.ui.display_text("Incorrect. Try again.")
             time.sleep(0.5)
 
         self.ui.clear_logs()
@@ -47,10 +47,10 @@ class Solver:
 
     def _handle_puzzle_reward(self, reward, room):
         """Handle reward from solving a puzzle."""
-        self.ui.print(f"You have received: {reward.name}")
+        self.ui.display_text(f"You have received: {reward.name}")
         msg, picked_up = self.player.pick_up(reward, ui=self.ui)
-        self.ui.print(msg)
+        self.ui.display_text(msg)
 
         if not picked_up:
             room.add_item(reward)
-            self.ui.print(f"{reward.name} has fallen to the floor.")
+            self.ui.display_text(f"{reward.name} has fallen to the floor.")
