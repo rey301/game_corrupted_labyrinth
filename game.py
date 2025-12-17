@@ -2,7 +2,7 @@ import time
 import logging
 
 from entities.characters.player import Player
-from entities.items.consumable import Consumable
+from entities.items.med import Med
 from entities.items.weapon import Weapon
 from systems.inventory import Inventory
 from systems.text_ui import TextUI
@@ -15,6 +15,7 @@ from systems.movement import Movement
 
 logging.basicConfig(filename="game.log", level=logging.INFO)
 
+
 class Game:
     """
     Main game controller managing game state, player commands, and interactions
@@ -26,7 +27,6 @@ class Game:
     ROOM_DELAY = 2
 
     def __init__(self, ui=None):
-        """Initialize game components."""
         self.player = Player("Lapel", "", 500, 500, 50)
         self.ui = TextUI()
         self.world = WorldBuilder()
@@ -39,8 +39,11 @@ class Game:
         self.movement = Movement(self.ui, self)
 
     def run(self):
-        """Entry point for the game. Handles UI lifecycle safely."""
-        self.ui.start()
+        """
+        Entry point for the game and handles the UI lifecycle safely.
+        :return: The game over menu if the player dies, or a result in which the player can quit or restart the game.
+        """
+        self.ui.start_screen()
         try:
             result = self.play()
             if result:
@@ -48,30 +51,33 @@ class Game:
 
             if self.game_over and not self.player.is_alive():
                 logging.info("Player dies")
-                return self.menu.game_over_menu() # return the menu for when the player dies
+                return self.menu.game_over_menu()  # return the menu for when the player dies
             return "quit"
         finally:
-            self.ui.stop()
+            self.ui.stop_screen()
 
     def play(self):
-        """Main game loop."""
+        """
+        Main game loop that plays the game and constantly checks if the user has paused the game.
+        :return: None
+        """
         self.initialise_game()
 
         while not self.game_over:
-            # Check for pause BEFORE getting new input
+            # check for pause
             if self.pause:
-                # Trigger the pause menu
+                # get pause menu
                 action = self.menu.pause()
                 logging.info("User pauses the game")
 
-                # Handle the menu's return value
+                # handle menu's return value
                 if action == "restart":
                     logging.info("User restarts the game")
-                    return "restart"  # Exit play immediately to restart
+                    return "restart"  # exit the play method to immediately restart the game
                 elif action == "quit":
                     logging.info("User quits the game")
-                    return "quit"  # Exit play immediately to quit
-                # If action is None, we simply loop again (Resume)
+                    return "quit"  # exit the play method to quit the game
+                # if there's no action, the game is resumed
 
             self.ui.draw_hud(self.player)
             key = self.ui.get_key()
@@ -79,46 +85,50 @@ class Game:
         return None
 
     def initialise_game(self):
-        """Set up the game world and display intro."""
+        """
+        Set up the game world and display intro.
+        :return: None
+        """
         start_room = self.world.build()
         self.player.set_current_room(start_room)
         self.ui.print_welcome()
-        self.ui.wait_for_key()
+        self.ui.wait_to_start_game()
         self.ui.draw_room(self.player.current_room.describe())
         self.ui.draw_hud(self.player)
         self.ui.clear_logs()
         self.ui.display_text("Press '/' for available commands.")
         self.ui.display_text("Hint: use arrow keys to move and [R] to scan room.")
 
-    # movement
-
     def move(self, direction):
-        """Move player in the specified direction."""
-        # Move to next room
+        """
+        Move player in the specified direction.
+        :return: None
+        """
         if self.movement.try_move(self.player, direction):
             logging.info(f"Player moved {direction}")
             self.ui.clear()
             self.ui.draw_room(self.player.current_room.describe())
 
-    # room interaction
-
     def scan_room(self):
-        """Scan and display all entities in the current room."""
+        """
+        Scan and display all entities in the current room.
+        :return: None
+        """
         room = self.player.current_room
-
-        if not room.items and not room.monsters and not room.puzzle:
-            self.ui.display_text("The room reveals nothing unusual.")
-            return
 
         self.ui.display_text("Scanning", end="")
         for i in range(3):
             time.sleep(0.5)
             self.ui.display_text(".", end="")
-
         self.ui.display_text("\n", False)
         time.sleep(0.5)
 
-        # Display items
+        if not room.items and not room.monsters and not room.puzzle:
+            self.ui.clear_logs()
+            self.ui.display_text("The room reveals nothing unusual.")
+            return
+
+        # display items
         if room.items:
             self.ui.display_text("[ Items Detected ]", False)
             for item_name in room.items:
@@ -128,7 +138,7 @@ class Game:
             self.ui.display_text("\n[ No Items Detected ]\n", False)
             self.ui.display_text("")
 
-        # Display monsters
+        # display monsters
         if room.monsters:
             self.ui.display_text("[ Hostile Entities ]", False)
             for monster in room.monsters.values():
@@ -138,20 +148,23 @@ class Game:
             self.ui.display_text("[ No Hostiles Present ]\n", False)
             self.ui.display_text("")
 
-        # Display puzzle
+        # display puzzle
         if room.puzzle:
             self.ui.display_text("[ Corrupted Engram Detected ]", False)
             self.ui.display_text(f" {room.puzzle.name}\n")
             self.ui.display_text("")
 
-        # Check for phantom key
+        # check for phantom key
         if "phantom_key" in self.player.storage:
             self.ui.display_text("[ Spatial Anomaly Detected ]", False)
             self.ui.display_text("A faint doorway signature is flickering here...\n")
             self.ui.display_text("")
 
-    def take_item(self):
-        """Pick up an item from the current room."""
+    def display_items(self):
+        """
+        Display items for the player to take in the room.
+        :return: None
+        """
         room = self.player.current_room
 
         if not room.items:
@@ -160,11 +173,20 @@ class Game:
 
         selections = self.menu.display_item_menu(room.items, "Pick an item:")
 
-        key = self.menu.wait_for_key()
+        key = self.ui.wait_for_key()
+        self.choose_item(key, selections)
+
+    def choose_item(self, key, selections):
+        """
+        Pick the item that the player chooses using a key.
+        :param key: The key that the user presses.
+        :param selections: The items that can be selected.
+        :return: None
+        """
         if key == "ESC":
             self.menu.pause()
 
-        # Check for valid item selection
+        # check for valid item selection
         if key in selections:
             self.ui.clear_logs()
             chosen_item = selections[key]
@@ -182,7 +204,7 @@ class Game:
                 if isinstance(chosen_item, Weapon) and chosen_item.damage > self.player.attack_power:
                     prompt_msg = f"{chosen_item.name} is stronger than your current attack power. Equip?"
 
-                elif isinstance(chosen_item, Consumable) and self.player.equipped_med is None:
+                elif isinstance(chosen_item, Med) and self.player.equipped_med is None:
                     prompt_msg = "You don't have any meds currently equipped. Equip?"
 
                 if prompt_msg:
@@ -205,15 +227,18 @@ class Game:
                             self.ui.clear_logs()
                             break
 
-            return  # Exit menu after inspecting
+            return  # exit menu after inspecting
 
-        # Check for Exit command
+        # check for exit command
         if key == "b":
             self.ui.clear_logs()
             return
 
     def heal_player(self):
-        """Use equipped medical item to heal player."""
+        """
+        Use equipped medical item to heal player.
+        :return: None
+        """
         if not self.player.equipped_med:
             self.ui.display_text("You don't have any meds equipped!")
             return False
@@ -233,10 +258,11 @@ class Game:
             self.ui.display_text(self.player.remove_item(med))
         return True
 
-    # __combat__
-
     def do_fight(self, monster_name):
-        """Handle combat with a monster."""
+        """
+        Handle combat with a monster.
+        :param monster_name: The name of the monster in which teh player is fighting.
+        """
         room = self.player.current_room
 
         if not room.monsters:
@@ -252,11 +278,13 @@ class Game:
         logging.info("Player starts fight")
         battle.start()
 
-    # using items
     def do_use(self, item):
-        """Use an item from player's inventory."""
+        """
+        Use an item from player's storage, where it is removed if it can be used.
+        :param item: The item that is being used.
+        """
 
-        result, flag = item.use(player=self.player, room=self.player.current_room)
+        result, flag = item.use(player=self.player)
 
         if result:
             self.ui.display_text(result)
@@ -267,21 +295,23 @@ class Game:
             self.ui.display_text(f"You can't use {item.name} here.")
 
     def do_drop(self, item):
-        """Drop an item from inventory into the current room."""
-        room = self.player.current_room
-
+        """
+        Drop an item from storage into the current room.
+        :param item: The item is dropped.
+        """
         if item.name not in self.player.storage:
             self.ui.display_text("You don't have that item.")
             return
 
         self.ui.display_text(self.player.remove_item(item))
-        room.add_item(item)
         self.ui.display_text(f"{item.name} has fallen to the floor.")
         logging.info(f"Player drops {item.name}")
 
-def main():
-    """Main entry point for the game."""
 
+def main():
+    """
+    Main entry point for the game.
+    """
     while True:
         logging.info("User starts a new game")
         game = Game()
@@ -289,7 +319,6 @@ def main():
 
         if result == "quit":
             break
-
 
 if __name__ == "__main__":
     main()

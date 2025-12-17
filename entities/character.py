@@ -1,6 +1,12 @@
 from entities.entity import Entity
 
+
 class Character(Entity):
+    """
+    A character in the game that has health and attack power.
+    They can attack other characters and can be checked if they are alive or not.
+    """
+
     def __init__(self, name, description, hp, max_hp, attack_power):
         super().__init__(name, description)
         self.hp = hp
@@ -9,16 +15,16 @@ class Character(Entity):
 
     def is_alive(self):
         """
-            Returns whether the characters's hp is < 0
+        Returns whether the characters's hp is < 0.
         :return: True if characters's hp is > 0, False otherwise.
         """
         return self.hp > 0
 
     def attack(self, target):
         """
-            Perform attack on another characters.
-        :param target: The characters being attacked.
-        :return: Damage dealt as an integer
+        Perform attack on another characters.
+        :param target: The character being attacked.
+        :return: Damage dealt as an integer.
         """
         damage_dealt = self.attack_power
         prev_hp = target.hp

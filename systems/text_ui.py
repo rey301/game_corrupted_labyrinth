@@ -3,17 +3,19 @@ import time
 
 
 class TextUI:
-    """A text-based user interface for the game using curses."""
+    """
+    A text-based user interface built using the curses library.
+    It renders rooms, HUD, logs, and menus, handling keyboard input, managing screen layout and typing animation.
+    """
 
-    # Class constants
-    ESC_DELAY_MS = 25
-    SEPARATOR_LENGTH = 90
+    # class constants
+    ESC_DELAY_MS = 25 # so that the user can press escape only once
     HUD_HEIGHT = 1
-    BOTTOM_MARGIN = 5  # Space reserved for logs and input
-    TYPING_SPEED = 0.03 # Seconds per characters (adjustable)
+    BOTTOM_MARGIN = 5  # space reserved for logs and input
+    TYPING_SPEED = 0.03 # seconds per character
 
     def __init__(self):
-        self.stdscr = None
+        self.screen = None
         self.started = False
 
         # Layout tracking
@@ -25,40 +27,61 @@ class TextUI:
         # Typing animation toggle
         self.typing_enabled = True
 
-    def start(self):
-        """Initialize the curses screen and configure settings."""
-        self.stdscr = curses.initscr()
+    def start_screen(self):
+        """
+        Initialise the curses screen and configure terminal settings.
+
+        Must be called before any rendering happens as it switches the terminal into curses mode and enables
+        non-blocking keyboard input.
+        :return: None
+        """
+        self.screen = curses.initscr()
         curses.noecho()
         curses.cbreak()
         curses.curs_set(0)
         curses.set_escdelay(self.ESC_DELAY_MS)
-        self.stdscr.keypad(True)
-        self.stdscr.nodelay(True)  # Make getch() non-blocking
+        self.screen.keypad(True)
+        self.screen.nodelay(True)  # Make getch() non-blocking
         self.started = True
 
-    def stop(self):
-        """Restore terminal to normal mode."""
+    def stop_screen(self):
+        """
+        Restore terminal to normal mode, and is only called when the game exits to prevent terminal corruption.
+        """
         if not self.started:
             return
 
         curses.nocbreak()
-        self.stdscr.keypad(False)
+        self.screen.keypad(False)
         curses.echo()
         curses.endwin()
 
     def clear(self):
-        """Clear the entire screen."""
-        self.stdscr.clear()
-        self.stdscr.refresh()
+        """
+        Clear the entire screen.
+        """
+        self.screen.clear()
+        self.screen.refresh()
 
     def get_screen_size(self):
-        """Get current screen dimensions."""
-        return self.stdscr.getmaxyx()
+        """
+        Get current screen dimensions.
+        """
+        return self.screen.getmaxyx()
 
-    def safe_addstr(self, y, x, text, max_width=None):
-        """Safely add a string to the screen, handling curses errors."""
+    def safe_draw(self, y, x, text, max_width=None):
+        """
+        Safely draw text to the screen given a position; this prevents crashes caused by drawing outside
+        the screen bounds or curses rendering errors.
+        :param y: Vertical screen position
+        :param x: Horizontal screen position
+        :param text: Text to render
+        :param max_width: Max width to draw text
+        :return:
+        """
         h, w = self.get_screen_size()
 
+        # check if position is larger than the screen
         if y >= h or x >= w:
             return
 
@@ -66,95 +89,101 @@ class TextUI:
             max_width = w - 1
 
         try:
-            self.stdscr.addstr(y, x, text[:max_width])
+            self.screen.addstr(y, x, text[:max_width])
         except curses.error:
             pass
 
     def draw_separator(self, y):
-        """Draw a horizontal separator line spanning the full terminal width."""
+        """
+        Draw a horizontal separator line spanning the full terminal width.
+        """
         h, w = self.get_screen_size()
-        self.safe_addstr(y, 0, "-" * w)
+        self.safe_draw(y, 0, "-" * w)
 
     def draw_centered(self, text, y=None, clear=False):
         """
         Draw text centered horizontally on the screen.
-
-        Args:
-            text: String or multi-line string to center
-            y: Starting y position (None = current position)
-            clear: Whether to clear screen first
-
-        Returns:
-            The y position after the last line drawn
+        :param text: String or multi-line string to center
+        :param y: Starting y position (None means the starting position)
+        :param clear: Whether to clear screen first
+        :return: The y position after the last line drawn
         """
         if clear:
-            self.stdscr.clear()
+            self.screen.clear()
 
         h, w = self.get_screen_size()
         lines = str(text).split("\n")
 
         if y is None:
-            y, _ = self.stdscr.getyx()
+            y, _ = self.screen.getyx()
 
         for i, line in enumerate(lines):
             current_y = y + i
             if current_y >= h:
                 break
 
-            # Calculate centered x position
+            # calculate centered x position
             line_length = len(line)
             x = max(0, (w - line_length) // 2)
 
-            self.safe_addstr(current_y, x, line, w - x)
+            self.safe_draw(current_y, x, line, w - x)
 
-        self.stdscr.refresh()
+        self.screen.refresh()
         return y + len(lines)
 
     def draw_room(self, room_desc):
-        """Draw the room description centered with full-width separators."""
-        self.stdscr.clear()
+        """
+        Draw the room description centered with full-width separators, where space is reserved for the HUD and
+        log output.
+        :param room_desc: The description of the room
+        :return: None
+        """
+        self.screen.clear()
         h, w = self.get_screen_size()
 
         y = 0
 
-        # Top separator
+        # top separator
         self.draw_separator(y)
         y += 1
 
-        # Room description - centered
+        # center the room description
         lines = room_desc.strip("\n").split("\n")
         for line in lines:
             if y >= h - self.BOTTOM_MARGIN:
                 break
 
-            # Calculate centered x position
+            # calculate centered x position
             line_length = len(line)
             x = max(0, (w - line_length) // 2)
-            self.safe_addstr(y, x, line, w - x)
+            self.safe_draw(y, x, line, w - x)
             y += 1
 
-        # Bottom separator before HUD
+        # bottom separator before hud
         if y < h - self.BOTTOM_MARGIN:
             self.draw_separator(y)
             y += 1
 
-        # Reserve space for HUD
+        # reserve space for hud
         self.hud_y = y
         y += self.HUD_HEIGHT
 
-        # Separator after HUD
+        # separator after hud
         if y < h - self.BOTTOM_MARGIN:
             self.draw_separator(y)
             y += 1
 
-        # Set log starting position
+        # set log starting position
         self.room_start_y = y
         self.log_y = y
 
-        self.stdscr.refresh()
+        self.screen.refresh()
 
     def draw_hud(self, player):
-        """Draw the heads-up display with player stats, centered."""
+        """
+        Draw the heads-up display with player stats, centered.
+        :param player: The player in which the stats are pulled from.
+        """
         h, w = self.get_screen_size()
 
         # Build HUD components
@@ -170,30 +199,28 @@ class TextUI:
 
         hud_text = f"{hp}   {med}   {cap}   {atk}   {wpn}"
 
-        # Clear HUD line
-        self.stdscr.move(self.hud_y, 0)
-        self.stdscr.clrtoeol()
+        # clear hud line
+        self.screen.move(self.hud_y, 0)
+        self.screen.clrtoeol()
 
-        # Calculate centered x position and draw HUD
+        # calculate centered x position and draw hud
         hud_length = len(hud_text)
         x = max(0, (w - hud_length) // 2)
-        self.safe_addstr(self.hud_y, x, hud_text, w - x)
+        self.safe_draw(self.hud_y, x, hud_text, w - x)
 
-        self.stdscr.refresh()
+        self.screen.refresh()
 
     def display_text(self, text, typing=None, end="\n"):
         """
-        Args:
-            text: Text to print
-            typing: Override typing animation
-            end: Character to print at the end (default "\n").
-                 Pass end="" to stay on the same line.
+        Display text in the log area with optional typing animation, which can be skipped using the space bar.
+        It can print multiline text and use inline printing (two print statements on one line).
+        :param text: The text to display.
+        :param typing: Allows typing animation to be set.
+        :param end: Line ending character where the default is a newline.
+        :return: None
         """
         h, w = self.get_screen_size()
 
-        # We don't split by newline immediately if we want to support partial lines.
-        # Instead, we handle the text as a stream or simple line for this implementation.
-        # To keep it compatible with your logic, we will assume 'text' might have newlines.
         lines = str(text).split("\n")
 
         use_typing = self.typing_enabled if typing is None else typing
@@ -206,26 +233,26 @@ class TextUI:
                 self.log_x = 0
                 break
 
-            # Calculate available width on current line
-            # If we are starting a new line, log_x is 0. If appending, it's > 0.
+            # calculate available width on current line
+            # if starting a new line, log_x is 0 but if appending, > 0
             available_w = w - self.log_x
 
             if use_typing:
                 skipped = False
-                # Offset the characters index by the current log_x position
+                # offset the characters index by the current log_x position
                 for i, char in enumerate(line):
                     if i >= available_w - 1:
                         break
 
                     # Print at log_y, log_x + i
-                    self.safe_addstr(self.log_y, self.log_x + i, char)
-                    self.stdscr.refresh()
+                    self.safe_draw(self.log_y, self.log_x + i, char)
+                    self.screen.refresh()
 
                     if self.get_key() == " ":
                         remaining = line[i + 1:available_w - 1]
                         if remaining:
-                            self.safe_addstr(self.log_y, self.log_x + i + 1, remaining)
-                            self.stdscr.refresh()
+                            self.safe_draw(self.log_y, self.log_x + i + 1, remaining)
+                            self.screen.refresh()
                         skipped = True
                         break
 
@@ -234,74 +261,55 @@ class TextUI:
                 if skipped:
                     use_typing = False
             else:
-                # Print entire line starting at self.log_x
-                # ensure we don't overflow width
-                self.safe_addstr(self.log_y, self.log_x, line, w - 1)
+                # print entire line at starting position log_x using safe_draw
+                self.safe_draw(self.log_y, self.log_x, line, w - 1)
 
-            # Update log_x based on the length of text we just printed
+            # update log_x based on the length of text
             self.log_x += len(line)
 
-            # Handle Newlines
-            # If this is NOT the last segment of the text, it implies an explicit \n in the input
+            # handling newlines
             if line_idx < len(lines) - 1:
                 self.log_y += 1
                 self.log_x = 0
 
-            # If this IS the last segment, check the 'end' parameter
+            # if this is the last part, check the end parameter
             elif line_idx == len(lines) - 1:
                 if end == "\n":
                     self.log_y += 1
                     self.log_x = 0
                 else:
-                    # If end is not a newline (e.g., ""), we stay on this line.
-                    # Just add the 'end' char if it exists and update X
+                    # if not a newline, we stay on this line.
                     if end:
-                        self.safe_addstr(self.log_y, self.log_x, end)
+                        self.safe_draw(self.log_y, self.log_x, end)
                         self.log_x += len(end)
 
-        self.stdscr.refresh()
+        self.screen.refresh()
 
-    def _check_skip_input(self):
-        """Check if user pressed any key (non-blocking)."""
-        try:
-            key = self.get_key()
-            if key != -1:  # -1 means no key was pressed
-                return True
-            if key == " ":
-                return False
-        except:
-            pass
-        return False
-
-    def wait_for_key(self, prompt="Press SPACE to continue..."):
+    def wait_to_start_game(self, prompt="Press SPACE to begin initialisation..."):
         """
-        Display a message and wait for user to press any key.
-
-        Args:
-            prompt: Message to display
+        Used to display a prompt to the user after welcome message is shown, to allow the player to start the game.
+        :param prompt: The prompt in which is displayed.
         """
         self.display_text(f"\n{prompt}", typing=False)
 
-        # Set blocking mode temporarily
-        self.stdscr.nodelay(False)
-        self.stdscr.getch()
-        self.stdscr.nodelay(True)
+        # set blocking mode temporarily
+        self.screen.nodelay(False)
+        self.screen.getch()
+        self.screen.nodelay(True)
 
     def set_typing_speed(self, speed):
         """
         Set the typing animation speed.
-
-        Args:
-            speed: Seconds per characters (e.g., 0.05 for slower, 0.01 for faster)
+        :param speed: Seconds per characters (e.g., 0.05 for slower, 0.01 for faster).
+        :return: None
         """
         self.TYPING_SPEED = speed
 
     def toggle_typing(self, enabled=None):
         """
         Enable or disable typing animation.
-
-        Args:
-            enabled: True to enable, False to disable, None to toggle
+        :param enabled: True to enable, False to disable, None to toggle.
+        :return: None
         """
         if enabled is None:
             self.typing_enabled = not self.typing_enabled
@@ -309,22 +317,28 @@ class TextUI:
             self.typing_enabled = enabled
 
     def clear_logs(self):
-        """Clear the log area below the HUD."""
+        """
+        Clear the log area below the HUD.
+        :return: None
+        """
         h, w = self.get_screen_size()
 
         for y in range(self.room_start_y, h - 1):
             try:
-                self.stdscr.move(y, 0)
-                self.stdscr.clrtoeol()
+                self.screen.move(y, 0)
+                self.screen.clrtoeol()
             except curses.error:
                 pass
 
         self.log_y = self.room_start_y
-        self.stdscr.refresh()
+        self.screen.refresh()
 
     def get_key(self):
-        """Get a single key press from the user."""
-        key = self.stdscr.getch()
+        """
+        Get a single key press from the user.
+        :return: A string "ESC" if the user pressed ESC key or the character string for any key.
+        """
+        key = self.screen.getch()
 
         if key == 27:  # ESC key
             return "ESC"
@@ -334,49 +348,37 @@ class TextUI:
 
         return key
 
-    def get_text(self, prompt="> "):
-        """Get a line of text input from the user."""
-        self.display_text(prompt)
-
-        # --- ENTER TYPING MODE ---
-        curses.echo()  # Show typed characters
-        curses.curs_set(1)  # Show the blinking cursor
-        self.stdscr.nodelay(False)  # Force the program to WAIT for input
-
-        # Get current cursor position to type right after the prompt
-        y, x = self.stdscr.getyx()
-
-        # Capture the input
-        try:
-            # getstr returns bytes, so we decode to string
-            input_bytes = self.stdscr.getstr(y, x)
-            text = input_bytes.decode("utf-8")
-        except Exception:
-            text = ""
-
-        # --- RESTORE GAME MODE ---
-        self.stdscr.nodelay(True)  # Return to non-blocking mode (game loop)
-        curses.curs_set(0)  # Hide the cursor again
-        curses.noecho()  # Stop echoing characters
-
-        return text
+    def wait_for_key(self):
+        """
+        This loops until a key is pressed.
+        :return: The key if a key is pressed.
+        """
+        while True:
+            key = self.get_key()
+            if key != -1:
+                return key
 
     def redraw_game(self, room, player):
-        """Redraw the entire game screen."""
+        """
+        Redraw the entire game screen.
+        :param room: The room in which the description is used to display.
+        :param player: Used so that the player's stats can be displayed on the HUD.
+        :return: None
+        """
         self.clear()
         self.draw_room(room.description)
         self.draw_hud(player)
 
-
-    # Legacy methods (kept for compatibility)
-    def input(self, prompt=""):
-        """Legacy method - reads input using built-in input()."""
-        return input(prompt)
-
     def draw_top(self, text, y=0, clear=True):
-        """Legacy method - draw text at the top of the screen."""
+        """
+        Draw text at the top of the screen.
+        :param text: The text to be drawn.
+        :param y: Defaulted at 0, which is the left most side.
+        :param clear: Defaulted to True, which clears the whole screen.
+        :return: None
+        """
         if clear:
-            self.stdscr.clear()
+            self.screen.clear()
 
         h, w = self.get_screen_size()
         lines = str(text).split("\n")
@@ -384,15 +386,48 @@ class TextUI:
         for i, line in enumerate(lines):
             if y + i >= h:
                 break
-            self.safe_addstr(y + i, 0, line, w - 1)
+            self.safe_draw(y + i, 0, line, w - 1)
 
-        self.stdscr.refresh()
+        self.screen.refresh()
 
-    def get_inp(self, prompt="> "):
-        """Legacy method - alias for get_text()."""
-        return self.get_text(prompt)
+    def get_text(self, prompt="> "):
+        """
+        Get a line of text input from the user.
+
+        This switches out of blocking mode with a visible curor and echo enabled.
+        :param prompt: The input prompt displayed to the user.
+        :return: The user text that is inputted.
+        """
+        self.display_text(prompt)
+
+        # typing mode
+        curses.echo()  # show typed characters
+        curses.curs_set(1)  # show the blinking cursor
+        self.screen.nodelay(False)  # force the program to wait for input
+
+        # get current cursor position to type right after the prompt
+        y, x = self.screen.getyx()
+
+        # get input
+        try:
+            # getstr returns bytes, so we decode to string
+            input_bytes = self.screen.getstr(y, x)
+            text = input_bytes.decode("utf-8")
+        except Exception:
+            text = ""
+
+        # restore back to non-blocking mode
+        self.screen.nodelay(True)
+        curses.curs_set(0)  # hide cursor
+        curses.noecho()  # doesn't echo characters
+
+        return text
 
     def print_welcome(self):
+        """
+        Prints the welcome text for the game.
+        :return: None
+        """
         self.display_text("""> INITIALISING SESSION...
 > LOADING USER MEMORY.............
 > CHECKSUM ERROR IN SECTOR 0
@@ -413,8 +448,10 @@ AND ESCAPE BEFORE THE SYSTEM COLLAPSES
         """)
 
     def print_help(self):
-            """Display all available commands."""
-            self.display_text("""COMMANDS:
+        """
+        Display all available commands.
+        """
+        self.display_text("""COMMANDS:
 Player:
   [ARROW KEYS]       - Move to another room
   [I]                - View player's statistics
@@ -430,8 +467,5 @@ Puzzles:
 
 System:
   [/]                - Show this help message
-  [ESC]              - Pause menu
-            """, False)
-
-    if __name__ == "__main__":
-        main()
+  [ESC]              - Pause menu""",
+                          False)

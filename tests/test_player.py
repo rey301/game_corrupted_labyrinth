@@ -1,7 +1,7 @@
 import unittest
 from entities.characters.player import Player
 from entities.items.weapon import Weapon
-from entities.items.consumable import Consumable
+from entities.items.med import Med
 from entities.room import Room
 
 
@@ -11,7 +11,7 @@ class TestPlayer(unittest.TestCase):
     """
     def setUp(self):
         self.player = Player("Test", "", hp=50, max_hp=100, attack_power=50)
-        self.med = Consumable("test_med", "healing!!", weight=2, heal=30, uses=1, max_uses=1)
+        self.med = Med("test_med", "healing!!", weight=2, heal=30, uses=1, max_uses=1)
         self.weapon = Weapon("Knife", "sharp!!!", weight=3, damage=5)
         self.test_room = Room("test_room", "")
         self.test_room.add_item(self.weapon)

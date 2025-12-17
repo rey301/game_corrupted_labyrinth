@@ -1,6 +1,9 @@
 import curses
 
 class InputHandler:
+    """
+    This class handles input from the use the executes certain methods given a Game object.
+    """
     def __init__(self, game):
         self.game = game
 
@@ -14,7 +17,7 @@ class InputHandler:
         self.actions = {
             "r": game.scan_room,
             "p": lambda: game.solver.do_solve(),
-            "t": game.take_item,
+            "t": game.display_items,
             "h": game.heal_player,
             "s": lambda: game.inventory.show_player_storage(),
             "i": lambda: game.ui.display_text(game.player.show_stats()),
@@ -22,6 +25,13 @@ class InputHandler:
         }
 
     def handle(self, key):
+        """
+        When a certain key is given (pressed) then an action is executed depending on the key
+        (movement is handled by another class). If no key or space is pressed then nothing happens, but any other key
+        will display a help message to the user.
+        :param key: The key that is pressed by the user.
+        :return: None
+        """
         if key == -1 or key == " ":
             return
         else:

@@ -1,4 +1,7 @@
 class Menu:
+    """
+    This class allows menus to be displayed when paused or when the player dies.
+    """
     def __init__(self, ui, game):
         self.ui = ui
         self.game = game
@@ -57,8 +60,3 @@ class Menu:
 
         return selections
 
-    def wait_for_key(self):
-        while True:
-            key = self.ui.get_key()
-            if key != -1:
-                return key

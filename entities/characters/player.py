@@ -1,26 +1,27 @@
 from entities.character import Character
 from entities.items.weapon import Weapon
-from entities.items.consumable import Consumable
+from entities.items.med import Med
+
 
 class Player(Character):
     """
-    The user-controlled characters, who can move through rooms,
-    use items, pick up rewards, and engage in combat with monsters.
+    The user-controlled character, who can move through rooms,
+    use items, pick up items and rewards, and engage combat with monsters.
     """
 
     def __init__(self, name, description, hp, max_hp, attack_power):
         super().__init__(name, description, hp, max_hp, attack_power)
         self.current_room = None
-        self.storage = {} # list of class Item
+        self.storage = {}  # list of class Item
         self.weight = 0
         self.equipped_med = None
         self.max_weight = 64
-        self.scannable = False # when true the player can read logs
-        self.equipped_weapon = None # what weapon the player is currently holding
+        self.scannable = False  # when true the player can read logs
+        self.equipped_weapon = None  # what weapon the player is currently holding
 
     def set_current_room(self, room):
         """
-        Set the room to the current room that the player is in.
+        Set the current room to where the player is moving to.
         :param room: The room the player moves to.
         :return: None
         """
@@ -28,38 +29,48 @@ class Player(Character):
 
     def pick_up(self, item):
         """
-            Pick up an item and add to storage, checking the weight limit before
-            pick up.
-        :param ui:
+        Pick up an item and add it to the player's storage.
         :param item: Item in which the player picks up.
         :return: True if the item has been picked up, otherwise False (too heavy).
         """
-
+        # check the if the weight exceeds the storage capacity
         if (self.weight + item.weight) > self.max_weight:
             return False
         self.storage[item.name] = item
         self.weight += item.weight
 
         if item.name in self.current_room.items:
-            self.current_room.remove_item(item) # remove item from room
+            self.current_room.remove_item(item)  # remove item from room
 
         return True
 
     def remove_item(self, item):
+        """
+        Removes a specified item from storage and drops it in the current room.
+        If the player has an item equipped then it is unequipped first before removing it.
+        :param item: The item that will be removed from storage
+        :return: The string message updating the user on the storage capacity or the item wasn't found.
+        """
         lines = []
         if item.name in self.storage:
+            # unequip anything that is equipped
             if self.equipped_weapon:
                 if item.name == self.equipped_weapon.name:
                     lines.append(self.unequip(item))
             if self.equipped_med:
                 if item.name == self.equipped_med.name:
                     lines.append(self.unequip(item))
+
+            # update weights and remove from storage
             item_weight = self.storage[item.name].weight
             prev_weight = self.weight
             self.weight -= item_weight
             self.storage.pop(item.name)
+            self.current_room.add_item(item)  # add the item to the room
             lines.append(
-                f"{item.name} removed. \nCapacity updated: {prev_weight} - {item_weight} --> {self.weight}/{self.max_weight} bytes.\n")
+                f"{item.name} removed. \nCapacity updated: {prev_weight} - {item_weight} --> "
+                f"{self.weight}/{self.max_weight} bytes.\n"
+            )
             return "\n".join(lines)
         return "Item not found."
 
@@ -75,7 +86,7 @@ class Player(Character):
 
     def show_stats(self):
         """
-        Showing the player's stats, with hp and attack power.
+        Showing the player's stats: HP, attack power, weight, and if the scan module is active.
         :return: The formatted string for the player's stats.
         """
         lines = [
@@ -83,38 +94,39 @@ class Player(Character):
             f"Name: {self.name}",
             f"HP: {self.hp}/{self.max_hp}",
             f"Attack Power: {self.attack_power}",
-            f"Inventory Weight: {self.weight}/{self.max_weight}",
-            f"Log Module Active: {'Yes' if self.scannable else 'No'}",
+            f"Storage Capacity: <{self.weight}/{self.max_weight}>",
+            f"Scan Module Active: {'Yes' if self.scannable else 'No'}",
         ]
         return "\n".join(lines)
 
     def equip(self, item):
         """
         Equip a weapon or meds from the player's storage.
-        :param item: String name of the weapon to equip.
-        :return: String message describing what was equiped.
+        :param item: Item to be equipped.
+        :return: String message describing what was equipped.
         """
-        # check the storage if weapon is inside
+        # check the storage if item is inside
         if item.name not in self.storage:
             return f"You don't have {item.name}"
 
         stored_item = self.storage[item.name]
 
+        # checking if item in storage is a weapon or med, then equip
         if isinstance(stored_item, Weapon):
             # equip the weapon
             self.equipped_weapon = stored_item
             self.attack_power = stored_item.damage
 
             return f"You equip {item.name}. Attack updated to {self.attack_power}."
-        elif isinstance(stored_item, Consumable):
+        elif isinstance(stored_item, Med):
             self.equipped_med = stored_item
-            return f"You equip {stored_item.name}. Uses updated to {stored_item.uses}"
+            return f"You equip {stored_item.name}. Uses updated to {stored_item.uses}."
         else:
             return f"You can't equip {stored_item.name}"
 
     def unequip(self, item):
         """
-        Unequip a weapon from the player's storage.
+        Unequip an item from the player but keep it in storage.
         :return: String message describing what was unequipped.
         """
         if isinstance(item, Weapon):
@@ -122,21 +134,9 @@ class Player(Character):
             self.equipped_weapon = None
             self.attack_power = 50
             return f"You unequip {weapon_name}. Attack updated to {self.attack_power}."
-        if isinstance(item, Consumable):
+        if isinstance(item, Med):
             med_name = self.equipped_med.name
             self.equipped_med = None
             return f"You unequip {med_name}."
         else:
             return "Unknown type."
-
-    def get_consumables(self):
-        consumables = {}
-        for item_name in self.storage:
-            if isinstance(self.storage[item_name], Consumable):
-                consumables[item_name] = self.storage[item_name]
-        return consumables
-
-class NotInStorageError(Exception):
-    """A custom exception to handle items not in backpack."""
-    def __init__(self, item, message):
-        print(f'{item} {message}')

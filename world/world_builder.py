@@ -2,19 +2,24 @@ from entities.room import Room
 from entities.puzzle import Puzzle
 from entities.characters.monster import Monster
 from entities.items.weapon import Weapon
-from entities.items.consumable import Consumable
+from entities.items.med import Med
 from entities.items.upgrade import Upgrade
 from entities.items.key import Key
 from entities.items.lore import Lore
 
+
 class WorldBuilder:
+    """
+    Responsible for building every room, item, monster, puzzle in the game; as well as their connections.
+    """
+
     def __init__(self):
         self.rooms = {}
 
     def build(self):
         """
-            Creates all rooms, connects them with exits,
-            places items/puzzles/monsters, and returns the starting room.
+        Creates all rooms, connects them with exits,
+        places items/puzzles/monsters, and returns the starting room.
         :return: The starting room.
         """
 
@@ -143,7 +148,7 @@ link to a powerful presence deeper in the system...
 
 Exits: SOUTH -> Gatekeeper Node, WEST -> Boot Sector
             """,
-            locked = True
+            locked=True
         )
 
         c2 = Room(
@@ -225,13 +230,13 @@ The path leads you back, back to the real world.
 
     def link_rooms(self):
         """
-            Creates directional exits between rooms.
+        Creates directional exits between rooms.
         :return: None
         """
         # Boot Sector (spawn)
         self.rooms["a0"].set_exit("north", self.rooms["a1"])
         self.rooms["a0"].set_exit("south", self.rooms["b0"])
-        self.rooms["a0"].set_exit("east", self.rooms["c0"]) # phantom node
+        self.rooms["a0"].set_exit("east", self.rooms["c0"])  # phantom node
         self.rooms["a0"].lock_exit("east", "unlock_c0")
 
         # Lost Cache
@@ -240,7 +245,7 @@ The path leads you back, back to the real world.
         # Glitch Pit
         self.rooms["b0"].set_exit("north", self.rooms["a0"])
         self.rooms["b0"].set_exit("east", self.rooms["b1"])
-        self.rooms["b0"].lock_exit("east", "d4t4") # lock the door to data well
+        self.rooms["b0"].lock_exit("east", "d4t4")  # lock the door to data well
         self.rooms["b0"].set_exit("west", self.rooms["b3"])  # dead-end branch
 
         # Dead Pixels
@@ -255,8 +260,8 @@ The path leads you back, back to the real world.
         self.rooms["b2"].set_exit("east", self.rooms["c2"])  # boss path
 
         # Phantom Node (secret room) - unlocked separately
-        self.rooms["c0"].set_exit("south", self.rooms["c2"]) # secret shortcut to gatekeeper
-        self.rooms["c0"].set_exit("west", self.rooms["a0"]) # boot sector (spawn)
+        self.rooms["c0"].set_exit("south", self.rooms["c2"])  # secret shortcut to gatekeeper
+        self.rooms["c0"].set_exit("west", self.rooms["a0"])  # boot sector (spawn)
 
         # Gatekeeper Node (boss)
         self.rooms["c2"].set_exit("west", self.rooms["b2"])
@@ -272,11 +277,11 @@ The path leads you back, back to the real world.
         self.rooms["d1"].lock_exit("north", "k3rn3l")  # lock the door to system kernel (end)
         self.rooms["d1"].set_exit("south", self.rooms["d0"])
 
-        # System Kernel is endgame (no exits)
+        # system kernel is endgame (no exits)
 
     def place_items(self):
         """
-            Place Item objects into chosen rooms.
+        Place Item objects into chosen rooms.
         :return: None
         """
         # a tier items
@@ -287,7 +292,7 @@ The path leads you back, back to the real world.
             damage=150,
             weight=24
         )
-        health_module = Consumable(
+        health_module = Med(
             "health_module",
             "A compact utility that repairs corrupted user data. "
             "\nActivating it restores a portion of your health.",
@@ -368,7 +373,7 @@ and the world began rewriting itself without supervision.
 
     def place_puzzles(self):
         """
-            Assign Puzzle objects to chosen rooms.
+        Assign Puzzle objects to chosen rooms.
         :return: None
         """
         # lost cache
@@ -403,8 +408,8 @@ and the world began rewriting itself without supervision.
         puzzle_b2 = Puzzle(
             name="kernel_repair",
             prompt="Repair the corrupted kernel header: K_RN_L → fill the missing letters.",
-            solution="KERNEL",    # accepting "KERNEL" in game logic is easy too
-            reward=Consumable(
+            solution="KERNEL",  # accepting "KERNEL" in game logic is easy too
+            reward=Med(
                 name="health_container",
                 description="A large utility that immensely repairs corrupted user data. Activating it restores a large portion of your health.",
                 heal=500,
@@ -420,13 +425,13 @@ and the world began rewriting itself without supervision.
             name="faded_data",
             prompt="A whisper: 'What remains when memory fades?'",
             solution="echo",
-            reward=Consumable("health_package",
-                              "An extremely large utility that repairs all corruption.\nActivating it restores health to maximum.",
-                              heal=-1,
-                              weight=12,
-                              uses=5,
-                              max_uses=5
-                              )
+            reward=Med("health_package",
+                       "An extremely large utility that repairs all corruption.\nActivating it restores health to maximum.",
+                       heal=-1,
+                       weight=12,
+                       uses=5,
+                       max_uses=5
+                       )
         )
         self.rooms["c0"].puzzle = puzzle_c0
 
@@ -456,7 +461,7 @@ It was built to keep you from remembering why.
 
     def place_monsters(self):
         """
-            Assign Monster objects to chosen rooms.
+        Assign Monster objects to chosen rooms.
         :return: None
         """
         # glitch pit
@@ -517,7 +522,8 @@ It was built to keep you from remembering why.
             hp=800,
             max_hp=800,
             attack_power=200,
-            reward=Weapon("code_breaker", "A powerful system weapon designed to destroy all data.", weight=32, damage=1000),
+            reward=Weapon("code_breaker", "A powerful system weapon designed to destroy all data.", weight=32,
+                          damage=1000),
             blocks_exit="south"
         )
         self.rooms["c0"].add_monster(echo_shade)
@@ -562,4 +568,3 @@ or until it is destroyed.
             blocks_exit="north"
         )
         self.rooms["d0"].add_monster(memory_phantom)
-

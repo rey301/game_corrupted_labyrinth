@@ -1,20 +1,21 @@
 from entities.item import Item
 
 class Upgrade(Item):
+    """
+    Defines upgrades in the game that can enhance a players stats or change a certain state.
+    This includes upgrading their HP and storage, as well as allowing the player to read logs.
+    """
     def __init__(self, name, description, weight, upgrade_type):
         super().__init__(name, description, weight)
         self.upgrade_type = upgrade_type
 
-    def use(self, player=None, room=None, world=None):
+    def use(self, player):
         """
-        When certain items are used, it causes something to happen in the world, or to the player (e.g.
-        reading logs).
-        :param player: The player that is currently in the game.
-        :param room: The room that the player is currently in.
-        :param world: The world with attributes of the game.
-        :return: The text that will be printed to the user, and the flag if the item gets removed.
+        When used a certain stat is upgraded or allowing the user to read logs.
+        :param player: The player that is using the item.
+        :return: The string message the is shown to the user, showing updates on their stats or state change.
         """
-        room = player.current_room
+
         # for expanding storage
         if self.upgrade_type == "storage":
             prev_max = player.max_weight

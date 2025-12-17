@@ -1,19 +1,8 @@
 class Entity:
+    """
+    An entity is any object that is in the game world where they have a name and a description.
+    """
     def __init__(self, name, description=None):
         self.name = name
         self.description = description
-
-    def get_name(self):
-        """
-            Returns entity's name.
-        :return: The name string.
-        """
-        return self.name
-
-    def get_description(self):
-        """
-            Returns the object's description.
-        :return: The description string.
-        """
-        return self.description
 
