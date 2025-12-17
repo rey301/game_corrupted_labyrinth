@@ -1,7 +1,9 @@
-import curses
 import time
+import logging
 
 from entities.characters.player import Player
+from entities.items.consumable import Consumable
+from entities.items.weapon import Weapon
 from systems.inventory import Inventory
 from systems.text_ui import TextUI
 from world.world_builder import WorldBuilder
@@ -11,6 +13,7 @@ from systems.input_handler import InputHandler
 from systems.solver import Solver
 from systems.movement import Movement
 
+logging.basicConfig(filename="game.log", level=logging.INFO)
 
 class Game:
     """
@@ -22,7 +25,7 @@ class Game:
     INTRO_DELAY = 5
     ROOM_DELAY = 2
 
-    def __init__(self):
+    def __init__(self, ui=None):
         """Initialize game components."""
         self.player = Player("Lapel", "", 500, 500, 50)
         self.ui = TextUI()
@@ -31,7 +34,7 @@ class Game:
         self.menu = Menu(self.ui, self)
         self.input_handler = InputHandler(self)
         self.inventory = Inventory(self.ui, self)
-        self.solver = Solver(self.ui, self.player, self)
+        self.solver = Solver(self.ui, self.player)
         self.pause = False
         self.movement = Movement(self.ui, self)
 
@@ -44,6 +47,7 @@ class Game:
                 return result
 
             if self.game_over and not self.player.is_alive():
+                logging.info("Player dies")
                 return self.menu.game_over_menu() # return the menu for when the player dies
             return "quit"
         finally:
@@ -58,11 +62,14 @@ class Game:
             if self.pause:
                 # Trigger the pause menu
                 action = self.menu.pause()
+                logging.info("User pauses the game")
 
                 # Handle the menu's return value
                 if action == "restart":
+                    logging.info("User restarts the game")
                     return "restart"  # Exit play immediately to restart
                 elif action == "quit":
+                    logging.info("User quits the game")
                     return "quit"  # Exit play immediately to quit
                 # If action is None, we simply loop again (Resume)
 
@@ -89,6 +96,7 @@ class Game:
         """Move player in the specified direction."""
         # Move to next room
         if self.movement.try_move(self.player, direction):
+            logging.info(f"Player moved {direction}")
             self.ui.clear()
             self.ui.draw_room(self.player.current_room.describe())
 
@@ -160,8 +168,43 @@ class Game:
         if key in selections:
             self.ui.clear_logs()
             chosen_item = selections[key]
-            msg, _ = self.player.pick_up(chosen_item, self.ui)
-            self.ui.display_text(msg)
+            picked_up = self.player.pick_up(chosen_item)
+            prev_weight = self.player.weight
+            if not picked_up:
+                self.ui.display_text(f"{chosen_item.name} is too heavy to carry.")
+            elif picked_up:
+                self.ui.display_text(f"{chosen_item.name} added to storage.")
+                self.ui.display_text(f"Storage: {prev_weight} + {chosen_item.weight} --> "
+                                     f"{self.player.weight}/{self.player.max_weight} bytes")
+                logging.info(f"Player picked up {chosen_item.name}")
+
+                prompt_msg = None
+                if isinstance(chosen_item, Weapon) and chosen_item.damage > self.player.attack_power:
+                    prompt_msg = f"{chosen_item.name} is stronger than your current attack power. Equip?"
+
+                elif isinstance(chosen_item, Consumable) and self.player.equipped_med is None:
+                    prompt_msg = "You don't have any meds currently equipped. Equip?"
+
+                if prompt_msg:
+                    time.sleep(1)
+                    self.ui.clear_logs()
+                    self.ui.display_text(prompt_msg)
+                    self.ui.display_text("[1] Yes\n[2] No")
+
+                    while True:
+                        key = self.ui.get_key()
+                        if key == -1: continue
+
+                        if key == "1":
+                            msg = self.player.equip(chosen_item)
+                            self.ui.clear_logs()
+                            self.ui.display_text(msg)
+                            logging.info(f"Player equipped {chosen_item.name}")
+                            break
+                        elif key == "2":
+                            self.ui.clear_logs()
+                            break
+
             return  # Exit menu after inspecting
 
         # Check for Exit command
@@ -183,6 +226,7 @@ class Game:
 
         msg, flag = med.use(self.player)
         self.ui.display_text(f"You use {med.name}. {msg}")
+        logging.info("Player heals")
 
         if flag == "remove":
             self.ui.display_text("Med charges depleted!")
@@ -205,6 +249,7 @@ class Game:
 
         monster = room.monsters[monster_name]
         battle = Combat(self.ui, self.player, monster, self)
+        logging.info("Player starts fight")
         battle.start()
 
     # using items
@@ -217,6 +262,7 @@ class Game:
             self.ui.display_text(result)
             if flag == "remove":
                 self.ui.display_text(self.player.remove_item(item))
+                logging.info(f"Player uses {item.name}")
         else:
             self.ui.display_text(f"You can't use {item.name} here.")
 
@@ -231,10 +277,13 @@ class Game:
         self.ui.display_text(self.player.remove_item(item))
         room.add_item(item)
         self.ui.display_text(f"{item.name} has fallen to the floor.")
+        logging.info(f"Player drops {item.name}")
 
 def main():
     """Main entry point for the game."""
+
     while True:
+        logging.info("User starts a new game")
         game = Game()
         result = game.run()
 

@@ -49,24 +49,24 @@ class Inventory:
 
         actions = self.get_item_actions(item)
 
-        for key, label, _ in actions:
-            self.ui.display_text(f"[{key}] {label}")
+        for action_key, label, _ in actions:
+            self.ui.display_text(f"[{action_key}] {label}")
         self.ui.display_text("[B] Back")
 
-        key = self.game.menu.wait_for_key()
+        user_key = self.game.menu.wait_for_key()
 
-        if key == "ESC":
+        if user_key == "ESC":
             self.game.menu.pause()
 
-        for key, _, action in actions:
-            if key == key:
+        for action_key, _, action in actions:
+            if user_key == action_key:
                 self.ui.clear_logs()
                 msg = action()
                 if msg:
                     self.ui.display_text(msg)
                 return
             # Check for Exit command
-            if key == "b":
+            if user_key == "b":
                 self.ui.clear_logs()
                 self.show_player_storage()
                 return
@@ -97,6 +97,6 @@ class Inventory:
 
         else:  # Misc items
             actions.append(("1", "Use", lambda: self.game.do_use(item)))
-            actions.append(("2", "Drop", lambda: self.ui.display_text(player.remove_item(item))))
+            actions.append(("2", "Drop", lambda: self.game.do_drop(item)))
 
         return actions

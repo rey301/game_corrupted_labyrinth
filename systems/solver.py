@@ -1,10 +1,12 @@
 import time
 
 class Solver:
-    def __init__(self, ui, player, game):
+    def __init__(self, ui, player):
         self.ui = ui
         self.player = player
-        self.game = game
+
+    def check_solution(self, answer):
+        return answer == self.player.current_room.puzzle.solution
 
     def do_solve(self):
         """Attempt to solve the puzzle in the current room."""
@@ -27,9 +29,9 @@ class Solver:
         while not puzzle.solved:
             self.ui.clear_logs()
             self.ui.display_text(puzzle.prompt)
-            answer = self.ui.get_inp()# retrieve answer from user
+            answer = self.ui.get_inp() # retrieve answer from user
 
-            if answer == puzzle.solution:
+            if self.check_solution(answer):
                 puzzle.solved = True
                 self.ui.clear_logs()
                 self.ui.display_text("Engram has broken, it fizzles into air.")
@@ -48,8 +50,12 @@ class Solver:
     def _handle_puzzle_reward(self, reward, room):
         """Handle reward from solving a puzzle."""
         self.ui.display_text(f"You have received: {reward.name}")
-        msg, picked_up = self.player.pick_up(reward, ui=self.ui)
-        self.ui.display_text(msg)
+        prev_weight = self.player.weight
+        picked_up = self.player.pick_up(reward)
+        if picked_up:
+            self.ui.display_text(f"{reward.name} added to storage.")
+            self.ui.display_text(f"Storage: {prev_weight} + {reward.weight} --> "
+                                 f"{self.player.weight}/{self.player.max_weight} bytes")
 
         if not picked_up:
             room.add_item(reward)

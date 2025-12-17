@@ -26,7 +26,7 @@ class Player(Character):
         """
         self.current_room = room
 
-    def pick_up(self, item, ui):
+    def pick_up(self, item):
         """
             Pick up an item and add to storage, checking the weight limit before
             pick up.
@@ -36,69 +36,14 @@ class Player(Character):
         """
 
         if (self.weight + item.weight) > self.max_weight:
-            return f"{item.name} is too heavy to carry.", False
+            return False
         self.storage[item.name] = item
-        prev_weight = self.weight
         self.weight += item.weight
-        lines= [f"{item.name} added to storage.",
-                f"Storage: {prev_weight} + {item.weight} --> {self.weight}/{self.max_weight} bytes"
-                ]
+
         if item.name in self.current_room.items:
             self.current_room.remove_item(item) # remove item from room
 
-        # auto equip for weapons
-        if isinstance(item, Weapon):
-            current = self.attack_power
-            new = item.damage
-
-            if new > current:
-                ui.display_text(f"{item.name} is stronger than your current attack power. Equip?")
-                ui.display_text("[1] Yes\n[2] No")
-
-                while True:
-                    key = ui.get_key()
-
-                    # If no key is pressed (and we are in non-blocking mode),
-                    # get_key returns -1. We must ignore it and keep waiting.
-                    if key == -1:
-                        continue
-
-                    # Check for valid item selection
-                    if key == "1":
-                        msg = self.equip(item)
-                        ui.clear_logs()
-                        ui.display_text(msg)
-                        break
-                    elif key == "2":
-                        ui.clear_logs()
-                        break
-
-        if isinstance(item, Consumable):
-            if self.equipped_med is None:
-                ui.clear_logs()
-                ui.display_text(f"You don't have any meds currently equipped. Equip?")
-                ui.display_text("[1] Yes\n[2] No")
-
-                while True:
-                    key = ui.get_key()
-
-                    # If no key is pressed (and we are in non-blocking mode),
-                    # get_key returns -1. We must ignore it and keep waiting.
-                    if key == -1:
-                        continue
-
-                    # Check for valid item selection
-                    if key == "1":
-                        msg = self.equip(item)
-                        ui.clear_logs()
-                        ui.display_text(msg)
-                        break
-                    elif key == "2":
-                        ui.clear_logs()
-                        break
-
-
-        return "\n".join(lines), True
+        return True
 
     def remove_item(self, item):
         lines = []
@@ -175,7 +120,7 @@ class Player(Character):
         if isinstance(item, Weapon):
             weapon_name = self.equipped_weapon.name
             self.equipped_weapon = None
-            self.attack_power = 1
+            self.attack_power = 50
             return f"You unequip {weapon_name}. Attack updated to {self.attack_power}."
         if isinstance(item, Consumable):
             med_name = self.equipped_med.name
