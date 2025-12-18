@@ -234,6 +234,7 @@ class Game:
                         elif key == "2":
                             self.ui.clear_logs()
                             break
+                        time.sleep(0.01)
 
             return  # exit menu after inspecting
 
@@ -328,6 +329,7 @@ def main():
 
         if result == "quit":
             break
+        time.sleep(0.01)
 
 if __name__ == "__main__":
     main()

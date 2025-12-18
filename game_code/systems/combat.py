@@ -46,6 +46,7 @@ class Combat:
 
             self.ui.display_text(f"{self.monster.name} HP: {self.monster.hp}/{self.monster.max_hp}")
             self.ui.display_text(f"Your HP: {self.player.hp}/{self.player.max_hp}")
+            time.sleep(0.01)
 
         self.handle_combat_end(self.monster, self.player.current_room)
         return None
@@ -74,6 +75,7 @@ class Combat:
             if key == "2": return "heal"
             if key == "3": return "retreat"
             if key == -1: continue
+            time.sleep(0.01)
 
     def execute_player_attack(self):
         """
@@ -139,7 +141,9 @@ class Combat:
         picked_up = self.player.pick_up(monster.reward)
 
         if not picked_up:
+            room.add_item(monster.reward)
             self.ui.display_text(f"{monster.reward.name} is too heavy to carry.")
+            self.ui.display_text(f"{monster.reward.name} has fallen to the floor.")
         elif picked_up:
             self.ui.display_text(f"{monster.reward.name} added to storage.")
             self.ui.display_text(f"Storage: {prev_weight} + {monster.reward.weight} --> "
@@ -171,5 +175,5 @@ class Combat:
                     elif key == "2":
                         self.ui.clear_logs()
                         break
-
+                    time.sleep(0.01)
 

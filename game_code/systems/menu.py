@@ -1,3 +1,6 @@
+import time
+
+
 class Menu:
     """
     This class allows menus to be displayed when paused or when the player dies.
@@ -28,6 +31,7 @@ class Menu:
                 return "restart"
             if key == "q":
                 return "quit"
+            time.sleep(0.01)
 
     def game_over_menu(self):
         """Display game over menu and handle selection."""
@@ -46,6 +50,7 @@ class Menu:
                 return "restart"
             elif key == "q":
                 return "quit"
+            time.sleep(0.01)
 
 
     def item_menu(self, items, prompt):

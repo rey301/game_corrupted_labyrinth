@@ -361,7 +361,7 @@ class TextUI:
         """
         while True:
             key = self.get_key()
-            if key != -1:
+            if key != -1 and key != " ":
                 return key
 
     def redraw_game(self, room, player):

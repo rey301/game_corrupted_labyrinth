@@ -14,7 +14,7 @@ class TestSolver(unittest.TestCase):
             reward=None
         )
         self.player = Player("Test","", 100,100,20)
-        self.solver = PuzzleHandler(ui=None, player=self.player)
+        self.solver = PuzzleHandler(ui=None, player=self.player, game=None)
         self.room = Room("test_room", "")
         self.room.puzzle = self.puzzle
         self.player.set_current_room(self.room)

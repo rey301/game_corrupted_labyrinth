@@ -37,7 +37,7 @@ class InputHandler:
         else:
             self.game.ui.clear_logs()
             if key == "ESC":
-                self.game.pause = True
+                self.game.pause_menu = True
                 return
 
             if key in self.movement:
