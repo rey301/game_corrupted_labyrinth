@@ -523,7 +523,7 @@ It was built to keep you from remembering why.
             max_hp=800,
             attack_power=200,
             reward=Weapon("code_breaker", "A powerful system weapon designed to destroy all data.", weight=32,
-                          damage=1000),
+                          damage=1500),
             blocks_exit="south"
         )
         self.rooms["c0"].add_monster(echo_shade)

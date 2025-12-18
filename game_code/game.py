@@ -208,23 +208,27 @@ class Game:
             self.ui.clear_logs()
             return
 
-    def decide_pick_up(self, picked_up, chosen_item):
+    def decide_pick_up(self, picked_up, item):
         prev_weight = self.player.weight
         if not picked_up:
-            self.ui.display_text(f"{chosen_item.name} is too heavy to carry.")
+            self.ui.display_text(f"{item.name} is too heavy to carry.")
+            time.sleep(1)
+            self.ui.clear_logs()
+            self.player.current_room.add_item(item)
+            self.ui.display_text(f"{item.name} has fallen to the floor.")
         elif picked_up:
-            self.ui.display_text(f"{chosen_item.name} added to storage.")
-            self.ui.display_text(f"Storage: {prev_weight} + {chosen_item.weight} --> "
+            self.ui.display_text(f"{item.name} added to storage.")
+            self.ui.display_text(f"Storage: {prev_weight} + {item.weight} --> "
                                  f"{self.player.weight}/{self.player.max_weight} bytes")
             time.sleep(1)
             self.ui.clear_logs()
-            logging.info(f"Player picked up {chosen_item.name}")
+            logging.info(f"Player picked up {item.name}")
 
             prompt_msg = None
-            if isinstance(chosen_item, Weapon) and chosen_item.damage > self.player.attack_power:
-                prompt_msg = f"{chosen_item.name} is stronger than your current attack power. Equip?"
+            if isinstance(item, Weapon) and item.damage > self.player.attack_power:
+                prompt_msg = f"{item.name} is stronger than your current attack power. Equip?"
 
-            elif isinstance(chosen_item, Med) and self.player.equipped_med is None:
+            elif isinstance(item, Med) and self.player.equipped_med is None:
                 prompt_msg = "You don't have any meds currently equipped. Equip?"
 
             if prompt_msg:
@@ -236,10 +240,10 @@ class Game:
                     if key == -1: continue
 
                     if key == "1":
-                        msg = self.player.equip(chosen_item)
+                        msg = self.player.equip(item)
                         self.ui.clear_logs()
                         self.ui.display_text(msg)
-                        logging.info(f"Player equipped {chosen_item.name}")
+                        logging.info(f"Player equipped {item.name}")
                         break
                     elif key == "2":
                         self.ui.clear_logs()
