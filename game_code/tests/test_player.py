@@ -1,7 +1,8 @@
 import unittest
+
 from game_code.entities.characters.player import Player
-from game_code.entities.items.weapon import Weapon
 from game_code.entities.items.med import Med
+from game_code.entities.items.weapon import Weapon
 from game_code.entities.room import Room
 
 

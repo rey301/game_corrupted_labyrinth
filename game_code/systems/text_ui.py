@@ -400,7 +400,7 @@ class TextUI:
         """
         Get a line of text input from the user.
 
-        This switches out of blocking mode with a visible curor and echo enabled.
+        This switches out of blocking mode with a visible cursor and echo enabled.
         :param prompt: The input prompt displayed to the user.
         :return: The user text that is inputted.
         """

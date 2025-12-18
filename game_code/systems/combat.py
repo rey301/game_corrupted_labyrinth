@@ -1,8 +1,5 @@
-from random import random
 import time
-
-from game_code.entities.items.med import Med
-from game_code.entities.items.weapon import Weapon
+from random import random
 
 
 class Combat:
@@ -53,7 +50,7 @@ class Combat:
 
     def display_start(self):
         """
-        This displays the string messsage for the combat start.
+        This displays the string message for the combat start.
         :return: None
         """
         self.ui.clear_logs()
@@ -118,7 +115,7 @@ class Combat:
 
         if monster.hp == 0:
             self.ui.display_text(f"{monster.name} has fallen.")
-            self.handle_monster_reward(monster, room)
+            self.handle_monster_reward(monster)
             room.remove_monster(monster)
 
         if self.player.hp == 0:
@@ -127,7 +124,7 @@ class Combat:
             self.game.game_over = True
             time.sleep(3)
 
-    def handle_monster_reward(self, monster, room):
+    def handle_monster_reward(self, monster):
         """
         Checks if the monster has a reward, and if so, allow the player to pick up the reward. If it isn't picked up,
         then the item falls to the floor and is added to the room items.

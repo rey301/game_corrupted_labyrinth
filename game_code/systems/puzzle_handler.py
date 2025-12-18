@@ -61,13 +61,12 @@ class PuzzleHandler:
             room.remove_puzzle()
 
         if puzzle.reward:
-            self.handle_puzzle_reward(puzzle.reward, room)
+            self.handle_puzzle_reward(puzzle.reward)
 
-    def handle_puzzle_reward(self, reward, room):
+    def handle_puzzle_reward(self, reward):
         """
         Handles the reward from the puzzle.
         :param reward: The reward given from the puzzle.
-        :param room: The room that the player is currently in -
         reward is dropped if player's storage is too small to hold it.
         :return: None
         """

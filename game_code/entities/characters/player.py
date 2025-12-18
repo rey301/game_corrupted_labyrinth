@@ -1,6 +1,6 @@
 from game_code.entities.character import Character
-from game_code.entities.items.weapon import Weapon
 from game_code.entities.items.med import Med
+from game_code.entities.items.weapon import Weapon
 
 
 class Player(Character):
@@ -33,7 +33,7 @@ class Player(Character):
         :param item: Item in which the player picks up.
         :return: True if the item has been picked up, otherwise False (too heavy).
         """
-        # check the if the weight exceeds the storage capacity
+        # check if the weight exceeds the storage capacity
         if (self.weight + item.weight) > self.max_weight:
             return False
         self.storage[item.name] = item

@@ -1,9 +1,10 @@
 import unittest
 
+from game_code.entities.characters.player import Player
+from game_code.entities.puzzle import Puzzle
 from game_code.entities.room import Room
 from game_code.systems.puzzle_handler import PuzzleHandler
-from game_code.entities.puzzle import Puzzle
-from game_code.entities.characters.player import Player
+
 
 class TestSolver(unittest.TestCase):
     def setUp(self):

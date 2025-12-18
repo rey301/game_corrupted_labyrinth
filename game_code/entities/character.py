@@ -15,8 +15,8 @@ class Character(Entity):
 
     def is_alive(self):
         """
-        Returns whether the characters's hp is < 0.
-        :return: True if characters's hp is > 0, False otherwise.
+        Returns whether the character's hp is < 0.
+        :return: True if character's hp is > 0, False otherwise.
         """
         return self.hp > 0
 

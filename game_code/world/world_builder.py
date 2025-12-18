@@ -1,11 +1,11 @@
-from game_code.entities.room import Room
-from game_code.entities.puzzle import Puzzle
 from game_code.entities.characters.monster import Monster
-from game_code.entities.items.weapon import Weapon
-from game_code.entities.items.med import Med
-from game_code.entities.items.upgrade import Upgrade
 from game_code.entities.items.key import Key
 from game_code.entities.items.lore import Lore
+from game_code.entities.items.med import Med
+from game_code.entities.items.upgrade import Upgrade
+from game_code.entities.items.weapon import Weapon
+from game_code.entities.puzzle import Puzzle
+from game_code.entities.room import Room
 
 
 class WorldBuilder:

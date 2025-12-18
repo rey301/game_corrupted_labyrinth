@@ -1,6 +1,8 @@
 import unittest
-from game_code.entities.characters.player import Player
+
 from game_code.entities.characters.monster import Monster
+from game_code.entities.characters.player import Player
+
 
 class TestCombat(unittest.TestCase):
     def setUp(self):

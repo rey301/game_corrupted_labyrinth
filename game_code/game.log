@@ -71,3 +71,19 @@ INFO:root:User pauses the game
 INFO:root:User pauses the game
 INFO:root:User restarts the game
 INFO:root:User starts a new game
+INFO:root:Player moved north to lost_cache
+INFO:root:Player moved south to boot_sector
+INFO:root:Player picked up health_module
+INFO:root:Player equipped health_module
+INFO:root:Player moved north to lost_cache
+INFO:root:Player moved south to boot_sector
+INFO:root:Player moved south to glitch_pit
+INFO:root:Player moved north to boot_sector
+INFO:root:Player picked up fragmented_blade
+INFO:root:Player equipped fragmented_blade
+INFO:root:User pauses the game
+INFO:root:User pauses the game
+INFO:root:Player moved south to glitch_pit
+INFO:root:Player starts fight
+INFO:root:User starts a new game
+INFO:root:User pauses the game
