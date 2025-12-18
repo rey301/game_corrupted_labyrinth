@@ -155,3 +155,21 @@ INFO:root:Player moved east to fractured_archive
 INFO:root:Player moved north to obsolete_hub
 INFO:root:Player uses decrypter
 INFO:root:Player uses kernel_key
+INFO:root:User starts a new game
+INFO:root:Player picked up fragmented_blade
+INFO:root:Player equipped fragmented_blade
+INFO:root:Player moved south to glitch_pit
+INFO:root:Player starts fight
+INFO:root:Player picked up data_key
+INFO:root:User starts a new game
+INFO:root:Player picked up health_module
+INFO:root:Player equipped health_module
+INFO:root:Player picked up fragmented_blade
+INFO:root:Player equipped fragmented_blade
+INFO:root:Player moved south to glitch_pit
+INFO:root:Player starts fight
+INFO:root:Player picked up data_key
+INFO:root:Player uses data_key
+INFO:root:Player picked up scan_module
+INFO:root:Player uses scan_module
+INFO:root:Player picked up data_chip.log

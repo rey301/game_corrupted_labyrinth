@@ -1,5 +1,6 @@
 from game_code.entities.character import Character
 from game_code.entities.items.med import Med
+from game_code.entities.items.upgrade import Upgrade
 from game_code.entities.items.weapon import Weapon
 
 
@@ -51,7 +52,7 @@ class Player(Character):
         :param item: The item that will be removed from storage
         :return: The string message updating the user on the storage capacity or the item wasn't found.
         """
-        uses_flag = True
+        add_to_room = True
         lines = []
         if item.name in self.storage:
             # unequip anything that is equipped
@@ -60,16 +61,18 @@ class Player(Character):
                     lines.append(self.unequip(item))
             if self.equipped_med:
                 if self.equipped_med.uses == 0:
-                    uses_flag = False
+                    add_to_room = False
                 if item.name == self.equipped_med.name:
                     lines.append(self.unequip(item))
+            if isinstance(item, Upgrade):
+                add_to_room = False
 
             # update weights and remove from storage
             item_weight = self.storage[item.name].weight
             prev_weight = self.weight
             self.weight -= item_weight
             self.storage.pop(item.name)
-            if uses_flag:
+            if add_to_room:
                 self.current_room.add_item(item)  # add the item to the room
             lines.append(
                 f"{item.name} removed. \nCapacity updated: {prev_weight} - {item_weight} --> "
