@@ -91,7 +91,7 @@ class Movement:
         self.ui.display_text(f"Use {key_item.name} to unlock?")
         self.ui.display_text("\n[1] Yes\n[2] No")
 
-        key = self.game.menu.wait_for_key()
+        key = self.ui.wait_for_key()
         if key == "ESC":
             self.game.menu.pause_menu()
 

@@ -77,6 +77,12 @@ class StorageHandler:
                 msg = action()
                 if msg:
                     self.ui.display_text(msg)
+                    self.ui.display_text("[B] Back")
+                    key = self.ui.wait_for_key()
+                    if key == "b":
+                        self.inspect_item(item)
+                    else:
+                        return
                 return
             # check for exit command
             if user_key == "b":

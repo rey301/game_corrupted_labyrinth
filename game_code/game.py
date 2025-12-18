@@ -6,17 +6,17 @@ import os
 # adds the parent directory to the system path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from entities.characters.player import Player
-from entities.items.med import Med
-from entities.items.weapon import Weapon
-from systems.storage_handler import StorageHandler
-from systems.text_ui import TextUI
-from world.world_builder import WorldBuilder
-from systems.combat import Combat
-from systems.menu import Menu
-from systems.input_handler import InputHandler
-from systems.puzzle_handler import PuzzleHandler
-from systems.movement import Movement
+from game_code.entities.characters.player import Player
+from game_code.entities.items.med import Med
+from game_code.entities.items.weapon import Weapon
+from game_code.systems.storage_handler import StorageHandler
+from game_code.systems.text_ui import TextUI
+from game_code.world.world_builder import WorldBuilder
+from game_code.systems.combat import Combat
+from game_code.systems.menu import Menu
+from game_code.systems.input_handler import InputHandler
+from game_code.systems.puzzle_handler import PuzzleHandler
+from game_code.systems.movement import Movement
 
 logging.basicConfig(filename="game.log", level=logging.INFO)
 
@@ -31,7 +31,7 @@ class Game:
     INTRO_DELAY = 5
     ROOM_DELAY = 2
 
-    def __init__(self, ui=None):
+    def __init__(self):
         self.player = Player("Lapel", "", 500, 500, 50)
         self.ui = TextUI()
         self.world = WorldBuilder()
@@ -87,6 +87,7 @@ class Game:
             self.ui.draw_hud(self.player)
             key = self.ui.get_key()
             self.input_handler.handle(key)
+            time.sleep(0.01) # reduces cpu load
         return None
 
     def initialise_game(self):
@@ -221,7 +222,7 @@ class Game:
                     self.ui.display_text("[1] Yes\n[2] No")
 
                     while True:
-                        key = self.ui.get_key()
+                        key = self.ui.wait_for_key()
                         if key == -1: continue
 
                         if key == "1":
