@@ -1,121 +1,73 @@
 INFO:root:User starts a new game
-INFO:root:Player moved north to lost_cache
-INFO:root:Player moved south to boot_sector
+INFO:root:Player picked up fragmented_blade
+INFO:root:Player equipped fragmented_blade
 INFO:root:Player picked up health_module
 INFO:root:Player equipped health_module
 INFO:root:Player moved south to glitch_pit
 INFO:root:Player moved north to boot_sector
-INFO:root:Player picked up fragmented_blade
 INFO:root:Player moved south to glitch_pit
-INFO:root:Player starts fight
-INFO:root:Player heals
 INFO:root:Player moved west to dead_pixels
 INFO:root:Player picked up first_corruption.log
 INFO:root:Player moved east to glitch_pit
-INFO:root:User starts a new game
-INFO:root:User pauses the game
-INFO:root:Player moved south to glitch_pit
-INFO:root:Player moved north to boot_sector
-INFO:root:Player picked up health_module
-INFO:root:Player equipped health_module
-INFO:root:Player picked up fragmented_blade
-INFO:root:Player equipped fragmented_blade
-INFO:root:Player moved south to glitch_pit
 INFO:root:Player starts fight
+INFO:root:Player heals
 INFO:root:Player uses data_key
-INFO:root:Player moved east to data_well
 INFO:root:Player picked up scan_module
 INFO:root:Player uses scan_module
-INFO:root:Player picked up data_chip.log
+INFO:root:Player heals
+INFO:root:Player starts fight
+INFO:root:Player heals
+INFO:root:Player picked up debugging_lance
+INFO:root:Player equipped debugging_lance
 INFO:root:User starts a new game
 INFO:root:Player picked up health_module
 INFO:root:Player equipped health_module
+INFO:root:Player picked up fragmented_blade
+INFO:root:Player equipped fragmented_blade
 INFO:root:Player moved south to glitch_pit
-INFO:root:Player moved north to boot_sector
-INFO:root:Player moved south to glitch_pit
-INFO:root:User starts a new game
+INFO:root:Player starts fight
+INFO:root:Player heals
+INFO:root:Player heals
+INFO:root:Player uses data_key
 INFO:root:User starts a new game
 INFO:root:Player picked up health_module
 INFO:root:Player equipped health_module
-INFO:root:User pauses the game
-INFO:root:User restarts the game
-INFO:root:User starts a new game
-INFO:root:Player picked up health_module
-INFO:root:Player equipped health_module
-INFO:root:User pauses the game
-INFO:root:User restarts the game
-INFO:root:User starts a new game
-INFO:root:User starts a new game
-INFO:root:User starts a new game
-INFO:root:User starts a new game
-INFO:root:Player picked up health_module
-INFO:root:Player equipped health_module
-INFO:root:User pauses the game
-INFO:root:User starts a new game
-INFO:root:User starts a new game
-INFO:root:Player moved south to glitch_pit
-INFO:root:Player starts fight
-INFO:root:User starts a new game
-INFO:root:Player moved south to glitch_pit
-INFO:root:Player starts fight
-INFO:root:Player starts fight
-INFO:root:Player starts fight
-INFO:root:User starts a new game
-INFO:root:Player picked up health_module
-INFO:root:Player equipped health_module
-INFO:root:Player moved south to glitch_pit
-INFO:root:Player starts fight
-INFO:root:Player dies
+INFO:root:Player picked up fragmented_blade
+INFO:root:Player equipped fragmented_blade
 INFO:root:User starts a new game
 INFO:root:User starts a new game
 INFO:root:Player picked up health_module
 INFO:root:Player equipped health_module
 INFO:root:Player picked up fragmented_blade
 INFO:root:Player equipped fragmented_blade
-INFO:root:Player moved north to lost_cache
-INFO:root:Player moved south to boot_sector
-INFO:root:Player moved north to lost_cache
-INFO:root:Player moved south to boot_sector
-INFO:root:Player uses phantom_key
-INFO:root:Player moved west to boot_sector
-INFO:root:Player moved east to phantom_node
+INFO:root:Player moved south to glitch_pit
+INFO:root:Player starts fight
+INFO:root:Player picked up data_key
+INFO:root:Player uses data_key
+INFO:root:Player heals
+INFO:root:Player heals
 INFO:root:Player starts fight
 INFO:root:Player heals
-INFO:root:Player moved west to boot_sector
-INFO:root:Player moved east to phantom_node
-INFO:root:Player starts fight
-INFO:root:Player heals
-INFO:root:Player heals
-INFO:root:Player heals
-INFO:root:Player drops fragmented_blade
+INFO:root:Player dies
 INFO:root:User starts a new game
 INFO:root:Player picked up health_module
 INFO:root:Player equipped health_module
 INFO:root:Player picked up fragmented_blade
 INFO:root:Player equipped fragmented_blade
-INFO:root:Player moved north to lost_cache
-INFO:root:Player moved south to boot_sector
-INFO:root:Player uses phantom_key
+INFO:root:Player moved south to glitch_pit
 INFO:root:Player starts fight
-INFO:root:Player heals
-INFO:root:Player starts fight
-INFO:root:Player heals
-INFO:root:Player heals
-INFO:root:Player heals
-INFO:root:Player drops fragmented_blade
-INFO:root:Player picked up code_breaker
-INFO:root:Player equipped code_breaker
-INFO:root:Player heals
-INFO:root:Player moved south to gatekeeper_node
-INFO:root:Player starts fight
-INFO:root:Player dies
+INFO:root:Player picked up data_key
+INFO:root:Player uses data_key
+INFO:root:Player picked up debugging_lance
+INFO:root:Player equipped debugging_lance
+INFO:root:User starts a new game
 INFO:root:User starts a new game
 INFO:root:User starts a new game
 INFO:root:User pauses the game
-INFO:root:Player moved south to glitch_pit
-INFO:root:Player starts fight
+INFO:root:User pauses the game
+INFO:root:User pauses the game
+INFO:root:User pauses the game
+INFO:root:User pauses the game
+INFO:root:User pauses the game
+INFO:root:User restarts the game
 INFO:root:User starts a new game
-INFO:root:User starts a new game
-INFO:root:Player moved south to glitch_pit
-INFO:root:Player starts fight
-INFO:root:Player dies

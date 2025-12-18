@@ -137,43 +137,6 @@ class Combat:
             return
 
         self.ui.display_text(f"You have received: {monster.reward.name}\n")
-        prev_weight = self.player.weight
         picked_up = self.player.pick_up(monster.reward)
-
-        if not picked_up:
-            room.add_item(monster.reward)
-            self.ui.display_text(f"{monster.reward.name} is too heavy to carry.")
-            self.ui.display_text(f"{monster.reward.name} has fallen to the floor.")
-        elif picked_up:
-            self.ui.display_text(f"{monster.reward.name} added to storage.")
-            self.ui.display_text(f"Storage: {prev_weight} + {monster.reward.weight} --> "
-                                 f"{self.player.weight}/{self.player.max_weight} bytes")
-            time.sleep(1)
-            self.ui.clear_logs()
-
-            prompt_msg = None
-            if isinstance(monster.reward, Weapon) and monster.reward.damage > self.player.attack_power:
-                prompt_msg = f"{monster.reward.name} is stronger than your current attack power. Equip?"
-
-            elif isinstance(monster.reward, Med) and self.player.equipped_med is None:
-                prompt_msg = "You don't have any meds currently equipped. Equip?"
-
-            if prompt_msg:
-                self.ui.display_text(prompt_msg)
-                self.ui.display_text("[1] Yes\n[2] No")
-
-                while True:
-                    key = self.ui.wait_for_key()
-                    if key == -1: continue
-
-                    if key == "1":
-                        msg = self.player.equip(monster.reward)
-                        self.ui.clear_logs()
-                        self.ui.display_text(msg)
-                        logging.info(f"Player equipped {monster.reward.name}")
-                        break
-                    elif key == "2":
-                        self.ui.clear_logs()
-                        break
-                    time.sleep(0.01)
+        self.game.decide_pick_up(picked_up, monster.reward)
 

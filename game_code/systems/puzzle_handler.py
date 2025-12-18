@@ -5,7 +5,8 @@ class PuzzleHandler:
     """
     Handles solving puzzles in the game.
     """
-    def __init__(self, ui, player):
+    def __init__(self, ui, player, game):
+        self.game = game
         self.ui = ui
         self.player = player
 
@@ -71,13 +72,5 @@ class PuzzleHandler:
         :return: None
         """
         self.ui.display_text(f"You have received: {reward.name}")
-        prev_weight = self.player.weight
         picked_up = self.player.pick_up(reward)
-        if picked_up:
-            self.ui.display_text(f"{reward.name} added to storage.")
-            self.ui.display_text(f"Storage: {prev_weight} + {reward.weight} --> "
-                                 f"{self.player.weight}/{self.player.max_weight} bytes")
-
-        if not picked_up:
-            room.add_item(reward)
-            self.ui.display_text(f"{reward.name} has fallen to the floor.")
+        self.game.decide_pick_up(picked_up, reward)

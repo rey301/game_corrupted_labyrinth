@@ -51,6 +51,7 @@ class Player(Character):
         :param item: The item that will be removed from storage
         :return: The string message updating the user on the storage capacity or the item wasn't found.
         """
+        uses_flag = True
         lines = []
         if item.name in self.storage:
             # unequip anything that is equipped
@@ -58,6 +59,8 @@ class Player(Character):
                 if item.name == self.equipped_weapon.name:
                     lines.append(self.unequip(item))
             if self.equipped_med:
+                if self.equipped_med.uses == 0:
+                    uses_flag = False
                 if item.name == self.equipped_med.name:
                     lines.append(self.unequip(item))
 
@@ -66,7 +69,8 @@ class Player(Character):
             prev_weight = self.weight
             self.weight -= item_weight
             self.storage.pop(item.name)
-            self.current_room.add_item(item)  # add the item to the room
+            if uses_flag:
+                self.current_room.add_item(item)  # add the item to the room
             lines.append(
                 f"{item.name} removed. \nCapacity updated: {prev_weight} - {item_weight} --> "
                 f"{self.weight}/{self.max_weight} bytes.\n"
